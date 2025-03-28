@@ -19,27 +19,29 @@ body {
 
 .account-info {
     display: flex;
-    justify-content: space-between;
+    align-items: center; /* Centers content */
     gap: 40px;
+    justify-content: center;
+
     padding: 40px;
-    max-width: 900px;
+    max-width: 600px;
     margin: 40px auto; /* Adds space above and below */
     background: white;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
 
-.left-section {
-    width: 50%;
-    border-right: 1px solid #000;
-    padding-right: 40px;
-    font-size: 18px;
-}
-
 .right-section {
     width: 65%;
 }
-
+.right-section img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 10px auto; /* Centers the image */
+}
 .right-section h2 {
     margin-bottom: 20px;
 }
@@ -103,35 +105,42 @@ button:hover {
         });
     </script>
 @endif
-    <div class="account-info">
-        <div class="left-section">
+<div class="account-info">
+    <div class="right-section">
+        <h2>Edit Your Information</h2>
 
-            <h2>My Account Information</h2>
-            <p><strong>{{ Auth::user()->full_name }} </strong></p>
-            <hr>
-            <p>{{ Auth::user()->email }} </p>
-            <hr>
-            <p>{{ Auth::user()->phone_number }}</p>
-        </div>
-        <div class="right-section">
-            <h2>Edit Your Information</h2>
-            <form action="{{ route('profile.update') }}" method="POST">
-                @csrf
-                @method('PUT')
+        <!-- Profile Image -->
+        {{-- <img id="profile-image" src="{{ asset(Auth::user()->image) }}" alt="Profile Image"> --}}
 
-                <label for="full-name">Full Name</label>
-                <input type="text" id="full-name" name="full_name" value="{{ old('full_name', Auth::user()->full_name ) }}" required>
+        <!-- Image Upload Form -->
+        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email ) }}" required>
+            {{-- <label for="profile-picture">Upload New Image</label>
+            <input type="file" id="profile-picture" name="profile_picture" accept="image/*" onchange="previewImage(event)"> --}}
 
-                <label for="phone">Phone Number</label>
-                <input type="text" id="phone" name="phone_number" value="{{ old('phone_number', Auth::user()->phone_number) }}">
+            <label for="full-name">Full Name</label>
+            <input type="text" id="full-name" name="full_name" value="{{ old('full_name', Auth::user()->full_name ) }}" required>
 
-                <button type="submit">Save Change</button>
-            </form>
-        </div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email ) }}" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone_number" value="{{ old('phone_number', Auth::user()->phone_number) }}">
+
+            <button class="upload-btn" type="submit">Save Changes</button>
+        </form>
     </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        const image = document.getElementById('profile-image');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+
 
     <!-- Include Footer -->
     @include('layouts.footer')

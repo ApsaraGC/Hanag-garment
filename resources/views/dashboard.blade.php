@@ -197,14 +197,18 @@ overflow-x: hidden;
     justify-content: flex-start;
     gap: 16px;
 }
+
 .product-items {
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 10px;
-    width: 18%; /* 5 images per row, adjust width */
-    position: relative;
-    transition: transform 0.3s ease;
-}
+            text-align: center;
+            border: 0.5px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+        }
+
 
 .product-items:hover {
     transform: translateY(-5px);
@@ -306,29 +310,31 @@ overflow-x: hidden;
             margin-bottom: 20px;
         }
 
-         /* Product Grid */
-         .product-list {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
+         /* Ensure a row has exactly 5 products */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 products per row */
+    gap: 20px;
+    padding: 20px;
+}
 
         .product-item {
             text-align: center;
-            border: 1px solid #ddd;
-            padding: 15px;
+            border: 0.5px solid #ddd;
+            padding: 10px;
             background: #fff;
             position: relative;
             overflow: hidden;
             transition: transform 0.3s ease-in-out;
         }
 
-        .product-item img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
+       /* Uniform Image Size */
+.product-item img {
+    width: 100%; /* Ensures full width */
+    height: 220px; /* Fixed height for uniformity */
+    object-fit: contain; /* Ensures images fit well without distortion */
+    margin-bottom: 10px;
+}
 
         .product-item h4,
         .product-item p {
@@ -340,32 +346,34 @@ overflow-x: hidden;
             transform: scale(1.05);
         }
 
-        /* Add to Cart button - center of image */
-        .add-to-cart-btn {
-            display: none;
-            position: absolute;
-            top: 75%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #ed95da;
-            color: white;
-            padding: 15px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            width: 250px;         /* Increased width */
+       /* Adjust 'Add to Cart' button position */
+.add-to-cart-btn {
+    display: none;
+    position: absolute;
+    top: 65%; /* Move button slightly higher */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f564d5;
+    color: white;
+    padding: 12px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    width: 200px; /* Adjust width */
+    transition: background-color 0.3s ease;
+}
 
-            transition: background-color 0.3s ease;
-        }
-
-        /* Show Add to Cart button on hover */
-        .product-item:hover .add-to-cart-btn {
-            display: block;
-        }
-
+/* Show 'Add to Cart' button on hover */
+.product-item:hover .add-to-cart-btn {
+    display: block;
+}
         /* Wishlist Button */
         .wishlist-btn {
+            background: none; /* Remove button background */
+        border: none; /* Remove border */
+        padding: 0; /* Remove padding */
+        cursor: pointer; /* Make it clickable */
             position: absolute;
             right: 10px;
             top: 10px;
@@ -421,13 +429,10 @@ overflow-x: hidden;
     </div>
     <div class="image-content">
         <div class="image-content">
-            <img id="banner-image" src="{{ asset('build/assets/images/home/home1.png') }}" alt="Hot Deal">
+            <img id="banner-image" src="{{ asset('images/brands/Satin_Green.png') }}" alt="Hot Deal">
         </div>
     </div>
 </section>
-
-
-
 
     <!-- You Might Like Section -->
         <section class="you-might-like">
@@ -435,93 +440,99 @@ overflow-x: hidden;
         <h2>You Might Like</h2>
         <div class="carousel-items">
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/products/product_0-1.jpg') }}" alt="Item">
-                <p>Men Jacket</p>
+                <img src="{{ asset('images/brands/Satin_Green.png') }}" alt="Item">
+                <p>Floral Grown</p>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/category_1.png') }}" alt="Item">
-                <p>Sweater</p>
+                <img src="{{ asset('images/brands/Midi_Grad_34.png') }}" alt="Item">
+                <p>Casual Summar</p>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/product-3-1.jpg') }}" alt="Item">
-                <p>Girl T-Shirt</p>
+                <img src="{{ asset('images/brands/light_pink1.png') }}" alt="Item">
+                <p>A-Line Skirts</p>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/category_7.png') }}" alt="Item">
+                <img src="{{ asset('images/brands/White_one.png') }}" alt="Item">
                 <p>One piece</p>
             </div>
 
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/category_4.png') }}" alt="Item">
-                <p>Pants</p>
+                <img src="{{ asset('images/brands/White_long.png') }}" alt="Item">
+                <p>Party Grown</p>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/product-10.jpg') }}" alt="Item">
-                <p>Women T-shirt</p>
+                <img src="{{ asset('images/brands/Maroon_3.png') }}" alt="Item">
+                <p>Pleates Skirts</p>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/category_8.png') }}" alt="Item">
-                <p>Girl Jacket</p>
+                <img src="{{ asset('images/brands/Brown_white.png') }}" alt="Item">
+                <p>Formal Dress</p>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/category_2.png') }}" alt="Item">
-                <p>Women Jeans</p>
+                <img src="{{ asset('images/brands/Midi_Grad.png') }}" alt="Item">
+                <p>Denim Skirts</p>
             </div>
-            <div class="carousel-item">
+            {{-- <div class="carousel-item">
                 <img src="{{ asset('build/assets/images/home/demo3/category_5.png') }}" alt="Item">
                 <p>Men Shirt</p>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('build/assets/images/home/demo3/category_9.jpg') }}" alt="Item">
                 <p>Girl Shirt</p>
-            </div>
+            </div> --}}
 
         </div>
     </section>
 
  <div>
    <!-- Hot Deals Section -->
-<section class="hot-deals">
-    <!-- Sale Banner -->
-    <div class="sale-banner">
-        <h2>Summer Sale</h2>
-        <p>Up to 10% off</p>
-    </div>
-
-    <!-- Product Images & Information -->
-    <div class="deals-images">
-        @foreach($hotDeals as $product)
-        <div class="product-items">
-            <!-- Product Image -->
-            <img src="{{ asset('build/assets/images/products/' . $product->image) }}"
-                 alt="{{ $product->product_name }}">
-
-            <!-- Product Info -->
-            <div class="product-info">
-                <h3>{{ $product->product_name }}</h3>
-                <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
-                    @csrf
-                    <input type="hidden" name="id" value="{{$product->id}}"/>
-                    <input type="hidden" name="quantity" value="1"/>
-                    <input type="hidden" name="name" value="{{$product->product_name}}"/>
-                    <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price : $product->sale_price}}"/>
-                    <button type="submit" style="border: none; background: none; padding: 0; height: 20px;">
-                        <i class="cart-icon fa fa-shopping-cart"></i>
-                    </button>
-                                </form>
-
-            </div>
-
-            <!-- Price Section -->
-        <div class="price-section">
-            <p><span class="sale-price">${{ number_format($product->discount_price, 0) }}</span></p>
-            <p><span class="regular-price">${{ number_format($product->regular_price, 0) }}</span></p>
+    <!-- Hot Deals Section -->
+    <section class="hot-deals">
+        <!-- Sale Banner -->
+        <div class="sale-banner">
+            <h2>Summer Sale</h2>
+            <p>Up to 10% off</p>
         </div>
 
+        <!-- Product Images & Information -->
+        <div class="deals-images">
+            @foreach($hotDeals as $product)
+                <div class="product-items">
+                    <!-- Product Image -->
+                    <img src="{{ asset($product->image) }}" alt="{{ $product->product_name }}">
+
+                    <!-- Product Info -->
+                    <div class="product-info">
+                        <h3>{{ $product->product_name }}</h3>
+                        <form name="addtocart-form" method="post" action="{{ route('cart.add') }}">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $product->id }}"/>
+                            <input type="hidden" name="quantity" value="1"/>
+                            <input type="hidden" name="name" value="{{ $product->product_name }}"/>
+                            <input type="hidden" name="price" value="{{ $product->sale_price == '' ? $product->regular_price : $product->sale_price }}"/>
+                            <button type="submit" style="border: none; background: none; padding: 0; height: 20px;">
+                                <i class="cart-icon fa fa-shopping-cart"></i>
+                            </button>
+
+                        </form>
+                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="wishlist-btn">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Price Section -->
+                    <div class="price-section">
+                        <p><span class="sale-price">${{ number_format($product->discount_price, 0) }}</span></p>
+                        <p><span class="regular-price">${{ number_format($product->regular_price, 0) }}</span></p>
+                    </div>
+                </div>
+            @endforeach
         </div>
-        @endforeach
-    </div>
-</section>
+    </section>
+
  </div>
     <!-- Featured Products -->
     <section class="featured-products">
@@ -539,13 +550,18 @@ overflow-x: hidden;
                     <button class="add-to-cart-btn">Add to Cart</button>
                 </form>
                 <a href="{{ route('user.productDetails.show', ['id' => $product->id]) }}">
-                    <img src="{{ asset('build/assets/images/products/'.$product->image) }}" alt="Product Image">
+                    <img src="{{ asset($product->image) }}" alt="Product Image">
                 </a>
                 <h4>{{ $product->brand->brand_name }}</h4>
                 <p>{{ $product->product_name }}</p>
                 <p>Rs. {{ $product->sale_price }}</p>
                 <!-- Wishlist Button -->
-                <a href="{{route('user.wishlist')}}" class="wishlist-btn"><i class="fa fa-heart-o"></i></a>
+                <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="wishlist-btn">
+                        <i class="fa fa-heart-o"></i>
+                    </button>
+                </form>
             </div>
             @endforeach
         </div>
@@ -569,19 +585,19 @@ overflow-x: hidden;
     carousel.style.animationDuration = animationDuration;
 });
 
-let images = ['home1.png', 'home2.png','slideshow-character1.png']; // Array of image filenames
+let images = ['Maroon_3.png', 'light_pink.png','satin_green.png']; // Array of image filenames
         let currentImage = 0; // To keep track of the current image
         const bannerImage = document.getElementById('banner-image'); // Select the image element
 
         // Function to change the image
         function changeImage() {
             currentImage = (currentImage + 1) % images.length; // Loop back to the first image after the last
-            bannerImage.src = `{{ asset('build/assets/images/home/') }}/${images[currentImage]}`; // Update the image source
+            bannerImage.src = `{{ asset('images/brands') }}/${images[currentImage]}`; // Update the image source
 
             // Remove any previously added classes
             bannerImage.classList.remove('home2-height');
 
-            if (images[currentImage] === 'home2.png') {
+            if (images[currentImage] === 'Maroon_3.png') {
              bannerImage.style.height = '800px';
              bannerImage.style.width='100%';
 }

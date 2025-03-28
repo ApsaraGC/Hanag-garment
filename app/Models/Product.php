@@ -32,8 +32,6 @@ class Product extends Model
         'regular_price' => 'decimal:2',
         'sale_price' => 'decimal:2',
         'images' => 'array', // If stored as JSON
-
-
     ];
 
     public function brand(){

@@ -72,7 +72,7 @@ class ProductController extends Controller
         $image = $request->file('image');
         $fileName = Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('build/assets/images/products'), $fileName);
-        $product->image = $fileName;
+        $product->image = 'build/assets/images/products/'.$fileName;
     }
 
    // Handle Multiple Image Uploads
@@ -94,12 +94,11 @@ class ProductController extends Controller
    // Check if there are any images to save
    if (!empty($allImagesPaths)) {
        // Store the images as a JSON string in the database
-       $product->images = json_encode($allImagesPaths);
+       $product->images = $allImagesPaths;
    }
 
    // Save the product to the database
    $product->save();
-    // dd(vars: $product);
 
     // Redirect to the products page with success message
     return redirect()->route('admin.products')->with('success', 'Product added successfully!');
@@ -122,10 +121,7 @@ class ProductController extends Controller
 
         // Fetch related products (for example, products in the same category)
         $relatedProducts = Product::where('category_id', $product->category_id)->limit(4)->get();
-      // Check if product images are stored as JSON and decode it
-        // Check if product images are stored as JSON and decode it
- // Decode the images JSON string into an array
-        // Return the view with data
+      
         return view('user.productDetails', compact('product', 'relatedProducts',));
     }
 
@@ -192,12 +188,10 @@ public function update(Request $request, string $id)
         $image = $request->file('image');
         $fileName = Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('build/assets/images/products'), $fileName);
-        $product->image = $fileName;
+        $product->image = 'build/assets/images/products/'.$fileName;
     }
 
-    // Handle Multiple Image Uploads (if new images are uploaded)
     $allImagesPaths = [];  // Create an empty array to store multiple images
-
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $img) {
             // Generate a unique name for each image
@@ -210,18 +204,16 @@ public function update(Request $request, string $id)
             $allImagesPaths[] = 'build/assets/images/products/' . $imageName;  // Store the relative path
         }
     }
-
     // Check if there are any images to save
+     // Check if there are any images to save
     if (!empty($allImagesPaths)) {
-        // Store the images as a JSON string in the database
-        $product->images = json_encode($allImagesPaths);
+    // Store the images as a JSON string in the database
+    $product->images = $allImagesPaths;
     }
 
     // Save the updated product to the database
     $product->save();
-
     // Redirect to the products page with success message
-
     return redirect()->route('admin.products')->with('popup_message', 'Product updated successfully!');
 }
 
@@ -233,15 +225,7 @@ public function update(Request $request, string $id)
  */
 public function destroy(string $id)
 {
-    $product = Product::findOrFail($id);
-
-    // Delete the image file from the server if it exists
-    if ($product->image && file_exists(public_path('build/assets/images/products/' . $product->image))) {
-        unlink(public_path('build/assets/images/products' . $product->image));
-    }
-
     // Delete the brand record from the database
-    $product->delete();
 
     return redirect()->route('admin.products')->with('success', 'Product deleted successfully!');
 }

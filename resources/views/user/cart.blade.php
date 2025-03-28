@@ -168,6 +168,55 @@
     overflow: hidden;  /* Hide overflow if content exceeds the set height */
 }
 
+.empty-cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 80vh; /* Adjust height to center properly */
+    padding: 5px;
+}
+
+.empty-cart img {
+    max-width: 700px; /* Larger image */
+    opacity: 0.9;
+    margin-left: 310px;
+}
+
+.empty-cart h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-left: 270px;
+    margin-bottom: 5px;
+}
+
+.empty-cart p {
+    font-size: 20px;
+    color: #666;
+    margin-left: 270px;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.empty-cart .btn {
+    display: inline-block;
+        padding: 10px 20px;
+        background-color: #F070BB;
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        text-align: center;
+        margin-left: 270px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+}
+
+.empty-cart .btn:hover {
+    background-color: #138496;
+}
+
 
     </style>
 </head>
@@ -195,13 +244,6 @@
 
 
 
-    {{-- @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif --}}
 
     <div class="cart-container">
         @if($items->count() > 0)
@@ -223,7 +265,7 @@
                     <tr>
                         <td>
                             <div class="product-info">
-                                <img src="{{ asset('build/assets/images/products/'.$item->model->image) }}" alt="Product">
+                                <img src="{{ asset($item->model->image) }}" alt="Product">
                                 <div class="product-details">
                                     <p><strong>{{ $item->name }}</strong></p>
                                     <p>Color: {{ $item->model->color ?? 'N/A' }}</p>
@@ -296,7 +338,7 @@
                 <p>Payment Method</p>
                 <label><input type="checkbox"> eSewa</label>
                 <br>
-                <label><input type="checkbox"> </label>
+                <label><input type="checkbox"> COD</label>
             </div>
             <a href="{{ Auth::check() ? route('user.payment') : route('login') }}" class="checkout-btn">Proceed to Checkout</a>
 
@@ -304,11 +346,16 @@
         </div>
         @else
         <div class="row">
-            <div class="col-md-12 text-center pt-5 bp-5">
-                <p>No item found in your cart</p>
-                <a href="{{ route('user.shop') }}" class="btn btn-info">Shop Now</a>
+            <div class="col-md-12 d-flex justify-content-center">
+                <div class="empty-cart">
+                    <img src="{{ asset('images/brands/empty-cart.png') }}" alt="Empty Cart">
+                    <h1>Your Cart is Empty</h1>
+                    <p>Add something to make me happy :)</p>
+                    <a href="{{ route('user.shop') }}" class="btn btn-info">Shop Now</a>
+                </div>
             </div>
         </div>
+
         @endif
     </div>
 

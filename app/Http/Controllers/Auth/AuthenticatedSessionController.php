@@ -33,7 +33,8 @@ class AuthenticatedSessionController extends Controller
     // Attempt authentication
     if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
         return back()->withErrors([
-            'email' => 'These credentials do not match our records.',
+            'email' => 'The provided email address or password is incorrect.',
+            
         ])->onlyInput('email');
     }
      // Regenerate session and redirect

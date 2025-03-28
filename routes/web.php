@@ -60,7 +60,7 @@ Route::put('user/cart/increase-quantity/{rowId}', [CartController::class, 'incre
 Route::delete('user/cart/remove/{rowId}', [CartController::class, 'remove_item'])->name('cart.remove');
 Route::delete('user/cart/clear', [CartController::class, 'empty_cart'])->name('cart.empty');
 Route::post('user/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
-Route::get('user/wishlist', [CartController::class, 'wishlist'])->name('user.wishlist');
+// Route::get('user/wishlist', [CartController::class, 'wishlist'])->name('user.wishlist');
 
 // // Add to cart route
 // Route::post('cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
@@ -116,5 +116,15 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('users', [UserAdminController::class, 'showUsers'])->name('admin.users');
     Route::get('search-users', [UserAdminController::class, 'searchUsers'])->name('admin.search.users');
 });
+
+use App\Http\Controllers\WishlistController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('user.wishlist');
+    Route::post('/wishlist/add/{product_id}', [WishlistController::class, 'add'])->name('wishlist.add');
+    Route::delete('/wishlist/remove/{product_id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
+    Route::delete('/wishlist/clear', [WishlistController::class, 'clear'])->name('wishlist.clear');
+});
+
 
 

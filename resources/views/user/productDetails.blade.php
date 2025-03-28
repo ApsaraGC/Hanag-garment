@@ -210,21 +210,26 @@
         }
         /* Add to Cart Button for Related Products */
 .related-product-add-to-cart {
-    background: #F070BB;
+
+    background-color: #f564d5;
+    position: absolute;
     color: #fff;
-    padding: 10px 20px;
+    top: 68%; /* Move button slightly higher */
+    left: 50%;
+    padding: 12px 18px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
-    transition: background-color 0.3s ease;
-    width: 100%;
+    transform: translate(-50%, -50%);
+    width: 220px;
     margin-top: 10px;
 }
 
 .related-product-add-to-cart:hover {
-    background: #D55B9D;
+    display: block;
+
 }
 
 .related-product-add-to-cart i {
@@ -249,11 +254,14 @@
             transition: transform 0.3s ease-in-out;
         }
 
-        .product-item img {
-            max-width: 90%;
-            height: auto;
-            margin-bottom: 10px;
-        }
+       /* Uniform Image Size */
+.product-item img {
+    width: 100%; /* Ensures full width */
+    height: 220px; /* Fixed height for uniformity */
+    object-fit: contain; /* Ensures images fit well without distortion */
+    margin-bottom: 10px;
+}
+
 
         .product-item h4,
         .product-item p {
@@ -266,30 +274,13 @@
             transform: scale(1.05);
         }
 
-        /* Add to Cart button - center of image */
-        .add-to-cart-btn {
-            display: none;
-            position: absolute;
-            top: 75%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #ff00c8;
-            color: white;
-            padding: 15px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            width: 245px;         /* Increased width */
 
-            transition: background-color 0.3s ease;
-        }
-        /* Show Add to Cart button on hover */
-        .product-item:hover .add-to-cart-btn {
-            display: block;
-        }
  /* Wishlist Button */
         .wishlist-btn {
+            background: none; /* Remove button background */
+        border: none; /* Remove border */
+        padding: 0; /* Remove padding */
+        cursor: pointer; /* Make it clickable */
             position: absolute;
             right: 10px;
             top: 10px;
@@ -312,24 +303,16 @@
         <div class="product-section">
             <div class="product-gallery">
                 <div class="thumbnails">
-                    {{-- @php
-                    $images = json_decode($product->images, true);
-                @endphp --}}
-
-                {{-- @if($images && count($images) > 0) --}}
-                    @foreach($product as $image)
-                            <img src="{{ asset('build/assets/images/products/' . $product->images) }}" alt="Product Images">
-                    @endforeach
-                {{-- @else
-                    <p>No images available for this product.</p>
-                @endif --}}
-
-
-
+                    @php
+            $product->images= array_slice($product->images, 0, 4); // Limits to 4 images
+        @endphp
+                @foreach($product->images as $img)
+                <img src="{{ asset( $img) }}" alt="Product Image" ></img>
+            @endforeach
                 </div>
                 <div class="main-image">
 
-                    <img src="{{ asset('build/assets/images/products/'.$product->image) }}" alt="Main Product">
+                    <img src="{{ asset($product->image) }}" alt="Main Product">
                 </div>
             </div>
 
@@ -349,9 +332,6 @@
 
                 <!-- Quantity Selector -->
                 <div class="quantity">
-                    <button class="decrease">-</button>
-                    <input type="number" value="1" min="1">
-                    <button class="increase">+</button>
 
                     <!-- Add to Cart Form -->
                 <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
@@ -365,10 +345,17 @@
                     </button>
                 </form>
             </div>
+                      <!-- Wishlist Button -->
+                <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="wishlist">
+                        <i class="fa fa-heart-o"></i>Add To Wishlist
+                    </button>
+                </form>
 
-                <button class="wishlist">
+                {{-- <button class="wishlist">
                     <i class="fas fa-heart"></i> Add To Wishlist
-                </button>
+                </button> --}}
                 <p class="categories">Category:{{ $product->category->category_name }}</p>
                  <p class="tags">Brand:{{$product->brand->brand_name}}</p>
                 {{-- <p class="categories">Categories: {{ implode(', ', $product->category->pluck('category_name')->toArray()) }}</p> --}}
@@ -384,7 +371,7 @@
         <div class="product-list">
             @foreach ($relatedProducts as $relatedProduct)
                 <div class="product-item">
-                    <img src="{{ asset('build/assets/images/products/'. $relatedProduct->image) }}" alt="Related Product">
+                    <img src="{{ asset( $relatedProduct->image) }}" alt="Related Product">
 
                 <!-- Add to Cart button - will appear centered over image on hover -->
                 <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
@@ -397,11 +384,19 @@
                                 <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>
                 </form>
+
+                 <p class="product-name">{{$relatedProduct->brand->brand_name}}</p>
                 <p class="product-name">{{ $relatedProduct->product_name }}</p>
                 <p class="product-price">Rs. {{ $relatedProduct->sale_price }}</p>
 
                 <!-- Wishlist Button -->
-                <a href="{{route('user.wishlist')}}" class="wishlist-btn"><i class="fa fa-heart-o"></i></a>
+                  <!-- Wishlist Button -->
+                  <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="wishlist-btn">
+                        <i class="fa fa-heart-o"></i>
+                    </button>
+                </form>
             </div>
             @endforeach
         </div>

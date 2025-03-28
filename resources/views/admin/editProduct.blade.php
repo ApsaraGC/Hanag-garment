@@ -265,24 +265,28 @@
         @error('images')
             <span style="color:red;">{{$message}}</span>
         @enderror
-        <div class="">
+        {{-- <div class="">
             <label for="images" class="form-label">Additional Images</label>
             <input type="file" name="images[]" class="form-control"  accept="image/*" multiple onchange="previewImages(event)" value="{{old('images',$product->images)}}">
-        </div>
-
+        </div> --}}
+        <div class="form-group">
+            <label for="images">Product Images</label>
+            <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
+            {{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
+            </div>
 
 <!-- Preview images -->
-<div class="image-preview" id="additionalImagePreview"></div>
+{{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
 
 
-<!-- Show existing additional images -->
+{{-- <!-- Show existing additional images -->
 @if($product->images)
     <div class="mt-2">
         @foreach (explode(',', $product->images) as $image)
             <img src="{{ asset('build/assets/images/products/'  . $image) }}" alt="Additional Image" style="width: 100px; height: 100px; margin-right: 5px;">
         @endforeach
     </div>
-@endif
+@endif --}}
 
 @error('images')
     <span style="color:red;">{{ $message }}</span>

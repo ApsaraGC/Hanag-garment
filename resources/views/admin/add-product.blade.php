@@ -203,7 +203,7 @@
          @enderror
                 <div class="form-group">
                     <label for="size">Size</label>
-                    <input type="text" id="size" name="size" value="{{ old('size') }}">
+                    <input type="number" id="size" name="size" value="{{ old('size') }}">
                 </div>
                 @error('size')<span style="color:red;">{{$message}}</span>
          @enderror
@@ -282,14 +282,10 @@
             <span style="color:red;">{{$message}}</span>
         @enderror
 
-        {{-- <div class="">
-            <label for="images" class="form-label">Additional Images</label>
-            <input type="file" name="images[]" class="form-control"  accept="image/*" multiple onchange="previewImages(event)">
-
-        </div> --}}
+       
         <div class="form-group">
             <label for="images">Product Images</label>
-            <input type="file" name="images[]" class="form-control" accept="image/*">
+            <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
             {{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
                 </div>
 

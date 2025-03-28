@@ -313,7 +313,7 @@ tr:hover {
                 <tr>
                     <th>ID</th>
                     <th>Image</th>
-                    <th>Images</th>
+                    {{-- <th>Images</th> --}}
                     <th>Name</th>
                     <th>Category</th>
                     <th>Brand</th>
@@ -329,20 +329,16 @@ tr:hover {
                     <td>{{ $product->id }}</td>
                     <td class="image">
                         @if($product->image)
-                        <img src="{{ asset('build/assets/images/products/' . $product->image) }}" width="100" alt="{{ $product->product_name }}"></img>
+                        <img src="{{ asset( $product->image) }}" width="100" alt="{{ $product->product_name }}"></img>
                     @else
                         No Image
                     @endif
                         </td>
-
-                        <td class="image">
-                            @if($product->imageP)
-                                @php
-                                    $images = json_decode($product->images, true);
-                                @endphp
-                                @if($images && is_array($images))
-                                    @foreach($images as $img)
-                                        <img src="{{ asset('build/assets/images/products/' . $img) }}" alt="Product Image" width="100" style="margin: 5px;"></img>
+                        {{-- <td class="image">
+                            @if($product->images)
+                                @if($product->images && is_array($product->images))
+                                    @foreach($product->images as $img)
+                                        <img src="{{ asset( $img) }}" alt="Product Image" width="100" style="margin: 5px;"></img>
                                     @endforeach
                                 @else
                                     No Additional Images
@@ -350,7 +346,7 @@ tr:hover {
                             @else
                                 No Additional Images
                             @endif
-                        </td>
+                        </td> --}}
 
 
                     <td>{{ $product->product_name }}</td>

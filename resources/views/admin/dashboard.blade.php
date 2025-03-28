@@ -39,6 +39,8 @@
         }
         .card {
             padding: 20px;
+            text-decoration: none;
+            color: #333;
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -95,20 +97,35 @@
     <div class="main-content">
         <header>
             <div class="search-bar">
-                <input type="text" placeholder="Search here">
+                {{-- <input type="text" placeholder="Search here"> --}}
+                <p>Hi! Admin </p>
+
             </div>
-            <div class="admin-info">
+            {{-- <div class="admin-info">
                 <p>Admin</p>
                 <span>Hanag GC</span>
-            </div>
+            </div> --}}
         </header>
 
         <div class="dashboard-container">
-            <div class="card">Total Users: {{ $totalUsers }}</div>
-            <div class="card">Total Products: {{ $totalProducts }}</div>
-            <div class="card">Total Brands: {{ $totalBrands }}</div>
-            <div class="card">Total Orders: 500</div> <!-- Static value for total orders -->
+            <!-- Link wrapped around each card for redirection -->
+            <a href="{{ route('admin.users') }}" class="card">
+                Total Users: {{ $totalUsers }}
+            </a>
+
+            <a href="{{ route('admin.products') }}" class="card">
+                Total Products: {{ $totalProducts }}
+            </a>
+
+            <a href="{{ route('admin.brands') }}" class="card">
+                Total Brands: {{ $totalBrands }}
+            </a>
+
+            <a href="{{ route('admin.brands') }}" class="card">
+                Total Orders: 500
+            </a> <!-- Static value for total orders -->
         </div>
+
 
         <div class="revenue-cards">
             <div class="revenue-card">

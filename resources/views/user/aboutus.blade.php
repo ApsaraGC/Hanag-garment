@@ -98,7 +98,7 @@
     .cta-button {
         display: inline-block;
         padding: 10px 20px;
-        background-color: #f79c42;
+        background-color: #F070BB;
         color: #fff;
         text-decoration: none;
         font-weight: bold;

@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Login</title>
+     <!-- FontAwesome CDN for icons -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -13,67 +15,105 @@
 
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Soft background color */
         }
-
-
-
-
 
         .container {
-            max-width: 900px;
-            margin: -130px auto;
-            padding: 150px;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 50px;
+            background-color: white; /* White background for the form */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-
-
         .form-container h2 {
             text-align: center;
             margin-bottom: 20px;
+            color: #5b5454;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         .form-group label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #555;
         }
 
         .form-group input {
-
             width: 100%;
             padding: 10px;
-            border: 1px solid #F070BB;
+            padding-left: 20px; /* Adjust padding to make room for the icon on the left */
+            padding-right: 40px; /* Make room for the icon */
+            border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group input:focus {
+            border-color: #F070BB;
+            outline: none;
+            background-color: #fff;
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 10px;
+            top: 65%;
+            transform: translateY(-50%);
+            color: #aaa; /* Gray color for icons */
+            font-size: 20px;
         }
 
         .btn {
             background-color: #F070BB;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             width: 100%;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         .btn:hover {
-            background-color: #F070BB;
+            background-color: #D5609B; /* Slightly darker pink on hover */
+        }
+
+        .btn:focus {
+            outline: none;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        p a {
+            color: #F070BB;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
         }
 
     </style>
 </head>
 <body>
- <!-- Include Navigation -->
- @include('layouts.navigation')
+
+<!-- Include Navigation -->
+@include('layouts.navigation')
 
 <div class="container">
     <div class="form-container">
-        <h2>Log in Your Account</h2>
+        <h2>Log in to Your Account</h2>
 
         <form action="{{route('login')}}" method="POST">
             @csrf
@@ -82,31 +122,29 @@
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="Email Address" value="{{ old('email') }}" required>
+                <i class="fa fa-envelope"></i> <!-- Email icon -->
                 @error('email')
                     <span style="color: red; font-size: 14px;">{{ $message }}</span>
                 @enderror
             </div>
-
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" placeholder="Password">
+                <i class="fa fa-lock"></i> <!-- Password icon -->
                 @error('password')
                     <span style="color: red; font-size: 14px;">{{ $message }}</span>
                 @enderror
             </div>
-
-
             <button type="submit" class="btn">LOGIN</button>
         </form>
-        <p style="text-align: center; margin-top: 10px;">
-            Not Account Yet? <a href="{{route('register')}}">Create an account</a>
+        <p>
+            Don't have an account? <a href="{{route('register')}}">Create an account</a>
         </p>
     </div>
 </div>
 
-</li>
-
 <!-- Include Footer -->
 @include('layouts.Footer')
+
 </body>
 </html>

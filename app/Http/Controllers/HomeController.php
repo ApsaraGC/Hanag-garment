@@ -15,7 +15,7 @@ class HomeController extends Controller
 public function dashboard(){
         // Show only the first 4 products initially
 
-    $products = Product::take(4)->get();
+    $products = Product::take(5)->get();
 
     //$products = Product::all(); // Fetch all products from the database
 
@@ -31,13 +31,16 @@ public function hotDeals()
     $hotDeals = Product::take(5)->get();
 
     // Calculate discounts for the hot deals (10% off)
-    foreach ($hotDeals as $product) {
-        if ($product->sale_price < $product->regular_price) {
-            $product->discount_price = $product->regular_price - ($product->regular_price * 0.10);
-        } else {
-            $product->discount_price = $product->sale_price; // If sale price exists, use it directly
-        }
+   // Calculate discounts for the hot deals (10% off) if no sale price is set
+   foreach ($hotDeals as $product) {
+    if (empty($product->sale_price) || $product->sale_price >= $product->regular_price) {
+        // If sale price is not set or sale price is greater than or equal to regular price, apply a 10% discount
+        $product->discount_price = $product->regular_price - ($product->regular_price * 0.10);
+    } else {
+        // If sale price exists and is less than regular price, use the sale price directly
+        $product->discount_price = $product->sale_price;
     }
+}
 
     return $hotDeals;
 }
@@ -69,19 +72,7 @@ public  function cart(){
 public  function payment(){
     return view('user.payment');
 }
-// public  function product($id){
-//     // Fetch the product using the provided ID
-//    // Fetch the product from the database using the provided ID
-//    $product = Product::find($id);
 
-//    // Check if the product exists
-//    if (!$product) {
-//        return redirect()->route('user.shop')->with('error', 'Product not found');
-//    }
-
-//    // Pass the product data to the view
-//    return view('user.productDetails', compact('product','id'));
-// }
 public function show($productId)
 {
 }

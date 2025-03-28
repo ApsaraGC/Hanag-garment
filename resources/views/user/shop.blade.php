@@ -153,15 +153,15 @@
             font-size: 14px;
         }
 
-        /* Product Grid */
-        .product-list {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
-
+       /* Ensure a row has exactly 5 products */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 products per row */
+    gap: 20px;
+    padding: 20px;
+}
         .product-item {
+
             text-align: center;
             border: 0.5px solid #ddd;
             padding: 10px;
@@ -171,11 +171,13 @@
             transition: transform 0.3s ease-in-out;
         }
 
-        .product-item img {
-            max-width: 90%;
-            height: auto;
-            margin-bottom: 10px;
-        }
+       /* Uniform Image Size */
+.product-item img {
+    width: 100%; /* Ensures full width */
+    height: 220px; /* Fixed height for uniformity */
+    object-fit: contain; /* Ensures images fit well without distortion */
+    margin-bottom: 10px;
+}
 
         .product-item h4,
         .product-item p {
@@ -188,32 +190,35 @@
             transform: scale(1.05);
         }
 
-        /* Add to Cart button - center of image */
-        .add-to-cart-btn {
-            display: none;
-            position: absolute;
-            top: 75%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #ff00c8;
-            color: white;
-            padding: 15px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            width: 245px;         /* Increased width */
+        /* Adjust 'Add to Cart' button position */
+.add-to-cart-btn {
+    display: none;
+    position: absolute;
+    top: 68%; /* Move button slightly higher */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #efaee1;
+    color: white;
+    padding: 12px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    width: 200px; /* Adjust width */
+    transition: background-color 0.3s ease;
+}
 
-            transition: background-color 0.3s ease;
-        }
-
-        /* Show Add to Cart button on hover */
-        .product-item:hover .add-to-cart-btn {
-            display: block;
-        }
+/* Show 'Add to Cart' button on hover */
+.product-item:hover .add-to-cart-btn {
+    display: block;
+}
 
         /* Wishlist Button */
         .wishlist-btn {
+            background: none; /* Remove button background */
+        border: none; /* Remove border */
+        padding: 0; /* Remove padding */
+        cursor: pointer; /* Make it clickable */
             position: absolute;
             right: 10px;
             top: 10px;
@@ -280,7 +285,7 @@
                         <p>Accessories are the best way to update your look. Add a little edge with new styles and new colors, or go for timeless pieces.</p>
                     </div>
                     <div class="product-image">
-                        <img src="{{ asset(path: 'build/assets/images/products/product_8-1.jpg') }}" alt="Women's Accessories">
+                        <img src="{{ asset(path: 'images/brands/Maroon_3.png') }}" alt="Women's Accessories">
                     </div>
                 </div>
             </div>
@@ -289,7 +294,7 @@
         <!-- Sorting Controls -->
         <div class="product-controls">
             <div class="sorting">
-                <a href="home">Home</a> / <a href="">Shop</a>
+                <a href="{{route('dashboard')}}">Home</a> / <a href="{{route('user.shop')}}">Shop</a>
                 <label for="sort">DEFAULT SORTING</label>
                 <select id="sort">
                     <option value="default">Default</option>
@@ -317,23 +322,26 @@
                     <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price : $product->sale_price}}"/>
                     <button class="add-to-cart-btn">Add to Cart</button>
                 </form>
-
                 <a href="{{ route('user.productDetails.show', ['id' => $product->id]) }}">
-                    <img src="{{ asset('build/assets/images/products/'.$product->image) }}" alt="Product Image">
-                            <!-- Navigation Arrows -->
-        {{-- <span class="prev">&#60;</span>
-        <span class="next">&#62;</span> --}}
-
+                    <img src="{{ asset($product->image) }}" alt="Product Image">
                 </a>
                 <h4>{{ $product->brand->brand_name }}</h4>
                 <p>{{ $product->product_name }}</p>
                 <p>Rs. {{ $product->sale_price }}</p>
-
-                <!-- Wishlist Button -->
-                <a href="{{route('user.wishlist')}}" class="wishlist-btn"><i class="fa fa-heart-o"></i></a>
+                <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="wishlist-btn">
+                        <i class="fa fa-heart-o"></i>
+                    </button>
+                </form>
             </div>
+
+            <!-- Wishlist form -->
+
             @endforeach
+
         </div>
+
     </div>
     <!-- Include Footer -->
     @include('layouts.footer')
