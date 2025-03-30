@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brands - Hanag's Garment</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         /* General Styles */
@@ -94,6 +95,12 @@ h3 {
 }
 
 
+.no-results-message {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    margin-top: 20px;
+}
 
 
 
@@ -129,7 +136,7 @@ th, td {
 }
 
 th {
-    background: #ffb6c1;
+    background:  #ff66b2;
     color: white;
 }
 
@@ -206,10 +213,23 @@ tr:hover {
             <div>
                 <div class="flex">
                     <!-- Search Bar -->
-                    <form action="#" method="GET" class="search-container">
+                    {{-- <form action="#" method="GET" class="search-container">
                         <input type="text" name="search" class="search-input" placeholder="Search brands...">
                         <i class="fas fa-search search-icon"></i>
                     </form>
+
+                    <form action="#" method="GET" class="search-container">
+                        <input type="text" name="search" class="search-input" placeholder="Search brands...">
+                        <i class="fas fa-search search-icon"></i>
+                    </form> --}}
+                    <form action="{{ route('admin.brands') }}" method="GET" class="search-container">
+                        <input type="text" name="search" class="search-input" value="{{ request()->input('search') }}" placeholder="Search brands...">
+                        <i class="fas fa-search search-icon"></i>
+                    </form>
+
+                    @if($brands->isEmpty())
+                        <p class="no-results-message">No brands found</p>
+                    @endif
                     <!-- Add New Brand -->
                     <a href="{{route('admin.add-brand')}}" class="btn">+ Add New</a>
                 </div>
@@ -235,7 +255,7 @@ tr:hover {
                             <td>{{ $brand->brand_name }}</td>
                             <td>
                                 @if($brand->image)
-                                    <img src="{{ asset('build/assets/images/brands/' . $brand->image) }}" width="100">
+                                    <img src="{{ asset('build/assets/images/brands/' . $brand->image) }}" width="50">
                                 @else
                                     No Image
                                 @endif
@@ -259,8 +279,9 @@ tr:hover {
 
                 <!-- Pagination -->
                 <div class="pagination">
-                    {{$brands->links('pagination::bootstrap-4')}}
+                    {{ $brands->links('pagination::bootstrap-4') }}
                 </div>
+
             </div>
         </div>
     </div>

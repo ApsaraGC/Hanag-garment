@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brands - Hanag's Garment</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         /* General Styles */
@@ -117,7 +118,7 @@ td {
 }
 
 th {
-    background: #ffb6c1;
+    background:  #ff66b2;
     color: white;
 }
 

@@ -33,10 +33,22 @@ class AdminController extends Controller
         return view('admin.dashboard',compact('totalUsers', 'onlineRevenue','pendingRevenue','totalProducts', 'totalBrands', 'totalOrders', 'categories','brands','totalEarnings'));
     }
 
-    public function brands(){
-        $brands= Brand::orderBy('id','DESC')->paginate(10);
-        return view('admin.brands',compact('brands'));
+    public function brands(Request $request)
+{
+    $search = $request->input('search');
+
+    if ($search) {
+        $brands = Brand::where('brand_name', 'like', '%' . $search . '%')
+                       ->orderBy('id', 'DESC')
+                       ->paginate(10);
+    } else {
+        $brands = Brand::orderBy('id', 'DESC')->paginate(10);
     }
+
+    return view('admin.brands', compact('brands', 'search'));
+}
+
+
     public function addBrand(){
         return view('admin.add-brand');
     }

@@ -2,90 +2,189 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use App\Models\UserCart;
+use Surfsidemedia\Shoppingcart\Facades\Cart;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Surfsidemedia\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
 {
-/*************  ✨ Codeium Command ⭐  *************/
     /**
      * Display the cart view with cart items and totals.
-     *
-     * Retrieves the current cart items and calculates the subtotal,
-/******  6aa7f1e0-ed18-438f-8eed-d8c1ffc96ac9  *******/
+     */
     public function index()
     {
-    $items = Cart::instance('cart')->content();
-    $subtotal = (float) str_replace(',', '', Cart::subtotal());  // Convert subtotal to a float value
-    $deliveryCharge = 150;
-    $total = $subtotal + $deliveryCharge;
+        // Get the cart items for the logged-in user
+        $cartItems = UserCart::where('user_id', Auth::id())
+        ->with('product') // Load product details
+        ->get();
+        // Calculate the total price and other cart details
+        $subtotal = $cartItems->sum(function ($item) {
+            return $item->product->sale_price * $item->quantity;
+        });
 
-    return view('user.cart', compact('items', 'subtotal', 'deliveryCharge', 'total'));
+        $deliveryCharge = 150; // Fixed delivery charge
+        $total = $subtotal + $deliveryCharge;
+        // Return the cart view with the necessary data
+        return view('user.cart', compact('cartItems', 'subtotal', 'deliveryCharge', 'total'));
     }
 
-    public function add_to_cart(Request $request)
-    {
-        //dd($request->id, $request->name, $request->quantity, $request->price);  // Check what's being passed
 
-        Cart::instance('cart')->add($request->id, $request->name, $request->quantity, $request->price)->associate(Product::class);
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
+    /**
+     * Add a product to the cart.
+     */
+   /**
+ * Add a product to the cart.
+ */
+/**
+ * Add a product to the cart.
+ */
+public function addToCart(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:products,id', // Validate product ID exists
+        'quantity' => 'required|integer|min:1', // Validate quantity, though we'll default it to 1
+        'name' => 'required|string',
+        'price' => 'required|numeric|min:0',
+    ]);
+
+    // Check if the user is logged in
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'You must be logged in to add items to the cart.');
+    }
+    // Find the product
+    $product = Product::findOrFail($request->id);
+
+    // Check if the product already exists in the cart
+    $existingCartItem = UserCart::where('user_id', Auth::id())
+        ->where('product_id', $product->id)
+        ->first();
+
+    // If product already exists in the cart, just update the quantity
+    if ($existingCartItem) {
+        $existingCartItem->quantity += 1; // Increase quantity by 1
+        $existingCartItem->save();
+    } else {
+        // Add the product to the cart with quantity set to 1 by default
+        $cartItem = UserCart::create([
+            'user_id' => Auth::id(),
+            'product_id' => $product->id,
+            'product_name' => $request->name,
+            'price' => $product->sale_price,
+            'quantity' => 1, // Set the default quantity to 1
+            'status' => 'pending',  // Set status as pending
+        ]);
     }
 
+    // Redirect back to the cart page with success message
+    return redirect()->route('user.cart')->with('success', 'Product added to cart successfully!');
+}
+    /**
+     * Increase the quantity of a product in the cart.
+     */
+   // Increase the quantity of a product in the cart
+   public function increase_cart_quantity($productId)
+   {
+       $cartItem = UserCart::where('user_id', Auth::id())
+                           ->where('product_id', $productId)
+                           ->first();
+
+       // Fetch the available product quantity from the products table
+       $product = Product::find($productId);
+
+       if ($product && $cartItem) {
+           // Check if the cart quantity is less than the available stock
+           if ($cartItem->quantity < $product->quantity) {
+               // Increase the cart quantity by 1
+               $cartItem->quantity += 1;
+               $cartItem->save();
+               return redirect()->back()->with('popup_message', 'Product quantity updated successfully!');
+           } else {
+               return redirect()->back()->with('popup_message', 'Not enough stock available!');
+           }
+       }
+
+       return redirect()->back()->with('popup_message', 'Product not found!');
+   }
 
 
-    public function increase_cart_quantity($rowId)
+// Decrease the quantity of a product in the cart
+public function decrease_cart_quantity($productId)
 {
-    // Get the current cart item by rowId
-    $product = Cart::instance('cart')->get($rowId);
+    $cartItem = UserCart::where('user_id', Auth::id())
+                        ->where('product_id', $productId)
+                        ->first();
 
-    // Increase the quantity by 1
-    $qty = $product->qty + 1;
+    if ($cartItem && $cartItem->quantity > 1) {
+        // Decrease the quantity by 1
+        $cartItem->quantity -= 1;
+        $cartItem->save();
+        return redirect()->back()->with('popup_message', 'Product quantity updated successfully!');
+    }
 
-    // Update the cart with the new quantity
-    Cart::instance('cart')->update($rowId, $qty);
-
-    // Redirect back to update the cart page
-    return redirect()->back()->with('popup_message', 'Product Updated quantity to cart successfully!');
-
+    return redirect()->back()->with('popup_message', 'Cannot decrease quantity below 1!');
 }
 
-public function decrease_cart_quantity($rowId)
-{
-    // Get the current cart item by rowId
-    $product = Cart::instance('cart')->get($rowId);
-
-    // Decrease the quantity by 1 (make sure qty doesn't go below 1)
-    $qty = $product->qty > 1 ? $product->qty - 1 : 1;
-
-    // Update the cart with the new quantity
-    Cart::instance('cart')->update($rowId, $qty);
-
-    // Redirect back to update the cart page
-    return redirect()->back()->with('popup_message', 'Product Updated to cart successfully!');
-}
 
 
-    public function remove_item($rowId)
+
+
+
+    /**
+     * Remove an item from the cart.
+     */
+    public function removeItem($productId)
     {
-        Cart::instance('cart')->remove($rowId);
+        // Find the cart item in the database (assume it is stored in a 'user_carts' table)
+        $cartItem = UserCart::where('product_id', $productId)
+                            ->where('user_id', Auth::id()) // Ensure the item belongs to the logged-in user
+                            ->first();
+
+        // Check if the cart item exists
+        if (!$cartItem) {
+            return redirect()->route('user.cart')->with('error', 'Cart item not found.');
+        }
+
+        // Delete the cart item
+        $cartItem->delete();
+
+        // Redirect back with a success message
         return redirect()->back()->with('popup_message', 'Item removed successfully!');
-
     }
 
-    public function empty_cart()
+
+    /**
+     * Empty the cart.
+     */
+    public function emptyCart()
     {
-        Cart::instance('cart')->destroy();
-        return redirect()->back()->with('popup_message', 'Product Removed from cart successfully!');
-
+        UserCart::where('user_id', Auth::id())->where('status', 'pending')->delete();
+        return redirect()->route('cart.index')->with('popup_message', 'All items removed from the cart.');
     }
 
-    public function wishlist()
+    /**
+     * Checkout and complete the order.
+     */
+    public function checkout(Request $request)
     {
-        $items = Cart::instance('wishlist')->content();
-        return view('user.wishlist', compact('items'));
-    }
+        $cartItems = UserCart::where('user_id', Auth::id())
+                         ->where('status', 'pending')
+                         ->get();
 
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        }
+
+        // Update status to completed after checkout
+        foreach ($cartItems as $cartItem) {
+            $cartItem->status = 'completed';
+            $cartItem->save();
+        }
+
+        // Redirect to the invoice page or another route
+        return redirect()->route('user.invoice');
+    }
 }

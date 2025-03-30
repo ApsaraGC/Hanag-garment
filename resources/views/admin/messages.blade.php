@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Users</title>
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <title>Brands - Hanag's Garment</title>
+
     <style>
-        body {
+    body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
@@ -55,52 +56,49 @@ th, td {
 }
 
 th {
-    background-color:  #ff66b2;
-    color:#fff;
+    background-color: #f2f2f2;
 }
 
-        </style>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </style>
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
+
 <body>
     <div class="admin-panels">
         <!-- Sidebar -->
         @include('admin.navbar')
     </div>
+
     <div class="container">
-        <h1>User Management</h1>
-
-        <!-- Total Users -->
-        <p>Total Users: {{ $totalUsers ?? count($users) }}</p>
-
-        <!-- Search Form -->
-        <form method="GET" action="{{ route('admin.search.users') }}">
-            <input type="text" name="search" placeholder="Search by name or email" value="{{ request('search') }}">
-            <button type="submit">Search</button>
-        </form>
-
-        <!-- Users Table -->
-        <table>
+        <h2>User Messages</h2>
+        <table border="1" width="100%">
             <thead>
                 <tr>
-                    <th>S.N</th>
-                    <th>Full Name</th>
-                    <th>Phone Number</th>
+                    <th>Name</th>
                     <th>Email</th>
+                    <th>Phone</th>
+                    <th>Message</th>
+                    <th>Received At</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($users as $index => $user)
+                @foreach($messages as $message)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $user->full_name }}</td>
-                        <td>{{ $user->phone_number ?? 'N/A' }}</td>
-                        <td>{{ $user->email }}</td>
+                        <td>{{ $message->name }}</td>
+                        <td>{{ $message->email }}</td>
+                        <td>{{ $message->phone }}</td>
+                        <td>{{ $message->message }}</td>
+                        <td>{{ $message->created_at->format('Y-m-d H:i') }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
 </body>
+
 </html>

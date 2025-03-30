@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New category</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         /* General Styles */
@@ -94,7 +95,7 @@
         }
 
         .btn-secondary {
-            background: #888;
+            background: red;
         }
 
         .btn-secondary:hover {

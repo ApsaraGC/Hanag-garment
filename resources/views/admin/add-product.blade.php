@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product - Hanag's Garment</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         /* General Styles */
         body {
@@ -101,22 +103,40 @@
 
 
         /* Submit Button */
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: #ff1493;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+        .button-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap:10px;
+    margin-top: 20px;
+}
 
-        .btn-submit:hover {
-            background: #cc117a;
-        }
+.btn-submit, .btn-cancel {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-submit {
+    background-color: #ff66b2;
+}
+
+.btn-submit:hover {
+    background-color: #ff1493;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+}
+
+.btn-cancel:hover {
+    background-color: #c82333;
+}
+
        /* Custom Checkbox */
        .custom-checkbox label {
     display: flex;
@@ -181,6 +201,7 @@
                 grid-template-columns: 1fr;
             }
         }
+
     </style>
 </head>
 <body>
@@ -282,15 +303,13 @@
             <span style="color:red;">{{$message}}</span>
         @enderror
 
-       
+
         <div class="form-group">
             <label for="images">Product Images</label>
             <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
             {{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
                 </div>
-
-
-
+                <br>
                 <div class="form-group custom-checkbox">
                     <label for="is_featured">
                         <input type="checkbox" id="is_featured" name="is_featured" {{ old('is_featured') ? 'checked' : '' }}>
@@ -302,7 +321,10 @@
                  @enderror
 
             </div>
-            <button type="submit" class="btn-submit">Add Product</button>
+            <div class="button-container">
+                <button type="submit" class="btn-submit">Add Product</button>
+                <a href="{{ route('admin.products') }}" class="btn-cancel">Cancel</a>
+            </div>
         </form>
     </div>
     <script>

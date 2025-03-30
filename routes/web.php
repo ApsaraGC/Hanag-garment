@@ -4,6 +4,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserAdminController;
@@ -47,6 +50,9 @@ Route::get('user/shop', [HomeController::class, 'shop'])->name('user.shop');
 // Route::get('user/cart', [HomeController::class, 'cart'])->name('user.cart');
 Route::get('user/payment', [HomeController::class, 'payment'])->name('user.payment');
 Route::get('user/productDetails/{id}', [ProductController::class, 'show'])->name('user.productDetails.show');
+Route::get('user/shop', [ProductController::class, 'showShop'])->name('user.shop');
+Route::get('/shop/load-more', [ProductController::class, 'loadMoreProducts']);
+
 Route::get('user/faq',[HomeController::class,'faq'])->name('user.faq');
 // Inside routes/web.php
 Route::middleware('auth')->group(function() {
@@ -54,29 +60,20 @@ Route::middleware('auth')->group(function() {
     Route::resource('cart', CartController::class);
 });
 Route::get('user/cart', [CartController::class, 'index'])->name('user.cart');
-Route::post('user/cart/add', [CartController::class, 'add_to_cart'])->name('cart.add');
-Route::put('user/cart/decrease-quantity/{rowId}', [CartController::class, 'decrease_cart_quantity'])->name('cart.qty.decrease');
-Route::put('user/cart/increase-quantity/{rowId}', [CartController::class, 'increase_cart_quantity'])->name('cart.qty.increase');
-Route::delete('user/cart/remove/{rowId}', [CartController::class, 'remove_item'])->name('cart.remove');
-Route::delete('user/cart/clear', [CartController::class, 'empty_cart'])->name('cart.empty');
+Route::post('user/cart/add', [CartController::class, 'addTocart'])->name('cart.add');
+// In your routes/web.php
+Route::post('/cart/{productId}/increase', [CartController::class, 'increase_cart_quantity'])->name('cart.qty.increase');
+Route::post('/cart/{productId}/decrease', [CartController::class, 'decrease_cart_quantity'])->name('cart.qty.decrease');
+
+// Route::put('user/cart/decrease-quantity/{rowId}', [CartController::class, 'decreaseCartQuantity'])->name('cart.qty.decrease');
+// Route::put('user/cart/increase-quantity/{rowId}', [CartController::class, 'increaseCartQuantity'])->name('cart.qty.increase');
+Route::delete('user/cart/remove/{productId}', [CartController::class, 'removeItem'])->name('cart.remove');
+Route::delete('user/cart/clear', [CartController::class, 'emptyCart'])->name('cart.empty');
 Route::post('user/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
-// Route::get('user/wishlist', [CartController::class, 'wishlist'])->name('user.wishlist');
-
-// // Add to cart route
-// Route::post('cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
-
-// // View cart route
-// Route::get('user/cart', [CartController::class, 'index'])->name('user.cart');
-
-// // Update cart route
-// Route::patch('user/cart/update/{cart}', [CartController::class, 'updateCart'])->name('cart.update');
-
-
-// Route::get('user/productDetails/{id}', [HomeController::class, 'product'])->name('user.productDetails.show');
-//Route::get('user/productDetails/{id}', [HomeController::class, 'showProduct'])->name('user.productDetails');
 
 Route::get('user/contact', [HomeController::class, 'contact'])->name('user.contact');
 Route::get('user/profile', [HomeController::class, 'profile'])->name('user.profile');
+Route::post('/update-address', [ProfileController::class, 'updateAddress'])->name('update.address');
 
 Route::middleware(['auth',AuthAdmin::class])->group(function(){
     Route::get('admin/navbar', [AdminController::class, 'navbar'])->name('admin.navbar');
@@ -125,6 +122,18 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/wishlist/remove/{product_id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
     Route::delete('/wishlist/clear', [WishlistController::class, 'clear'])->name('wishlist.clear');
 });
+Route::get('/admin/messages', [MessageController::class, 'index'])->name('admin.messages');
 
+// Store messages
+Route::post('/contact', [MessageController::class, 'store'])->name('messages.store');
 
+// Admin route to view messages
+Route::get('/admin/messages', [MessageController::class, 'index'])->middleware('auth')->name('admin.messages');
+Route::get('/search', [HomeController::class, 'searchResults'])->name('user.search');
+
+// In web.php (routes file)
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::get('/user/esewa/payment', [PaymentController::class, 'esewaPayment'])->name('user.esewa.payment');
+Route::get('/user/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
+// Route::get('/user/invoice', [PaymentController::class, 'showPaymentPage'])->name('user.payment');
 

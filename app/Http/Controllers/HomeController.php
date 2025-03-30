@@ -12,19 +12,44 @@ class HomeController extends Controller
 //     $userName = auth()->user()->full_name; // Logged-in user's name
 //     return view('welcome', compact('userName'));
 // }
-public function dashboard(){
+public function dashboard(Request $request){
         // Show only the first 4 products initially
 
     $products = Product::take(5)->get();
 
     //$products = Product::all(); // Fetch all products from the database
+    $search = $request->input('search', ''); // Default to an empty string if no search term is provided
 
     $hotDeals = $this->hotDeals();
 
-    return view('dashboard', compact('products', 'hotDeals'));
+    return view('dashboard', compact('products', 'hotDeals','search'));
 
 
 }
+public function searchResults(Request $request)
+{
+    // Get the search query from the request
+    $search = $request->input('search');
+
+    if ($search) {
+        $products = Product::where('product_name', 'like', '%' . $search . '%')
+            ->orWhere('color', 'like', '%' . $search . '%')
+            ->orWhere('regular_price', 'like', '%' . $search . '%')
+            ->orWhere('sale_price', 'like', '%' . $search . '%')
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->where('category_name', 'like', '%' . $search . '%');
+            })
+            ->orWhereHas('brand', function ($query) use ($search) {
+                $query->where('brand_name', 'like', '%' . $search . '%');
+            })
+            ->get();
+    } else {
+        $products = collect(); // Return an empty collection if no search term is entered
+    }
+
+    return view('user.search', compact('products', 'search'));
+}
+
 public function hotDeals()
 {
     // Fetch the first 6 products for hot deals

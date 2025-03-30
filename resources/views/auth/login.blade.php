@@ -121,7 +121,7 @@
 
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="Email Address" value="{{ old('email') }}" required>
+                <input type="email" id="email" name="email" placeholder="Email Address" value="{{ old('email') }}">
                 <i class="fa fa-envelope"></i> <!-- Email icon -->
                 @error('email')
                     <span style="color: red; font-size: 14px;">{{ $message }}</span>

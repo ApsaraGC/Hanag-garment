@@ -7,6 +7,7 @@
 <meta name="keywords" content="clothing, garments, fashion, premium clothing, affordable fashion">
 <meta name="author" content="Hanag's Garments">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <title>Hanag's Garments</title>
 
@@ -441,7 +442,7 @@ overflow-x: hidden;
         <div class="carousel-items">
             <div class="carousel-item">
                 <img src="{{ asset('images/brands/Satin_Green.png') }}" alt="Item">
-                <p>Floral Grown</p>
+                <p>Floral Gown</p>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('images/brands/Midi_Grad_34.png') }}" alt="Item">
@@ -458,7 +459,7 @@ overflow-x: hidden;
 
             <div class="carousel-item">
                 <img src="{{ asset('images/brands/White_long.png') }}" alt="Item">
-                <p>Party Grown</p>
+                <p>Party Gown</p>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('images/brands/Maroon_3.png') }}" alt="Item">

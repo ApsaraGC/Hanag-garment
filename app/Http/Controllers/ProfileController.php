@@ -28,6 +28,14 @@ class ProfileController extends Controller
         return view('user.profile', compact('user'));
     }
 
+    public function updateAddress(Request $request)
+    {
+        $user = Auth::user();
+        $user->address = $request->input('address');
+        $user->save();
+
+        return redirect()->back()->with('success', 'Address updated successfully!');
+    }
 
     public function settings()
     {

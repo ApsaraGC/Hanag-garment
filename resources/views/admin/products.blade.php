@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Hanag's Garment</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         /* General Styles */
@@ -107,13 +108,13 @@ table {
 th,
 td {
     border: 1px solid #de7586;
-    padding: 12px;
+    padding: 10px;
     text-align: left;
     font-size: 14px;
 }
 
 th {
-    background: #c35d6c;
+    background: #ff66b2;
     color: white;
 }
 
@@ -224,8 +225,26 @@ tr:hover {
     }
 
     .search-container {
-        width: 100%;
-    }
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-input {
+    width: 250px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.btn-search {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
     .btn {
         width: 100%;
@@ -288,32 +307,24 @@ tr:hover {
 
     </div>
 @endif
-
-
         <div class="flex">
             <!-- Search Bar -->
-            <div class="search-container">
-                <input type="text" id="search" class="search-input" placeholder="Search products...">
+            <form action="{{ route('admin.products') }}" method="GET">
+                <div class="search-container">
+                   <input type="text" id="search" class="search-input" placeholder="Search products...">
                 <i class="fas fa-search search-icon"></i>
-            </div>
+                </div>
+            </form>
 
             <!-- Add Product Button -->
-            {{-- <form action="{{ route('admin.add-product') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <!-- Your form fields here -->
-                <button type="submit" class="btn-submit">Add Product</button>
-            </form> --}}
             <a href="{{ route('admin.add-product') }}" class="btn">Add Product</a>
-
                     </div>
-
         <!-- Product Table -->
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Image</th>
-                    {{-- <th>Images</th> --}}
                     <th>Name</th>
                     <th>Category</th>
                     <th>Brand</th>
@@ -324,63 +335,47 @@ tr:hover {
                 </tr>
             </thead>
             <tbody>
-                @foreach ($products as $product)
-                <tr>
-                    <td>{{ $product->id }}</td>
-                    <td class="image">
-                        @if($product->image)
-                        <img src="{{ asset( $product->image) }}" width="100" alt="{{ $product->product_name }}"></img>
-                    @else
-                        No Image
-                    @endif
-                        </td>
-                        {{-- <td class="image">
-                            @if($product->images)
-                                @if($product->images && is_array($product->images))
-                                    @foreach($product->images as $img)
-                                        <img src="{{ asset( $img) }}" alt="Product Image" width="100" style="margin: 5px;"></img>
-                                    @endforeach
+                @if($products->count() > 0)
+                    @foreach ($products as $product)
+                        <tr>
+                            <td>{{ $product->id }}</td>
+                            <td>
+                                @if($product->image)
+                                    <img src="{{ asset($product->image) }}" width="50" alt="{{ $product->product_name }}">
                                 @else
-                                    No Additional Images
+                                    No Image
                                 @endif
-                            @else
-                                No Additional Images
-                            @endif
-                        </td> --}}
-
-
-                    <td>{{ $product->product_name }}</td>
-                    <td>{{$product->category->category_name}}</td>
-                    {{-- /<td>{{ $product->category->name ?? 'N/A' }}</td> --}}
-                    <td>{{$product->brand->brand_name ?? 'N/A'}}</td>
-                    <td>${{ $product->regular_price }}</td>
-                    <td>{{ $product->stock_status }}</td>
-                    <td>{{$product->quantity}}</td>
-                    <td >
-                        <a href="{{ route('admin.editProducts', $product->id) }}" title="Edit"><i class="fas fa-edit" style="color:rgb(255, 0, 200)"></i></a>
-                        {{-- <a href="{{ route('admin.deleteProducts', $product->id) }}" title="Delete"><i class="fas fa-trash" style="color:rgb(248, 83, 83))"></i></a> --}}
-                        <form action="{{ route('admin.deleteProducts', $product->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" style="background:none; border:none; color:red;">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-
-
-                        {{-- <form id="delete-form-{{ $product->id }}" action="{{ route('admin.deleteProducts', $product->id) }}" method="POST" style="display: none;">
-                            @csrf
-                            @method('DELETE')
-                            <i class="fas fa-trash" style="color:red"></i>
-
-                        </form> --}}
-
-
-                    </td>
-                </tr>
-                @endforeach
+                            </td>
+                            <td>{{ $product->product_name }}</td>
+                            <td>{{ $product->category->category_name }}</td>
+                            <td>{{ $product->brand->brand_name ?? 'N/A' }}</td>
+                            <td>${{ $product->regular_price }}</td>
+                            <td>{{ $product->stock_status }}</td>
+                            <td>{{ $product->quantity }}</td>
+                            <td>
+                                <a href="{{ route('admin.editProducts', $product->id) }}" title="Edit">
+                                <i class="fas fa-edit" style="color:rgb(255, 0, 200);"></i>
+                                </a>
+                                <form action="{{ route('admin.deleteProducts', $product->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="background:none; border:none; color:red;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="9" style="text-align: center; font-size: 18px; font-weight: bold; color: red;">
+                            No products found!
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
+
 
         <!-- Pagination -->
         <div class="pagination">

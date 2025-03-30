@@ -11,14 +11,32 @@ use Illuminate\Support\Carbon;
 
 class ProductController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $products=Product::orderBy('created_at','DESC')->paginate(10);
-        return view('admin.products',compact('products'));
+    public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    // Check if search term is provided
+    if ($search) {
+        $products = Product::where('product_name', 'like', '%' . $search . '%')
+                           ->orWhere('category_name', 'like', '%' . $search . '%')
+                           ->orWhere('brand_name', 'like', '%' . $search . '%')
+                           ->orWhere('sale_price', 'like', '%' . $search . '%')
+                           ->paginate(8);
+    } else {
+        // No search term, show all products
+        $products = Product::paginate(8);
     }
+
+    return view('admin.products', compact('products', 'search'));
+}
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -104,6 +122,30 @@ class ProductController extends Controller
     return redirect()->route('admin.products')->with('success', 'Product added successfully!');
 }
 
+// public function showShop()
+// {
+//     $brands = Brand::all(); // Retrieve all brands from the database
+//     $products = Product::all(); // Retrieve all products
+//     return view('user.shop', compact('brands', 'products'));
+// }
+
+public function showShop(Request $request)
+{
+    $brands = Brand::all();
+
+    // Check if sorting is requested
+    $sort = $request->query('sort', 'default');
+
+    if ($sort === 'price-asc') {
+        $products = Product::orderBy('sale_price', 'asc')->get();
+    } elseif ($sort === 'price-desc') {
+        $products = Product::orderBy('sale_price', 'desc')->get();
+    } else {
+        $products = Product::all();
+    }
+
+    return view('user.shop', compact('brands', 'products', 'sort'));
+}
 
     /**
      * Display the specified resource.
@@ -121,9 +163,9 @@ class ProductController extends Controller
 
         // Fetch related products (for example, products in the same category)
         $relatedProducts = Product::where('category_id', $product->category_id)->limit(4)->get();
-      
         return view('user.productDetails', compact('product', 'relatedProducts',));
     }
+
 
 
 
@@ -224,11 +266,12 @@ public function update(Request $request, string $id)
  * Remove the specified resource from storage.
  */
 public function destroy(string $id)
-{
-    // Delete the brand record from the database
 
-    return redirect()->route('admin.products')->with('success', 'Product deleted successfully!');
-}
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->route('admin.products')->with('popup_message', 'Product deleted successfully!');
+    }
 
 
 

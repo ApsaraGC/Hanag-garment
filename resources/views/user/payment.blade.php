@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment - Hanag Garments</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -112,8 +114,7 @@
     <!-- Include Navigation -->
     @include('layouts.navigation')
 
-    <div class="payment-container">
-        <div class="header">Please login to make your payment</div>
+    {{-- <div class="payment-container">
         <div class="payment-details">
             <!-- Transaction Details Section -->
             <div class="transaction-details">
@@ -146,7 +147,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Include Footer -->
     @include('layouts.footer')
 </body>

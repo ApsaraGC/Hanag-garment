@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Hanag's Garments</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,15 +23,18 @@
 
         /* Sidebar Styles */
         .sidebar {
-            width: 25%;
+            width: 20%;
             background-color: #fff;
             padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top:23px;
+            margin-bottom: 20px; /* Add margin-bottom for separation on smaller screens */
             border-right: 1px solid #ddd;
         }
 
         .filter-box h3 {
             font-size: 18px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #000;
         }
 
@@ -40,6 +45,9 @@
 
         .filter-box li {
             font-size: 16px;
+            margin-bottom: 10px;
+
+            cursor: pointer;
             margin-bottom: 15px;
             color: #7a7a7a;
             cursor: pointer;
@@ -53,6 +61,8 @@
         .product-section {
             display: flex;
             width: 75%;
+            flex-direction: column;
+
             align-items: stretch;
             justify-content: space-between;
             padding: 20px;
@@ -60,25 +70,29 @@
         }
 
         .product-box {
-            display: flex;
-            width: 100%;
-            align-items: stretch;
-        }
+    display: flex;
+    width: 95%;
+    align-items: center;
+    position: relative; /* Ensures image can be positioned inside */
+    background-color: #f5a9c3;
+    padding: 20px;
+    border-radius: 10px;
+}
 
-        .product-description {
+.product-description {
             width: 50%;
             background-color: #f5a9c3;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            height: 340px;
+            justify-content: center;
+            height: auto;
         }
 
         .product-description h4 {
             font-size: 18px;
             color: #000;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .product-description h2 {
@@ -92,6 +106,7 @@
             font-size: 14px;
             color: #333;
             margin-bottom: 10px;
+            line-height: 1.5;
         }
 
         .product-image {
@@ -100,6 +115,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            right: 20px; /* Adjust image position */
+
             position: relative; /* Ensure positioning context for absolute elements */
         }
 
@@ -266,12 +283,11 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="filter-box">
-                    <h3>PRODUCT CATEGORIES</h3>
+                    <h3>Available Brands</h3>
                     <ul>
-                        <li>COLOR</li>
-                        <li>SIZE</li>
-                        <li>BRANDS</li>
-                        <li>PRICE</li>
+                        @foreach($brands as $brand)
+                        <li>{{ $brand->brand_name }}</li>
+                    @endforeach
                     </ul>
                 </div>
             </div>
@@ -281,8 +297,8 @@
                 <div class="product-box">
                     <div class="product-description">
                         <h4>WOMEN'S</h4>
-                        <h2>ACCESSORIES</h2>
-                        <p>Accessories are the best way to update your look. Add a little edge with new styles and new colors, or go for timeless pieces.</p>
+                        <h2>Garments</h2>
+                        <p>Discover trendy, high-quality fashion at budget-friendly prices. Elevate your style with our exclusive collections tailored for you.</p>
                     </div>
                     <div class="product-image">
                         <img src="{{ asset(path: 'images/brands/Maroon_3.png') }}" alt="Women's Accessories">
@@ -295,17 +311,15 @@
         <div class="product-controls">
             <div class="sorting">
                 <a href="{{route('dashboard')}}">Home</a> / <a href="{{route('user.shop')}}">Shop</a>
-                <label for="sort">DEFAULT SORTING</label>
-                <select id="sort">
-                    <option value="default">Default</option>
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                </select>
-                <span>VIEW</span>
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>4</button>
+
+                <label for="sort">Sort by price:</label>
+<select id="sort" name="sort" onchange="location = this.value;">
+    <option value="{{ route('user.shop', ['sort' => 'default']) }}" {{ $sort == 'default' ? 'selected' : '' }}>Default</option>
+    <option value="{{ route('user.shop', ['sort' => 'price-asc']) }}" {{ $sort == 'price-asc' ? 'selected' : '' }}>Price: Low to High</option>
+    <option value="{{ route('user.shop', ['sort' => 'price-desc']) }}" {{ $sort == 'price-desc' ? 'selected' : '' }}>Price: High to Low</option>
+</select>
+
+
             </div>
         </div>
 
@@ -335,12 +349,10 @@
                     </button>
                 </form>
             </div>
-
             <!-- Wishlist form -->
-
             @endforeach
-
         </div>
+<!-- Load More Button -->
 
     </div>
     <!-- Include Footer -->
@@ -376,6 +388,9 @@
             });
         });
     </script>
+
+
+
 </body>
 
 </html>

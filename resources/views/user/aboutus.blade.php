@@ -109,7 +109,7 @@
     }
 
     .cta-button:hover {
-        background-color: #e68a2f;
+        background-color: #e62fa0;
     }
 
     /* Ensure responsiveness */
@@ -170,7 +170,7 @@
                     <h3>Our Mission</h3>
                     <p>At Hanag’s, our mission is to offer high-quality, affordable, and stylish clothing that promotes eco-friendly practices. We are committed to delivering products that make you feel good while helping to preserve the planet.</p>
 
-                    <a href="#" class="cta-button">Shop Now</a> <!-- Call-to-action button -->
+                    <a href="{{route('user.shop')}}" class="cta-button">Shop Now</a> <!-- Call-to-action button -->
                 </div>
             </div>
         </div>

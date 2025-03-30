@@ -68,7 +68,7 @@
         .sidebar ul li a i{
           text-decoration: none;
           margin-top: -10px;
-          
+
         }
     </style>
 </head>
@@ -84,7 +84,7 @@
                 <li><a href="{{route('admin.categorys')}}">Category</a></li>
                 <li><a href="#">Order</a></li>
                 <li><a href="{{route('admin.users')}}">Users</a></li>
-                <li><a href="#">Messages</a></li>
+                <li><a href="{{route('admin.messages')}}">Messages</a></li>
                 <li><a href="#">Settings</a></li>
                 <!-- Authentication (login/logout) -->
                 <li>

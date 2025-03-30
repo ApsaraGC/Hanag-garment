@@ -78,21 +78,41 @@
             background-color: #F070BB;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
     <!-- Include Navigation -->
     @include('layouts.navigation')
+    @if(session('popup_message'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('popup_message') }}',
+            timer: 3000,
+            showConfirmButton: false,
+            width: '350px',  // Adjust width as needed
+            padding: '5px', // Optional: Adjust padding
+            customClass: {
+                popup: 'swal-popup-small'
+            }
+        });
+    </script>
+@endif
+
+
 
     <div class="container">
         <div class="form-container">
             <h2>Contact</h2>
 
-            <form action="{{ route('login') }}" method="POST">
+            <form action="{{ route('messages.store') }}" method="POST">
                 @csrf
                 <!-- CSRF Token -->
                 <div class="form-group">
-                    <label for="full_name">Name</label>
-                    <input type="text" id="full_name" name="full_name" placeholder="Your Name" required>
+                    <label for="name">Name</label>
+                    <input type="text" id="full_name" name="name" placeholder="Your Name" >
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
@@ -100,8 +120,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="phone_number">Phone Number</label>
-                    <input type="text" id="phone_number" name="phone_number" placeholder="Phone Number" required>
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" placeholder="Phone Number" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>

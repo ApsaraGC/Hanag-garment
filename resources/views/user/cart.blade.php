@@ -117,13 +117,15 @@
 
         }
         input[type="checkbox"] {
+            background-color: #4CAF50;
+
     border: 1px solid #F070BB;
-    width: 16px; /* Optional: Adjust size if needed */
-    height: 16px; /* Optional: Adjust size if needed */
-    border-radius: 3px; /* Optional: Add a slight rounding for aesthetics */
-    appearance: none; /* Removes default styling */
-    outline: none; /* Removes outline on focus */
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    outline: none;
     cursor: pointer;
+
 }
 /* General Button Styling */
 
@@ -240,13 +242,8 @@
     </script>
 @endif
 
-
-
-
-
-
     <div class="cart-container">
-        @if($items->count() > 0)
+        @if($cartItems->count() > 0)
         <!-- Cart Items -->
         <div class="cart-items">
             <h2>Cart</h2>
@@ -261,48 +258,54 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($items as $item)
+                    @foreach ($cartItems as $item)
                     <tr>
                         <td>
                             <div class="product-info">
-                                <img src="{{ asset($item->model->image) }}" alt="Product">
+                                <img src="{{ asset($item->product->image) }}" alt="Product">
                                 <div class="product-details">
-                                    <p><strong>{{ $item->name }}</strong></p>
-                                    <p>Color: {{ $item->model->color ?? 'N/A' }}</p>
-                                    <p>Size: {{ $item->model->size ?? 'N/A' }}</p>
+                                    <p><strong>{{ $item->product->product_name }}</strong></p>
+                                    <p>Color: {{ $item->product->color ?? 'N/A' }}</p>
+                                    <p>Size: {{ $item->product->size ?? 'N/A' }}</p>
                                 </div>
                             </div>
                         </td>
-                        <td>Rs. {{ $item->price }}</td>
+                        <td>Rs. {{ $item->product->sale_price }}</td>
                         <td>
                             <div class="quantity-selector">
-                                <!-- Form for decreasing the quantity -->
-                                <form method="POST" action="{{ route('cart.qty.decrease', ['rowId' => $item->rowId]) }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-link">-</button>
-                                </form>
+ <!-- Form for decreasing the quantity -->
+                                 <!-- Decrease Button -->
+        <form method="POST" action="{{ route('cart.qty.decrease', ['productId' => $item->product->id]) }}">
+            @csrf
+            <button type="submit" class="btn btn-link">-</button>
+        </form>
 
-                                <!-- Input for quantity -->
-                                <input type="number" name="quantity" value="{{ $item->qty }}" min="1" class="qty-control__number text-center" disabled>
+                                <!-- Display current quantity -->
+        <input type="text" value="{{ $item->quantity }}" readonly style="border: none; width: 40px; text-align: center;">
 
+        <!-- Display Available Stock -->
                                 <!-- Form for increasing the quantity -->
-                                <form method="POST" action="{{ route('cart.qty.increase', ['rowId' => $item->rowId]) }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-link">+</button>
-                                </form>
+                               <!-- Increase Button -->
+        <form method="POST" action="{{ route('cart.qty.increase', ['productId' => $item->product->id]) }}">
+            @csrf
+            <button type="submit" class="btn btn-link">+</button>
+        </form>
                             </div>
                         </td>
 
-                        <td>Rs. {{ $item->subtotal }}</td>
-                        <td>
-                            <form action="{{ route('cart.remove', $item->rowId) }}" method="POST">
+
+                        <td id="subtotal-{{ $item->product->id }}" class="product-subtotal">
+                            Rs. {{ $item->product->sale_price * $item->quantity }}
+                        </td>
+                                                <td>
+                            <form action="{{ route('cart.remove', ['productId' => $item->product->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Remove</button>
                             </form>
+
                         </td>
+
                     </tr>
                     @endforeach
                 </tbody>
@@ -334,13 +337,31 @@
             </div>
 
             <hr>
-            <div class="payment-method">
+            {{-- <div class="payment-method">
                 <p>Payment Method</p>
                 <label><input type="checkbox"> eSewa</label>
                 <br>
                 <label><input type="checkbox"> COD</label>
-            </div>
-            <a href="{{ Auth::check() ? route('user.payment') : route('login') }}" class="checkout-btn">Proceed to Checkout</a>
+            </div> --}}
+            <form method="POST" action="{{ route('cart.checkout') }}">
+                @csrf
+                <div class="payment-method">
+                    <p>Payment Method</p>
+                    <label>
+                        <input type="checkbox" name="payment_method[]" value="esewa" id="esewa">
+                        eSewa
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" name="payment_method[]" value="cod" id="cod">
+                        COD
+                    </label>
+                </div>
+
+                <a id="checkout-link" href="#" class="checkout-btn">Proceed to Checkout</a>
+            </form>
+
+            {{-- <a href="{{ Auth::check() ? route('user.payment') : route('login') }}" class="checkout-btn">Proceed to Checkout</a> --}}
 
             {{-- <a href="{{ route('user.payment') }}" class="checkout-btn">Proceed to Checkout</a> --}}
         </div>
@@ -362,6 +383,63 @@
     <!-- Include Footer -->
     @include('layouts.footer')
 </body>
+<script>
+  document.getElementById('checkout-link').addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent the default anchor click behavior
 
+    // Check if eSewa is selected
+    const isEsewaSelected = document.getElementById('esewa').checked;
+    // Check if COD is selected
+    const isCODSelected = document.getElementById('cod').checked;
+
+    // Prevent both payment methods from being selected at the same time
+    if (isEsewaSelected && isCODSelected) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Please select only one payment method',
+            showConfirmButton: true
+        });
+        return;
+    }
+    if (isEsewaSelected) {
+        // If eSewa is selected, check if the user is logged in
+        @auth
+            // Redirect to eSewa payment page
+            window.location.href = "{{ route('user.esewa.payment') }}";
+        @else
+            // If not logged in, redirect to login page
+            window.location.href = "{{ route('login') }}";
+        @endauth
+    } else if (isCODSelected) {
+        // If COD is selected, proceed with generating invoice
+        window.location.href = "{{ route('user.invoice') }}";
+    } else {
+        // If neither is selected, show a SweetAlert or an alert
+        Swal.fire({
+            icon: 'warning',
+            title: 'Please select a payment method',
+            showConfirmButton: true
+        });
+    }
+});
+
+// Disable the other checkbox when one is selected
+document.getElementById('esewa').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('cod').disabled = true; // Disable COD
+    } else {
+        document.getElementById('cod').disabled = false; // Enable COD
+    }
+});
+
+document.getElementById('cod').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('esewa').disabled = true; // Disable eSewa
+    } else {
+        document.getElementById('esewa').disabled = false; // Enable eSewa
+    }
+});
+</script>
+<!-- Add this script to update the quantity dynamically -->
 
 </html>

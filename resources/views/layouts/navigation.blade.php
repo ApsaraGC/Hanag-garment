@@ -52,6 +52,13 @@
         .nav-icons a {
             color: aliceblue;
         }
+        .nav-icons i,
+.nav-links i,
+.user-card i {
+  font-size: 18px;
+       /* Adjust this value as needed */
+  line-height: 1;       /* Use a line-height that best fits your design */
+}
 
         header {
             background-color: #F070BB;
@@ -118,7 +125,44 @@
         .profile-link:hover {
             color: #cc117a;
         }
+        /* Container for the search form */
+.search-form {
+  position: relative;
+  display: inline-block;
 
+}
+
+/* Initially, hide the input */
+.search-form input[type="text"] {
+    width: 200px;  /* Adjust width as needed */
+    padding: 10px 40px 10px 10px;  /* extra right padding for the icon */
+  /* width: 0; */
+  opacity: 0;
+  /* padding: 5px; */
+  border: none;
+  border-radius: 4px;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  outline: none;
+}
+
+/* When active, show and expand the input */
+.search-form.active input[type="text"] {
+  width: 150px;  /* Adjust width as needed */
+  opacity: 1;
+  padding: 5px 10px;
+}
+
+/* Style for the search button */
+.search-form .search-btn {
+  background: none;
+  border: none;
+  position: relative;
+  top:-2px;
+  cursor: pointer;
+  outline: none;
+  font-size: 16px;
+  color: inherit;
+}
     </style>
 </head>
 <body>
@@ -132,7 +176,13 @@
             <a href="{{route('user.contact')}}">CONTACT</a>
         </nav>
         <div class="nav-icons">
-            <a href="#"><i class="fa fa-search"></i></a>
+            <form class="search-form" method="GET" action="{{ route('user.search') }}">
+              <input type="text" name="search" value="{{ old('search', $search ?? '') }}" placeholder="Search products...">
+              <button type="button" class="search-btn">
+                <i class="fa fa-search"></i>
+              </button>
+            </form>
+            {{-- <a href="#"><i class="fa fa-search"></i></a> --}}
             @if (Route::has('login'))
             <nav class="">
                 @auth
@@ -143,6 +193,7 @@
                             <p>{{ Auth::user()->name }}</p>
                             <a href="{{ route('user.profile') }}" class="profile-link">View Profile</a>
                             <a href="{{ route('user.settings') }}" class="profile-link">Settings</a>
+                            
                             <form method="POST" action="{{ route('logout') }}" id="logout-form">
                                 @csrf
                                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -173,5 +224,32 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const searchForm = document.querySelector('.search-form');
+          const searchInput = searchForm.querySelector('input[type="text"]');
+          const searchBtn = searchForm.querySelector('.search-btn');
+
+          searchBtn.addEventListener('click', function (e) {
+            // If the form is not active, activate it and focus the input.
+            if (!searchForm.classList.contains('active')) {
+              searchForm.classList.add('active');
+              searchInput.focus();
+              e.preventDefault();
+            } else {
+              // If the form is active and the input is empty, hide it.
+              if (!searchInput.value.trim()) {
+                searchForm.classList.remove('active');
+                searchInput.blur();
+                e.preventDefault();
+              } else {
+                // Otherwise, if there's text, submit the form.
+                searchForm.submit();
+              }
+            }
+          });
+        });
+      </script>
+
 </body>
 </html>
