@@ -180,5 +180,32 @@ public function updateCategory(Request $request, $id)
     }
 
 
+// AdminController.php
+
+public function showRatings()
+{
+    // Get the products along with their reviews
+$products = Product::with(['reviews', 'brand'])->get();
+
+// Group products by brand_id, then calculate average rating from the reviews
+$brandRatings = $products->groupBy('brand_id')->map(function ($group) {
+    // Get the brand name (assuming 'brand' relationship is set up correctly in the Product model)
+    $brandName = $group->first()->brand->brand_name;
+
+    // Get all the reviews for the products in this brand group, and calculate the average rating
+    $averageRating = $group->flatMap(function ($product) {
+        return $product->reviews->pluck('rating');
+    })->avg();
+
+    return [
+        'brand_name' => $brandName,
+        'average_rating' => $averageRating
+    ];
+});
+    // Pass to the view
+    return view('admin.rating', compact('brandRatings'));
+}
+
+
 
 }

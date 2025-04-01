@@ -63,5 +63,9 @@ public static function boot()
         });
     });
 }
-
+ // Accessor for average rating
+ public function getAverageRatingAttribute()
+ {
+     return $this->reviews->avg('rating');
+ }
 }

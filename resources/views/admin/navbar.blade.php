@@ -85,7 +85,7 @@
                 <li><a href="{{route('admin.order')}}">Order</a></li>
                 <li><a href="{{route('admin.users')}}">Users</a></li>
                 <li><a href="{{route('admin.messages')}}">Messages</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="{{route('admin.rating')}}">Rating</a></li>
                 <!-- Authentication (login/logout) -->
                 <li>
                     @if (Route::has('login'))

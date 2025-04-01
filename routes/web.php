@@ -159,3 +159,4 @@ Route::get('/order/bill/download/{orderId}', [OrderController::class, 'downloadO
 
 Route::post('/submit-rating', [ProductController::class, 'submitRating'])->name('submit.rating');
 
+Route::get('/admin/ratings', [AdminController::class, 'showRatings'])->name('admin.rating');

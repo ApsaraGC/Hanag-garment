@@ -139,8 +139,8 @@
                 Total Brands: {{ $totalBrands }}
             </a>
 
-            <a href="{{ route('admin.brands') }}" class="card">
-                Total Orders: 500
+            <a href="{{ route('admin.order') }}" class="card">
+                Total Orders: {{ $totalOrders }}
             </a> <!-- Static value for total orders -->
         </div>
 
