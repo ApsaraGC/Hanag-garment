@@ -537,7 +537,7 @@ overflow-x: hidden;
  </div>
     <!-- Featured Products -->
     <section class="featured-products">
-        <h2>Featured Products</h2>
+        <h2>Our Latest Products</h2>
         <div class="product-list">
             @foreach($products as $product)
             <div class="product-item">
@@ -555,7 +555,7 @@ overflow-x: hidden;
                 </a>
                 <h4>{{ $product->brand->brand_name }}</h4>
                 <p>{{ $product->product_name }}</p>
-                <p>Rs. {{ $product->sale_price }}</p>
+                <p>Rs. {{ number_format($product->sale_price, 0) }}</p>
                 <!-- Wishlist Button -->
                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                     @csrf

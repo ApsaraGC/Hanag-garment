@@ -200,6 +200,7 @@
             width: 100%;
             border-radius: 5px;
             margin-bottom: 10px;
+
         }
 
         .product-name {
@@ -212,15 +213,16 @@
             font-weight: bold;
         }
         /* Add to Cart Button for Related Products */
-.related-product-add-to-cart {
 
+
+.related-product-add-to-cart {
     background-color: #f564d5;
     position: absolute;
-    color: #fff;
-    top: 68%; /* Move button slightly higher */
+    background-color: transparent;
+    top: 60%; /* Move button slightly higher */
     left: 50%;
-    padding: 12px 18px;
     border: none;
+    padding: 12px 18px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
@@ -228,16 +230,14 @@
     transform: translate(-50%, -50%);
     width: 220px;
     margin-top: 10px;
+
 }
 
 .related-product-add-to-cart:hover {
     display: block;
-
-}
-
-.related-product-add-to-cart i {
-    margin-right: 10px;
-    font-size: 18px;
+    background-color:#ede8e8;
+    color: rgb(236, 151, 164); /* Change text color on hover */
+    border: 2px solid #eea5a5;
 }
   /* Product Grid */
   .product-list {
@@ -263,6 +263,8 @@
     height: 220px; /* Fixed height for uniformity */
     object-fit: contain; /* Ensures images fit well without distortion */
     margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.3); /* Dark overlay on hover */
+
 }
 
 
@@ -293,8 +295,23 @@
             cursor: pointer;
             font-size: 18px;
         }
+   /* Full star (yellow) */
+.fa-star.checked {
+    color: yellow;
+}
+
+/* Half star effect using background gradient */
+.fa-star-half {
+    background: linear-gradient(to right, yellow 50%, #ccc 50%);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+
 
     </style>
+    <!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <!-- Include Navigation -->
@@ -322,12 +339,33 @@
             <div class="product-details">
                 <!-- Breadcrumb -->
                 <div class="breadcrumb">
-                    <a href="{{route('dashboard')}}">Home</a> / <a href="{{ route('user.shop') }}">The Shop</a> / <span>Lightweight Black Summer One Piece</span>
+                    <a href="{{route('dashboard')}}">Home</a> / <a href="{{ route('user.shop') }}">The Shop</a> / <span>{{ $product->short_description }}</span>
                 </div>
                 <h1>{{ $product->product_name }}</h1>
                 <div class="ratings">
-                    ⭐⭐⭐⭐⭐ <span>6 reviews</span>
+                    <form id="rating-form" action="{{ route('submit.rating') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="rating" id="selected-rating">
+
+                        @for ($i = 1; $i <= 5; $i++)
+                            <span class="star" data-rating="{{ $i }}" onclick="submitRating({{ $i }})">
+                                <span class="fa fa-star" id="star-{{ $i }}-empty"></span>
+                                <span class="fa fa-star checked" id="star-{{ $i }}-filled" style="display: none;"></span>
+                                <span class="fa fa-star-half" id="star-{{ $i }}-half" style="display: none;"></span>
+                            </span>
+                        @endfor
+                        <span id="review-count">{{ $product->reviews->count() }} reviews</span>
+                    </form>
                 </div>
+
+
+
+
+
+
+                <p class="price">Rs.  <span style="text-decoration: line-through; color: #5e5c5c; font-size: 20px;">{{ number_format($product->regular_price, 0) }}</span></p>
+
                 <p class="price">Rs. {{ $product->sale_price }}</p>
                 <p class="description">
                     {{ $product->description }}
@@ -352,7 +390,7 @@
                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                     @csrf
                     <button type="submit" class="wishlist">
-                        <i class="fa fa-heart-o"></i>Add To Wishlist
+                        <i class="fa fa-heart-o"></i> Add To Wishlist
                     </button>
                 </form>
 
@@ -409,4 +447,39 @@
     <!-- Include Footer -->
     @include('layouts.footer')
 </body>
+<script>
+  function submitRating(rating) {
+    // Set the selected rating in the hidden input field
+    document.getElementById('selected-rating').value = rating;
+
+    // Update the star display to reflect the selected rating (half-star logic)
+    for (let i = 1; i <= 5; i++) {
+        const starEmpty = document.getElementById(`star-${i}-empty`);
+        const starFilled = document.getElementById(`star-${i}-filled`);
+        const starHalf = document.getElementById(`star-${i}-half`);
+
+        // Reset all stars first
+        starEmpty.style.display = 'inline';
+        starFilled.style.display = 'none';
+        starHalf.style.display = 'none';
+
+        // If the current star is less than or equal to the rating, fill it with yellow
+        if (i <= rating) {
+            starEmpty.style.display = 'none';
+            starFilled.style.display = 'inline';
+        }
+
+        // If the current star is half of the next one, show half-filled star
+        else if (i - 1.5 === rating) {
+            starEmpty.style.display = 'none';
+            starHalf.style.display = 'inline';
+        }
+    }
+
+    // Submit the form
+    document.getElementById('rating-form').submit();
+}
+
+</script>
+
 </html>

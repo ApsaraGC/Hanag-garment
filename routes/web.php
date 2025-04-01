@@ -156,3 +156,6 @@ Route::get('/order/{orderId}/checkout', [OrderController::class, 'checkout'])->n
 //Route::get('user/orderBill', [OrderController::class, 'checkout'])->name('user.orderBill');
 Route::get('/order/bill/download/{orderId}', [OrderController::class, 'downloadOrderBill'])->name('download.orderBill');
 
+
+Route::post('/submit-rating', [ProductController::class, 'submitRating'])->name('submit.rating');
+

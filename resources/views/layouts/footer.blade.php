@@ -11,7 +11,7 @@
 
         /* Footer Styles */
         footer {
-            background-color: #fff;
+            background-color: #fbcbe1;
             font-family: Arial, sans-serif;
             border-top: 1px solid #ddd;
         }

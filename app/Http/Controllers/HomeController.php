@@ -15,7 +15,7 @@ class HomeController extends Controller
 public function dashboard(Request $request){
         // Show only the first 4 products initially
 
-    $products = Product::take(5)->get();
+        $products = Product::latest()->take(5)->get(); // Order by creation date (latest products first)
 
     //$products = Product::all(); // Fetch all products from the database
     $search = $request->input('search', ''); // Default to an empty string if no search term is provided

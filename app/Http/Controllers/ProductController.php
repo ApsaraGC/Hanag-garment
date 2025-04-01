@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -114,7 +115,6 @@ class ProductController extends Controller
        // Store the images as a JSON string in the database
        $product->images = $allImagesPaths;
    }
-
    // Save the product to the database
    $product->save();
 
@@ -122,32 +122,26 @@ class ProductController extends Controller
     return redirect()->route('admin.products')->with('success', 'Product added successfully!');
 }
 
-// public function showShop()
-// {
-//     $brands = Brand::all(); // Retrieve all brands from the database
-//     $products = Product::all(); // Retrieve all products
-//     return view('user.shop', compact('brands', 'products'));
-// }
 
 public function showShop(Request $request)
 {
     $brands = Brand::all();
 
     // Check if sorting is requested
-    $sort = $request->query('sort', 'default');
+     // Check if sorting is requested
+     $sort = $request->query('sort', 'default');
 
-    if ($sort === 'price-asc') {
-        $products = Product::orderBy('sale_price', 'asc')->get();
-    } elseif ($sort === 'price-desc') {
-        $products = Product::orderBy('sale_price', 'desc')->get();
-    } else {
-        $products = Product::all();
-    }
+     if ($sort === 'price-asc') {
+         $products = Product::orderBy('sale_price', 'asc')->paginate(10); // 9 products per page
+     } elseif ($sort === 'price-desc') {
+         $products = Product::orderBy('sale_price', 'desc')->paginate(10); // 9 products per page
+     } else {
+         $products = Product::paginate(10); // 9 products per page
+     }
 
     return view('user.shop', compact('brands', 'products', 'sort'));
 }
-
-    /**
+ /**
      * Display the specified resource.
      */
     public function showAddProductForm()
@@ -156,20 +150,66 @@ public function showShop(Request $request)
     $brands = Brand::all(); // If you are also
      return view('admin.add-product',compact('categories','brands'));
  }
-    public function show($productId)
-    {
-        // Eager load category and brand relationships
-        $product = Product::with(['category', 'brand'])->findOrFail($productId);
 
-        // Fetch related products (for example, products in the same category)
-        $relatedProducts = Product::where('category_id', $product->category_id)->limit(4)->get();
-        return view('user.productDetails', compact('product', 'relatedProducts',));
+ public function show($productId)
+{
+    $product = Product::with(['category', 'brand', 'reviews'])->findOrFail($productId);
+
+    // Calculate average rating
+    $averageRating = $product->reviews->avg('rating');
+
+    $relatedProducts = Product::where('category_id', $product->category_id)->limit(4)->get();
+
+    return view('user.productDetails', compact('product', 'relatedProducts', 'averageRating'));
+}
+
+public function submitRating(Request $request)
+{
+     // Check if the user is logged in
+     if (!auth()->check()) {
+        // If not logged in, redirect to login page with a message
+        return redirect()->route('login')->with('error', 'Please log in to submit a rating.');
+    }
+    // Validate the incoming request
+    $request->validate([
+        'rating' => 'required|integer|between:1,5',
+        'product_id' => 'required|exists:products,id', // Ensure product_id is valid
+    ]);
+
+    // Get the logged-in user
+    $user = auth()->user();
+
+    // Find the product
+    $product = Product::find($request->input('product_id'));
+
+    if (!$product) {
+        return redirect()->back()->with('error', 'Product not found.');
     }
 
+    // Check if the user has already reviewed the product
+    $existingReview = Review::where('product_id', $product->id)
+        ->where('user_id', $user->id)
+        ->first();
+
+    if ($existingReview) {
+        // If review exists, update it
+        $existingReview->rating = $request->input('rating');
+        $existingReview->save();
+    } else {
+        // If no review, create a new one
+        $product->reviews()->create([
+            'user_id' => $user->id,
+            'rating' => $request->input('rating'),
+        ]);
+    }
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Rating submitted successfully!');
+}
 
 
 
-    /**
+/**
      * Show the form for editing the specified resource.
      */
     public function edit( $id)

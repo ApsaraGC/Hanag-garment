@@ -194,6 +194,10 @@
     height: 220px; /* Fixed height for uniformity */
     object-fit: contain; /* Ensures images fit well without distortion */
     margin-bottom: 10px;
+    transition: 0.5s ease;
+    background: rgba(0, 0, 0, 0.3); /* Dark overlay on hover */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); Normal state shadow */
+
 }
 
         .product-item h4,
@@ -207,27 +211,30 @@
             transform: scale(1.05);
         }
 
-        /* Adjust 'Add to Cart' button position */
-.add-to-cart-btn {
+
+    .add-to-cart-btn {
     display: none;
     position: absolute;
     top: 68%; /* Move button slightly higher */
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #efaee1;
-    color: white;
+    background-color: transparent; /* Make background transparent */
+    color: #fff; /* White text color */
+    border: 2px solid #eea5a5; /* White border */
     padding: 12px 18px;
     font-size: 16px;
     cursor: pointer;
-    border: none;
     border-radius: 5px;
-    width: 200px; /* Adjust width */
-    transition: background-color 0.3s ease;
+    width: 209px; /* Adjust width */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Show 'Add to Cart' button on hover */
 .product-item:hover .add-to-cart-btn {
     display: block;
+    background-color:#ede8e8;
+    color: rgb(236, 151, 164); /* Change text color on hover */
+    border: 2px solid #eea5a5; /* Change border color on hover */
 }
 
         /* Wishlist Button */
@@ -269,6 +276,55 @@
     .product-item:hover .prev, .product-item:hover .next {
             display: block;
         }
+/* Pagination */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 8px 15px;
+    margin: 5px;
+    border: 1px solid #ff1493;
+    color: #ff1493;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.pagination a:hover {
+    background: #ff1493;
+    color: white;
+}
+
+/* Active Page */
+.pagination .active a {
+    background: #ff1493;
+    color: white;
+    font-weight: bold;
+}
+.pagination .disabled a,
+.pagination .disabled .page-link {
+    color: #ccc;
+    cursor: not-allowed;
+}
+.pagination .prev:disabled,
+.pagination .next:disabled {
+    background: #e0e0e0;
+    color: #ccc;
+    cursor: not-allowed;
+}
+/* Adjust the pagination numbers */
+.pagination .page-item {
+    display: inline-block;
+}
+
+/* Center pagination numbers properly */
+.pagination .page-item .page-link {
+    display: inline-block;
+    padding: 8px 16px;
+}
 
 
     </style>
@@ -327,8 +383,15 @@
         <div class="product-list">
             @foreach($products as $product)
             <div class="product-item">
+
+                <a href="{{ route('user.productDetails.show', ['id' => $product->id]) }}">
+                    <img src="{{ asset($product->image) }}" alt="Product Image">
+                </a>
+                <h4>{{ $product->brand->brand_name }}</h4>
+                <p>{{ $product->product_name }}</p>
+                <p>Rs. {{ number_format($product->sale_price, 0) }}</p>
                 <!-- Add to Cart button - will appear centered over image on hover -->
-                <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
+                  <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
                     @csrf
                     <input type="hidden" name="id" value="{{$product->id}}"/>
                     <input type="hidden" name="quantity" value="1"/>
@@ -336,12 +399,6 @@
                     <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price : $product->sale_price}}"/>
                     <button class="add-to-cart-btn">Add to Cart</button>
                 </form>
-                <a href="{{ route('user.productDetails.show', ['id' => $product->id]) }}">
-                    <img src="{{ asset($product->image) }}" alt="Product Image">
-                </a>
-                <h4>{{ $product->brand->brand_name }}</h4>
-                <p>{{ $product->product_name }}</p>
-                <p>Rs. {{ $product->sale_price }}</p>
                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                     @csrf
                     <button type="submit" class="wishlist-btn">
@@ -349,9 +406,14 @@
                     </button>
                 </form>
             </div>
-            <!-- Wishlist form -->
-            @endforeach
+
+    @endforeach
+
         </div>
+        <!-- Pagination -->
+  <div class="pagination">
+    {{ $products->appends(request()->query())->links('pagination::bootstrap-5') }}
+</div>
 <!-- Load More Button -->
 
     </div>
