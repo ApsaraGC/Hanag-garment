@@ -42,7 +42,7 @@ class AdminController extends Controller
                        ->orderBy('id', 'DESC')
                        ->paginate(10);
     } else {
-        $brands = Brand::orderBy('id', 'DESC')->paginate(10);
+        $brands = Brand::orderBy('id', 'DESC')->paginate(5);
     }
 
     return view('admin.brands', compact('brands', 'search'));

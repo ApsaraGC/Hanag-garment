@@ -82,7 +82,7 @@
                 <li><a href="{{route('admin.products')}}">Products</a></li>
                 <li><a href="{{route('admin.brands')}}">Brand</a></li>
                 <li><a href="{{route('admin.categorys')}}">Category</a></li>
-                <li><a href="#">Order</a></li>
+                <li><a href="{{route('admin.order')}}">Order</a></li>
                 <li><a href="{{route('admin.users')}}">Users</a></li>
                 <li><a href="{{route('admin.messages')}}">Messages</a></li>
                 <li><a href="#">Settings</a></li>

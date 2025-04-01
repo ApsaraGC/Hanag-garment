@@ -361,9 +361,8 @@
                 <a id="checkout-link" href="#" class="checkout-btn">Proceed to Checkout</a>
             </form>
 
-            {{-- <a href="{{ Auth::check() ? route('user.payment') : route('login') }}" class="checkout-btn">Proceed to Checkout</a> --}}
-
-            {{-- <a href="{{ route('user.payment') }}" class="checkout-btn">Proceed to Checkout</a> --}}
+            <!-- eSewa Payment Form -->
+      
         </div>
         @else
         <div class="row">
@@ -405,7 +404,7 @@
         // If eSewa is selected, check if the user is logged in
         @auth
             // Redirect to eSewa payment page
-            window.location.href = "{{ route('user.esewa.payment') }}";
+            window.location.href = "{{route('user.esewa.payment')}}";
         @else
             // If not logged in, redirect to login page
             window.location.href = "{{ route('login') }}";

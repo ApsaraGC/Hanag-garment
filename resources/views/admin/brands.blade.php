@@ -39,6 +39,7 @@ body {
 
 }
 
+
 /* Header */
 h3 {
     color: #ff1493;
@@ -50,7 +51,7 @@ h3 {
     list-style: none;
     padding: 0;
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 
 .breadcrumbs a {
@@ -127,12 +128,15 @@ table {
     border-collapse: collapse;
     margin-top: 20px;
     background-color: white;
+    max-height: 50px; /* Set your desired max height */
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 th, td {
     border: 1px solid #ffc0cb;
     padding: 12px;
     text-align: left;
+
 }
 
 th {
@@ -167,13 +171,20 @@ tr:hover {
     margin-top: 20px;
 }
 
+/* Pagination */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
 .pagination a {
-    padding: 8px 12px;
+    padding: 8px 15px;
     margin: 5px;
     border: 1px solid #ff1493;
     color: #ff1493;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 50px;
+    font-size: 14px;
     transition: 0.3s;
 }
 
@@ -181,6 +192,35 @@ tr:hover {
     background: #ff1493;
     color: white;
 }
+
+/* Active Page */
+.pagination .active a {
+    background: #ff1493;
+    color: white;
+    font-weight: bold;
+}
+.pagination .disabled a,
+.pagination .disabled .page-link {
+    color: #ccc;
+    cursor: not-allowed;
+}
+.pagination .prev:disabled,
+.pagination .next:disabled {
+    background: #e0e0e0;
+    color: #ccc;
+    cursor: not-allowed;
+}
+/* Adjust the pagination numbers */
+.pagination .page-item {
+    display: inline-block;
+}
+
+/* Center pagination numbers properly */
+.pagination .page-item .page-link {
+    display: inline-block;
+    padding: 8px 16px;
+}
+
 
 /* Flexbox Utility */
 .flex {
@@ -277,10 +317,10 @@ tr:hover {
                     </tbody>
                 </table>
 
-                <!-- Pagination -->
-                <div class="pagination">
-                    {{ $brands->links('pagination::bootstrap-4') }}
-                </div>
+                 <!-- Pagination -->
+        <div class="pagination">
+            {{ $brands->appends(request()->query())->links('pagination::bootstrap-5') }}
+        </div>
 
             </div>
         </div>

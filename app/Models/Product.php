@@ -42,6 +42,10 @@ class Product extends Model
         return $this->belongsTo(Category::class,'category_id');
     }
     // app/Models/Product.php
+    public function orders()
+    {
+        return $this->belongsTo(Order::class);
+    }
 
 public static function boot()
 {

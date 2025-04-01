@@ -18,16 +18,25 @@ body {
 }
 
 
+/* Sidebar (Navbar) Styles */
+.admin-panels {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    height: 100%;
+}
 
 .main-content-inner {
     flex: 1;
-    max-width: 1100px;
-    margin: 10px;
-    background: #ffffff; /* Different background for the main content */
-    padding: 20px; /* Add more padding for main content */
+    margin-left: 200px; /* Offset for the sidebar */
+    padding: 20px;
+    background-color: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    height: auto;
+    border-radius: 15px;
+    height: 100vh; /* To prevent long size issues */
+
 }
 
 h3 {

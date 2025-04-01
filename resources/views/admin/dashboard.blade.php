@@ -18,10 +18,28 @@
             height: 100vh;
             background-color: #f8f9fa;
         }
+        /* Sidebar (Navbar) Styles */
+.admin-panels {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    height: 100%;
+}
+
         .main-content {
             flex: 1;
-            padding: 20px;
-        }
+    margin-left: 200px; /* Offset for the sidebar */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    height: 100vh; /* To prevent long size issues */
+    overflow-x: hidden;
+
+}
+
         header {
             display: flex;
             justify-content: space-between;

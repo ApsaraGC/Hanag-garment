@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -104,6 +105,14 @@ Route::middleware(['auth',AuthAdmin::class])->group(function(){
     Route::put('/admin/products/{id}/update', [ProductController::class, 'update'])->name('admin.updateProducts');
     // Route::delete('/admin/products/{id}', [ProductController::class, 'delete'])->name('admin.deleteProducts');
     Route::delete('/admin/products/{id}', [ProductController::class, 'delete'])->name('admin.deleteProducts');
+    // Admin route to view orders
+    // Order Routes
+    Route::get('/admin/orders', [OrderController::class, 'viewOrders'])->name('admin.order');
+Route::get('/admin/orders/create', [OrderController::class, 'create'])->name('admin.createOrder');
+Route::post('/admin/orders', [OrderController::class, 'store'])->name('admin.storeOrder');
+Route::get('/admin/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.update-order');
+Route::put('/admin/orders/{order}', [OrderController::class, 'update'])->name('admin.updateOrder');
+Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.destroyOrder');
 
     // In routes/web.php
 
@@ -133,7 +142,17 @@ Route::get('/search', [HomeController::class, 'searchResults'])->name('user.sear
 
 // In web.php (routes file)
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-Route::get('/user/esewa/payment', [PaymentController::class, 'esewaPayment'])->name('user.esewa.payment');
+//Route::get('/user/esewa/payment', [PaymentController::class, 'esewaPayment'])->name('user.esewa.payment');
 Route::get('/user/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
-// Route::get('/user/invoice', [PaymentController::class, 'showPaymentPage'])->name('user.payment');
+Route::get('/user/esewa/payment', [PaymentController::class, 'showPaymentPage'])->name('user.esewa.payment');
+// Success and failure routes for the payment
+Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/failure', [PaymentController::class, 'paymentFailure'])->name('payment.failure');
+
+
+Route::post('/order/confirm', [OrderController::class, 'store'])->name('order.confirm');
+Route::get('/order/{orderId}/checkout', [OrderController::class, 'checkout'])->name('user.orderBill');
+
+//Route::get('user/orderBill', [OrderController::class, 'checkout'])->name('user.orderBill');
+Route::get('/order/bill/download/{orderId}', [OrderController::class, 'downloadOrderBill'])->name('download.orderBill');
 

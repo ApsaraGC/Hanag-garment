@@ -115,37 +115,25 @@
 
         <div class="transaction-details">
             <div class="header">Hanag Garments - Payment</div>
-            <form action="{{ route('order.confirm') }}" method="POST" id="orderForm">
-                @csrf
-                <h3>Hello, <span>{{ Auth::user()->full_name }}</span></h3>
-                <p><span>Address</span> <span>{{ $user->address ?? 'No address set' }}</span></p>
-                <hr>
-                <p><span>Payment Type</span> <span>{{ $paymentType }}</span></p>
-                <p><span>Subtotal</span> <span>Rs.{{ number_format($subtotal, 2) }}</span></p>
-                <p><span>Delivery Charge</span> <span>Rs.{{ number_format($deliveryCharge, 2) }}</span></p>
-                <hr>
-                <p><span>Total</span> <span>Rs.{{ number_format($total, 2) }}</span></p>
-                <button type="submit" class="save-btn">Confirm Your order</button>
-                <a href="{{ route('user.cart') }}" class="cancel-btn" style="text-decoration:none;display:inline-block;padding:12px 20px;border-radius:5px;font-size:14px;color:#fff;background-color:#ff3333;width:39git%;text-align:center;margin-top:15px;">Cancel</a>
-            </form>
+            <h1>Order Bill</h1>
+
+            <h3>Order ID: {{ $order->id }}</h3>
+            <p>User: {{ $user->name }}</p> <!-- Assuming 'name' is a field on the User model -->
+            <p>Order Type: {{ $order->order_type }}</p>
+            <p>Subtotal: Rs.{{ number_format($order->sub_total, 2) }}</p>
+            <p>Discount: Rs.{{ number_format($order->discount, 2) }}</p>
+            <p>Total Amount: Rs.{{ number_format($order->total_amount, 2) }}</p>
+            <p>Status: {{ $order->status }}</p>
+            <p>Description: {{ $order->description }}</p>
+
         </div>
 
-        <div class="address-section">
-            <h4>Update Your Address</h4>
-            <form action="{{ route('update.address') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="address">New Address</label>
-                    <input type="text" id="address" name="address" value="{{ $user->address ?? '' }}" placeholder="Enter your new address" required>
-                </div>
-                <button type="submit" class="save-btn">Save Address</button>
-            </form>
-        </div>
+
     </div>
     @include('layouts.footer')
 
 
-    <script>
+       <script>
     // Handling the confirmation order submission and triggering SweetAlert
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();  // Prevent the form from submitting immediately
