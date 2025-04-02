@@ -6,6 +6,8 @@
     <title>Login</title>
      <!-- FontAwesome CDN for icons -->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -130,13 +132,17 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Password">
-                <i class="fa fa-lock"></i> <!-- Password icon -->
+                <i class="fa fa-eye" id="togglePassword"></i> <!-- Eye icon for toggling visibility -->
                 @error('password')
                     <span style="color: red; font-size: 14px;">{{ $message }}</span>
                 @enderror
             </div>
             <button type="submit" class="btn">LOGIN</button>
         </form>
+        <p>
+            <a href="{{ route('password.request') }}">Forgot Password?</a>
+        </p>
+
         <p>
             Don't have an account? <a href="{{route('register')}}">Create an account</a>
         </p>
@@ -145,6 +151,17 @@
 
 <!-- Include Footer -->
 @include('layouts.Footer')
+<!-- JavaScript for toggling password visibility -->
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function (e) {
+        // Toggle the type attribute of the password input
+        const passwordField = document.getElementById('password');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
 
+        // Toggle the eye icon
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
 </body>
 </html>

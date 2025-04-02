@@ -335,6 +335,7 @@ overflow-x: hidden;
     height: 220px; /* Fixed height for uniformity */
     object-fit: contain; /* Ensures images fit well without distortion */
     margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.3);
 }
 
         .product-item h4,
@@ -347,28 +348,9 @@ overflow-x: hidden;
             transform: scale(1.05);
         }
 
-       /* Adjust 'Add to Cart' button position */
-.add-to-cart-btn {
-    display: none;
-    position: absolute;
-    top: 65%; /* Move button slightly higher */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f564d5;
-    color: white;
-    padding: 12px 18px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    width: 200px; /* Adjust width */
-    transition: background-color 0.3s ease;
-}
+.add-to-cart-btn { display: none; position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); background: transparent; color: #fff; border: 2px solid #eea5a5; padding: 12px 18px; font-size: 16px; border-radius: 5px; width: 200px; transition: 0.3s; }
+.product-item:hover .add-to-cart-btn { display: block; background: #ede8e8; color: rgb(236, 151, 164); }
 
-/* Show 'Add to Cart' button on hover */
-.product-item:hover .add-to-cart-btn {
-    display: block;
-}
         /* Wishlist Button */
         .wishlist-btn {
             background: none; /* Remove button background */

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -46,8 +47,7 @@
 
         .form-group input {
             width: 100%;
-
-            padding: 12px 30px 12px 12px; /* Adjusting for icon space on the right */
+            padding: 12px 30px 12px 12px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
@@ -62,9 +62,9 @@
 
         .form-group i {
             position: absolute;
-            right: 10px; /* Position the icon on the right */
+            right: 10px;
             top: 65%;
-            transform: translateY(-50%); /* Center the icon vertically */
+            transform: translateY(-50%);
             color: #aaa;
             font-size: 20px;
         }
@@ -76,7 +76,7 @@
         }
 
         .form-column {
-            flex: 1 1 calc(50% - 20px); /* 2 columns */
+            flex: 1 1 calc(50% - 20px);
         }
 
         .form-column input {
@@ -92,19 +92,45 @@
         .btn {
             background-color: #F070BB;
             color: white;
-            border: none;
-            margin-left: 250px;
             text-align: center;
+            border: none;
             padding: 12px 20px;
+            margin-left:270px;
             width: 30%;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
+            margin-top: 20px;
         }
 
         .btn:hover {
             background-color: #D5609B;
+        }
+
+        .google-btn {
+            background-color: #4285F4;
+            margin-left:270px;
+
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            width: 30%;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 14px;
+            cursor: pointer;
+        }
+
+        .google-btn i {
+            margin-right: 10px;
+        }
+
+        .google-btn:hover {
+            background-color: #357AE8;
         }
 
         p {
@@ -164,7 +190,7 @@
                 <div class="form-column">
                     <div class="form-group">
                         <label for="phone_number">Phone Number</label>
-                        <input type="text" id="phone_number" name="phone_number" placeholder="Phone Number" value="{{ old('phone_number') }}" >
+                        <input type="text" id="phone_number" name="phone_number" placeholder="Phone Number" value="{{ old('phone_number') }}">
                         <i class="fa fa-phone"></i> <!-- Phone icon -->
                         @error('phone_number')
                             <span class="error">{{ $message }}</span>
@@ -209,9 +235,15 @@
             <button type="submit" class="btn">SIGN UP</button>
         </form>
 
+        <!-- Google Login Button -->
+        <a href="{{ url('login/google') }}" class="google-btn">
+            <i class="fab fa-google"></i> Login with Google
+        </a>
+
         <p>
             Have an account? <a href="{{ route('login') }}">Login to your account</a>
         </p>
+
     </div>
 </div>
 

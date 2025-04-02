@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Font Awesome CDN -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,7 +39,6 @@
             display: flex;
             gap: 20px;
             margin-top: 20px;
-            margin-bottom: 40px;
         }
 
         .product-gallery {
@@ -62,8 +63,14 @@
 
         .main-image img {
             width: 100%;
+            /* You can adjust this percentage to fit your layout */
             max-width: 500px;
-            border-radius: 5px;
+            /* Set a max width */
+            height: auto;
+            /* Keep the aspect ratio intact */
+            border: 5px;
+            object-fit: cover;
+            /* Optional: Ensures the image covers the area without stretching */
         }
 
         .product-details {
@@ -99,72 +106,71 @@
         }
 
         .add-to-cart {
-    background: #F070BB;
-    color: #fff;
-    padding: 15px 35px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 16px;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    width: 100%;
-    margin-top: 20px;
-}
+            background: #F070BB;
+            color: #fff;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
 
-.add-to-cart:hover {
-    background: #D55B9D;
-}
+        .add-to-cart:hover {
+            background: #D55B9D;
+        }
 
-.add-to-cart i {
-    margin-right: 10px;
-    font-size: 18px;
-}
+        .add-to-cart i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
 
-.add-to-cart-btn {
-    background: #F070BB;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-    width: 100%;
-    transition: background-color 0.3s ease;
-}
+        .add-to-cart-btn {
+            background: #F070BB;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
 
-.add-to-cart-btn:hover {
-    background: #D55B9D;
-}
+        .add-to-cart-btn:hover {
+            background: #D55B9D;
+        }
 
-.quantity input {
-    width: 50px;
-    text-align: center;
-    border: 1px solid #ddd;
-    height: 30px;
-}
+        .quantity input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            height: 30px;
+        }
 
-.quantity button {
-    background: #F070BB;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
+        .quantity button {
+            background: #F070BB;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
 
-.quantity button:hover {
-    background: #D55B9D;
-}
+        .quantity button:hover {
+            background: #D55B9D;
+        }
 
-.quantity button:active {
-    background: #C1518A;
-}
-
+        .quantity button:active {
+            background: #C1518A;
+        }
 
         .wishlist {
             background: #ddd;
@@ -177,7 +183,7 @@
         }
 
         .related-products {
-            margin-top: 40px;
+            margin-top: 20px;
         }
 
         .related-products h2 {
@@ -212,35 +218,41 @@
             color: #F070BB;
             font-weight: bold;
         }
+
         /* Add to Cart Button for Related Products */
 
 
-.related-product-add-to-cart {
-    background-color: #f564d5;
-    position: absolute;
-    background-color: transparent;
-    top: 60%; /* Move button slightly higher */
-    left: 50%;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    width: 220px;
-    margin-top: 10px;
+        .related-product-add-to-cart {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 220px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, background-color 0.3s ease;
 
-}
+        }
 
-.related-product-add-to-cart:hover {
-    display: block;
-    background-color:#ede8e8;
-    color: rgb(236, 151, 164); /* Change text color on hover */
-    border: 2px solid #eea5a5;
-}
-  /* Product Grid */
-  .product-list {
+        /* Show button only on hover */
+        .product-item:hover .related-product-add-to-cart {
+            opacity: 1;
+        }
+
+        /* Subtle hover effect for the button */
+        .related-product-add-to-cart:hover {
+            background-color: #ede8e8;
+            color: rgb(236, 151, 164);
+            border: 2px solid #eea5a5;
+        }
+
+        /* Product Grid */
+        .product-list {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
@@ -254,18 +266,23 @@
             background: #fff;
             position: relative;
             overflow: hidden;
+            width: 220px;
             transition: transform 0.3s ease-in-out;
         }
 
-       /* Uniform Image Size */
-.product-item img {
-    width: 100%; /* Ensures full width */
-    height: 220px; /* Fixed height for uniformity */
-    object-fit: contain; /* Ensures images fit well without distortion */
-    margin-bottom: 10px;
-    background: rgba(0, 0, 0, 0.3); /* Dark overlay on hover */
+        /* Uniform Image Size */
+        .product-item img {
+            width: 100%;
+            /* Ensures full width */
+            height: 220px;
+            /* Fixed height for uniformity */
+            object-fit: contain;
+            /* Ensures images fit well without distortion */
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            /* Dark overlay on hover */
 
-}
+        }
 
 
         .product-item h4,
@@ -280,12 +297,16 @@
         }
 
 
- /* Wishlist Button */
+        /* Wishlist Button */
         .wishlist-btn {
-            background: none; /* Remove button background */
-        border: none; /* Remove border */
-        padding: 0; /* Remove padding */
-        cursor: pointer; /* Make it clickable */
+            background: none;
+            /* Remove button background */
+            border: none;
+            /* Remove border */
+            padding: 0;
+            /* Remove padding */
+            cursor: pointer;
+            /* Make it clickable */
             position: absolute;
             right: 10px;
             top: 10px;
@@ -295,24 +316,33 @@
             cursor: pointer;
             font-size: 18px;
         }
-   /* Full star (yellow) */
-.fa-star.checked {
-    color: yellow;
-}
 
-/* Half star effect using background gradient */
-.fa-star-half {
-    background: linear-gradient(to right, yellow 50%, #ccc 50%);
-    -webkit-background-clip: text;
-    color: transparent;
-}
+        /* Full star (yellow) */
+        .fa-star.checked {
+            color: yellow;
+        }
 
+        /* Half star effect using background gradient */
+        .fa-star-half {
+            background: linear-gradient(to right, yellow 50%, #ccc 50%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
 
+        .thumbnail {
+            cursor: pointer;
+            /* Change cursor to pointer when hovering over thumbnails */
+        }
 
+        .thumbnail.active {
+            border: 2px solid #F070BB;
+            /* Optional: Add a border to highlight the active thumbnail */
+        }
     </style>
     <!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
     <!-- Include Navigation -->
     @include('layouts.navigation')
@@ -324,22 +354,24 @@
             <div class="product-gallery">
                 <div class="thumbnails">
                     @php
-            $product->images= array_slice($product->images, 0, 4); // Limits to 4 images
-        @endphp
-                @foreach($product->images as $img)
-                <img src="{{ asset( $img) }}" alt="Product Image" ></img>
-            @endforeach
+                        $product->images = array_slice($product->images, 0, 4); // Limits to 4 images
+                    @endphp
+                    @foreach($product->images as $img)
+                        <img src="{{ asset($img) }}" alt="Product Image" class="thumbnail"
+                            onclick="changeMainImage(this)"></img>
+                    @endforeach
                 </div>
                 <div class="main-image">
 
-                    <img src="{{ asset($product->image) }}" alt="Main Product">
+                    <img id="main-image" src="{{ asset($product->image) }}" alt="Main Product ">
                 </div>
             </div>
 
             <div class="product-details">
                 <!-- Breadcrumb -->
                 <div class="breadcrumb">
-                    <a href="{{route('dashboard')}}">Home</a> / <a href="{{ route('user.shop') }}">The Shop</a> / <span>{{ $product->short_description }}</span>
+                    <a href="{{route('dashboard')}}">Home</a> / <a href="{{ route('user.shop') }}">The Shop</a> /
+                    <span>{{ $product->short_description }}</span>
                 </div>
                 <h1>{{ $product->product_name }}</h1>
                 <div class="ratings">
@@ -359,48 +391,41 @@
                     </form>
                 </div>
 
-
-
-
-
-
-                <p class="price">Rs.  <span style="text-decoration: line-through; color: #5e5c5c; font-size: 20px;">{{ number_format($product->regular_price, 0) }}</span></p>
+                <p class="price">Rs. <span
+                        style="text-decoration: line-through; color: #5e5c5c; font-size: 20px;">{{ number_format($product->regular_price, 0) }}</span>
+                </p>
 
                 <p class="price">Rs. {{ $product->sale_price }}</p>
                 <p class="description">
                     {{ $product->description }}
                 </p>
-
                 <!-- Quantity Selector -->
                 <div class="quantity">
-
                     <!-- Add to Cart Form -->
-                <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
-                    @csrf
-                    <input type="hidden" name="id" value="{{ $product->id }}">
-                    <input type="hidden" name="quantity" value="1">
-                    <input type="hidden" name="name" value="{{ $product->product_name }}">
-                    <input type="hidden" name="price" value="{{ $product->sale_price ?: $product->regular_price }}">
-                    <button type="submit" class="add-to-cart">
-                        <i class="fas fa-cart-plus"></i> Add to Cart
-                    </button>
-                </form>
-            </div>
-                      <!-- Wishlist Button -->
+                    <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="name" value="{{ $product->product_name }}">
+                        <input type="hidden" name="price" value="{{ $product->sale_price ?: $product->regular_price }}">
+                        <button type="submit" class="add-to-cart">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+                <!-- Wishlist Button -->
                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                     @csrf
                     <button type="submit" class="wishlist">
                         <i class="fa fa-heart-o"></i> Add To Wishlist
                     </button>
                 </form>
-
-                {{-- <button class="wishlist">
-                    <i class="fas fa-heart"></i> Add To Wishlist
-                </button> --}}
                 <p class="categories">Category:{{ $product->category->category_name }}</p>
-                 <p class="tags">Brand:{{$product->brand->brand_name}}</p>
-                {{-- <p class="categories">Categories: {{ implode(', ', $product->category->pluck('category_name')->toArray()) }}</p> --}}
-                {{-- <p class="tags">Brand: {{ implode(', ', $product->brand->pluck('brand_name')->toArray()) }}</p> --}}
+                <p class="tags">Brand:{{$product->brand->brand_name}}</p>
+                {{-- <p class="categories">Categories: {{ implode(', ',
+                    $product->category->pluck('category_name')->toArray()) }}</p> --}}
+                {{-- <p class="tags">Brand: {{ implode(', ', $product->brand->pluck('brand_name')->toArray()) }}</p>
+                --}}
 
             </div>
         </div>
@@ -408,78 +433,105 @@
         <!-- Related Products -->
         <div class="related-products">
             <h2>Related Products</h2>
-             <!-- Product Grid -->
-        <div class="product-list">
-            @foreach ($relatedProducts as $relatedProduct)
-                <div class="product-item">
-                    <img src="{{ asset( $relatedProduct->image) }}" alt="Related Product">
+            <!-- Product Grid -->
+            <div class="product-list">
+                @foreach ($relatedProducts as $relatedProduct)
+                    <div class="product-item">
+                        <img src="{{ asset($relatedProduct->image) }}" alt="Related Product">
 
-                <!-- Add to Cart button - will appear centered over image on hover -->
-                <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
-                    @csrf
+                        <!-- Add to Cart button - will appear centered over image on hover -->
+                        <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
+                            @csrf
                             <input type="hidden" name="id" value="{{ $relatedProduct->id }}">
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="name" value="{{ $relatedProduct->product_name }}">
-                            <input type="hidden" name="price" value="{{ $relatedProduct->sale_price ?: $relatedProduct->regular_price }}">
+                            <input type="hidden" name="price"
+                                value="{{ $relatedProduct->sale_price ?: $relatedProduct->regular_price }}">
                             <button type="submit" class="related-product-add-to-cart">
                                 <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>
-                </form>
+                        </form>
 
-                 <p class="product-name">{{$relatedProduct->brand->brand_name}}</p>
-                <p class="product-name">{{ $relatedProduct->product_name }}</p>
-                <p class="product-price">Rs. {{ $relatedProduct->sale_price }}</p>
+                        <p class="product-name">{{$relatedProduct->brand->brand_name}}</p>
+                        <p class="product-name">{{ $relatedProduct->product_name }}</p>
+                        <p class="product-price">Rs. {{ $relatedProduct->sale_price }}</p>
 
-                <!-- Wishlist Button -->
-                  <!-- Wishlist Button -->
-                  <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="wishlist-btn">
-                        <i class="fa fa-heart-o"></i>
-                    </button>
-                </form>
+                        <!-- Wishlist Button -->
+                        <!-- Wishlist Button -->
+                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="wishlist-btn">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </form>
+                    </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
-            </div>
 
     </div>
     <!-- Include Footer -->
     @include('layouts.footer')
 </body>
 <script>
-  function submitRating(rating) {
-    // Set the selected rating in the hidden input field
-    document.getElementById('selected-rating').value = rating;
+    function submitRating(rating) {
+        // Set the selected rating in the hidden input field
+        document.getElementById('selected-rating').value = rating;
 
-    // Update the star display to reflect the selected rating (half-star logic)
-    for (let i = 1; i <= 5; i++) {
-        const starEmpty = document.getElementById(`star-${i}-empty`);
-        const starFilled = document.getElementById(`star-${i}-filled`);
-        const starHalf = document.getElementById(`star-${i}-half`);
+        // Update the star display to reflect the selected rating (half-star logic)
+        for (let i = 1; i <= 5; i++) {
+            const starEmpty = document.getElementById(`star-${i}-empty`);
+            const starFilled = document.getElementById(`star-${i}-filled`);
+            const starHalf = document.getElementById(`star-${i}-half`);
 
-        // Reset all stars first
-        starEmpty.style.display = 'inline';
-        starFilled.style.display = 'none';
-        starHalf.style.display = 'none';
+            // Reset all stars first
+            starEmpty.style.display = 'inline';
+            starFilled.style.display = 'none';
+            starHalf.style.display = 'none';
 
-        // If the current star is less than or equal to the rating, fill it with yellow
-        if (i <= rating) {
-            starEmpty.style.display = 'none';
-            starFilled.style.display = 'inline';
+            // If the current star is less than or equal to the rating, fill it with yellow
+            if (i <= rating) {
+                starEmpty.style.display = 'none';
+                starFilled.style.display = 'inline';
+            }
+
+            // If the current star is half of the next one, show half-filled star
+            else if (i - 1.5 === rating) {
+                starEmpty.style.display = 'none';
+                starHalf.style.display = 'inline';
+            }
         }
 
-        // If the current star is half of the next one, show half-filled star
-        else if (i - 1.5 === rating) {
-            starEmpty.style.display = 'none';
-            starHalf.style.display = 'inline';
-        }
+        // Submit the form
+        document.getElementById('rating-form').submit();
     }
+</script>
+<script>
+    function changeMainImage(thumbnail) {
+        // Get all thumbnails and remove 'active' class
+        var thumbnails = document.querySelectorAll('.thumbnail');
+        thumbnails.forEach(function (thumb) {
+            thumb.classList.remove('active');
+        });
 
-    // Submit the form
-    document.getElementById('rating-form').submit();
-}
+        // Add 'active' class to the clicked thumbnail
+        thumbnail.classList.add('active');
 
+        // Get the source of the clicked thumbnail image
+        var thumbnailSrc = thumbnail.src;
+
+        // Get the main image element
+        var mainImage = document.getElementById('main-image');
+
+        // Get the current source of the main image
+        var currentMainImageSrc = mainImage.src;
+
+        // Swap the main image with the clicked thumbnail
+        mainImage.src = thumbnailSrc;
+
+        // Set the thumbnail image's source to the old main image source
+        thumbnail.src = currentMainImageSrc;
+    }
 </script>
 
 </html>

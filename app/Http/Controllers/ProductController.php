@@ -12,8 +12,7 @@ use Illuminate\Support\Carbon;
 
 class ProductController extends Controller
 {
-
-    /**
+  /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
@@ -34,10 +33,6 @@ class ProductController extends Controller
 
     return view('admin.products', compact('products', 'search'));
 }
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
@@ -160,3 +163,11 @@ Route::get('/order/bill/download/{orderId}', [OrderController::class, 'downloadO
 Route::post('/submit-rating', [ProductController::class, 'submitRating'])->name('submit.rating');
 
 Route::get('/admin/ratings', [AdminController::class, 'showRatings'])->name('admin.rating');
+
+Route::get('login/google', [LoginController::class, 'redirectToGoogle']);
+Route::get('callback/google', [LoginController::class, 'handleGoogleCallback']);
+// Show the reset password form (based on username)
+Route::get('reset-password', [PasswordResetLinkController::class, 'create'])->name('forgot-password.form');
+
+// Handle reset password submission (update password directly)
+Route::post('reset-password', [PasswordResetLinkController::class, 'store'])->name('password.reset.submit');

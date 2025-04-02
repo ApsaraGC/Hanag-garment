@@ -97,11 +97,10 @@
                 <p><i class="fa fa-map-marker"></i>  Fulbari-11, Pokhara</p>
                             <!-- Social Media Icons -->
                             <p>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-youtube"></i></a>
+                                <a href="#" style="color:#333;"><i class="fa fa-instagram"></i></a>
+                                <a href="#" style="color:#333;"><i class="fa fa-youtube"></i></a>
                             </p>
             </div>
-
             <!-- Shop Section -->
             <div class="footer-section">
                 <h4>SHOP</h4>

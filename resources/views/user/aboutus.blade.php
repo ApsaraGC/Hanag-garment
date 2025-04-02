@@ -5,134 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Hanag's Garments</title>
     <style>
-    /* Reset default margin and padding for body and all elements */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    /* Body styling */
-    body {
-        font-family: 'Arial', sans-serif;
-        line-height: 1.6;
-        color: #333;
-        background-color: #f4f4f4;
-    }
-
-    /* Main container */
-    .container {
-        padding: 10px;
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        border-radius: 10px;
-    }
-
-    /* Heading style */
-    h1 {
-        text-align: center;
-        color: #444;
-        margin-top: 15px;
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-    }
-
-    /* Full-width image */
-    .full-width-image img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
-
-    /* Shop details section */
-    .shop-details {
-        margin-top: 30px;
-    }
-
-    .shop-details h2 {
-        text-align: left;
-        color: #000;
-        font-size: 1.6rem;
-        margin-bottom: 10px;
-    }
-
-    /* Shop paragraph with smaller text and more breaks */
-    .shop-details p {
-        font-size: 1rem;
-        color: #555;
-        line-height: 1.8;
-        margin-bottom: 15px;
-    }
-
-    /* Shop information with image and text side by side */
-    .shop-info {
-        display: flex;
-        margin-top: 20px;
-        gap: 20px;
-        flex-wrap: wrap; /* Allow items to wrap on small screens */
-        align-items: center;
-    }
-
-    /* Left side with image */
-    .left-side {
-        width: 40%;
-        padding-right: 10px;
-    }
-
-    .left-side img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-
-    /* Right side with description */
-    .right-side {
-        width: 55%;
-    }
-
-    /* Button styling */
-    .cta-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #F070BB;
-        color: #fff;
-        text-decoration: none;
-        font-weight: bold;
-        text-align: center;
-        border-radius: 5px;
-        margin-top: 30px;
-        transition: background-color 0.3s ease;
-    }
-
-    .cta-button:hover {
-        background-color: #e62fa0;
-    }
-
-    /* Ensure responsiveness */
-    @media (max-width: 768px) {
-        .shop-info {
-            flex-direction: column;
-        }
-
-        .left-side, .right-side {
-            width: 100%;
-            padding: 10px 0;
-        }
-
-        h1 {
-            font-size: 2rem;
-        }
-
-        .cta-button {
-            width: 100%;
-            text-align: center;
-        }
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
+.container { padding: 10px; max-width: 1200px; margin: auto; border-radius: 10px; }
+h1 { text-align: center; color: #444; margin: 15px 0 20px; font-size: 2.5rem; }
+.full-width-image img, .left-side img { width: 100%; border-radius: 8px; object-fit: cover; }
+.full-width-image img { margin-bottom: 20px; }
+.left-side img { height: 250px; }
+.shop-details { margin-top: 30px; }
+.shop-details h2 { font-size: 1.6rem; margin-bottom: 10px; }
+.shop-details p { font-size: 1rem; color: #555; line-height: 1.8; margin-bottom: 15px; }
+.shop-info { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin-top: 20px; }
+.left-side { width: 40%; padding-right: 10px; }
+.right-side { width: 55%; }
+.cta-button { display: inline-block; padding: 10px 20px; text-decoration: none; background: #F070BB; color: #fff; font-weight: bold; text-align: center; border-radius: 5px; margin-top: 30px; transition: 0.3s; }
+.cta-button:hover { background: #e62fa0; }
+@media (max-width: 768px) {
+  .shop-info { flex-direction: column; }
+  .left-side, .right-side { width: 100%; padding: 10px 0; }
+  h1 { font-size: 2rem; }
+  .cta-button { width: 100%; }
+}
     </style>
 </head>
 <body>

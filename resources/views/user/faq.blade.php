@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - Hanag Garment</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your Hanag Garment CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         /* General Layout */
 body {
@@ -28,7 +28,7 @@ body {
 
 .page-title {
     font-size: 32px;
-    color: #2c3e50;
+    color: #56595b;
     text-align: center;
     margin-bottom: 30px;
 }
@@ -50,7 +50,7 @@ body {
 
 .faq-question {
     font-size: 18px;
-    color: #2980b9;
+    color: #b92987;
     margin: 0;
     font-weight: bold;
 }

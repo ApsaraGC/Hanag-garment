@@ -276,23 +276,10 @@
             <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
             {{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
             </div>
-
-<!-- Preview images -->
-{{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
-
-
-{{-- <!-- Show existing additional images -->
-@if($product->images)
-    <div class="mt-2">
-        @foreach (explode(',', $product->images) as $image)
-            <img src="{{ asset('build/assets/images/products/'  . $image) }}" alt="Additional Image" style="width: 100px; height: 100px; margin-right: 5px;">
-        @endforeach
-    </div>
-@endif --}}
-
 @error('images')
     <span style="color:red;">{{ $message }}</span>
 @enderror
+<br>
                 <div class="form-group custom-checkbox">
                     <label for="is_featured">
                         <input type="checkbox" id="is_featured" name="is_featured" {{ old('is_featured') ? 'checked' : '' }}>
