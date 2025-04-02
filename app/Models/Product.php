@@ -51,18 +51,19 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
-public static function boot()
-{
-    parent::boot();
+    // public static function boot()
+    // {
+    //     parent::boot();
 
-    // Deleting associated images when a product is deleted
-    static::deleting(function ($product) {
-        $product->images->each(function ($image) {
-            Storage::disk('public')->delete('products/' . $image->filename);
-            $image->delete();
-        });
-    });
-}
+    //     // Deleting associated images when a product is deleted
+    //     static::deleting(function ($product) {
+    //         $product->images->each(function ($image) {
+    //             Storage::disk('public')->delete('products/' . $image->filename);
+    //             $image->delete();
+    //         });
+    //     });
+    // }
+
  // Accessor for average rating
  public function getAverageRatingAttribute()
  {

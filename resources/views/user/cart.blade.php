@@ -32,8 +32,8 @@ input[type="checkbox"] { background-color: #4CAF50; border: 1px solid #F070BB; w
 .swal-popup-small { font-size: 14px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); padding: 5px 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
 .empty-cart { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 80vh; padding: 5px; }
 .empty-cart img { max-width: 700px; opacity: 0.9; margin-left: 310px; }
-.empty-cart h1, .empty-cart p, .empty-cart .btn { margin-left: 270px; }
-.empty-cart h1 { font-size: 32px; font-weight: bold; color: #333; margin-bottom: 5px; }
+.empty-cart h1, .empty-cart p, .empty-cart .btn { margin-left: 270px; text-decoration: none; }
+.empty-cart h1 { font-size:  32px;  font-weight: bold; color: #333; margin-bottom: 5px; }
 .empty-cart p { font-size: 20px; color: #666; margin-bottom: 20px; text-decoration: none; }
 .empty-cart .btn { display: inline-block; padding: 10px 20px; background-color: #F070BB; color: #fff; font-weight: bold; text-align: center; border-radius: 5px; transition: background-color 0.3s ease; }
 .empty-cart .btn:hover { background-color: #e62fa0; }
