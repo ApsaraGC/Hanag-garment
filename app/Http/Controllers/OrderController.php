@@ -52,9 +52,6 @@ class OrderController extends Controller
         return redirect()->route('admin.destroyOrder', ['order' => $id])->with('success', 'Order deleted successfully');
     }
 
-
-
-
     public function store(Request $request)
     {
         $user = auth::user(); // Get logged-in user
@@ -90,7 +87,9 @@ class OrderController extends Controller
          UserCart::where('user_id', $user->id)->delete();
 
         // Pass the order ID to the redirect route
-        return redirect()->route('user.invoice', ['orderId' => $order->id])->with('success', 'Order placed successfully!');
+        return redirect()->route('dashboard')->with('success', 'Order placed successfully!');
+
+        // return redirect()->route('user.invoice', ['orderId' => $order->id])->with('success', 'Order placed successfully!');
     }
     // public function checkout($orderId)
     // {

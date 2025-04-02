@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Route;
@@ -171,3 +172,7 @@ Route::get('reset-password', [PasswordResetLinkController::class, 'create'])->na
 
 // Handle reset password submission (update password directly)
 Route::post('reset-password', [PasswordResetLinkController::class, 'store'])->name('password.reset.submit');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user/settings', [SettingController::class, 'settings'])->name('user.settings');
+});

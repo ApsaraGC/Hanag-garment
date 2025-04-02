@@ -455,14 +455,7 @@ overflow-x: hidden;
                 <img src="{{ asset('images/brands/Midi_Grad.png') }}" alt="Item">
                 <p>Denim Skirts</p>
             </div>
-            {{-- <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/category_5.png') }}" alt="Item">
-                <p>Men Shirt</p>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('build/assets/images/home/demo3/category_9.jpg') }}" alt="Item">
-                <p>Girl Shirt</p>
-            </div> --}}
+           
 
         </div>
     </section>

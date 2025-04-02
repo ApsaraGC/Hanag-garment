@@ -125,10 +125,7 @@
             <p>Total Amount: Rs.{{ number_format($order->total_amount, 2) }}</p>
             <p>Status: {{ $order->status }}</p>
             <p>Description: {{ $order->description }}</p>
-
         </div>
-
-
     </div>
     @include('layouts.footer')
 
