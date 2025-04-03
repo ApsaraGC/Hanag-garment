@@ -121,21 +121,49 @@ class ProductController extends Controller
 public function showShop(Request $request)
 {
     $brands = Brand::all();
+    $categories = Category::all(); // Fetch all categories
 
-    // Check if sorting is requested
-     // Check if sorting is requested
-     $sort = $request->query('sort', 'default');
+    $sort = $request->query('sort', 'default');
+    $priceSort = ($sort == 'price-asc') ? 'asc' : 'desc';
 
-     if ($sort === 'price-asc') {
-         $products = Product::orderBy('sale_price', 'asc')->paginate(10); // 9 products per page
-     } elseif ($sort === 'price-desc') {
-         $products = Product::orderBy('sale_price', 'desc')->paginate(10); // 9 products per page
-     } else {
-         $products = Product::paginate(10); // 9 products per page
-     }
+    // Start the query builder
+    $products = Product::query();
 
-    return view('user.shop', compact('brands', 'products', 'sort'));
+    if ($sort) {
+        $products = $products->orderBy('sale_price', $priceSort);
+    }
+
+    // Handle search
+    $search = $request->input('search');
+
+    if ($search) {
+        $products = $products->where('product_name', 'like', '%' . $search . '%')
+            ->orWhere('color', 'like', '%' . $search . '%')
+            ->orWhere('regular_price', 'like', '%' . $search . '%')
+            ->orWhere('sale_price', 'like', '%' . $search . '%')
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->where('category_name', 'like', '%' . $search . '%');
+            })
+            ->orWhereHas('brand', function ($query) use ($search) {
+                $query->where('brand_name', 'like', '%' . $search . '%');
+            });
+    }
+
+    // Apply sorting if needed
+    if ($sort == 'price-asc') {
+        $products = $products->orderBy('sale_price', 'asc');
+    } elseif ($sort == 'price-desc') {
+        $products = $products->orderBy('sale_price', 'desc');
+    } else {
+        $products = $products->orderBy('created_at', 'desc'); // Default sorting
+    }
+    // Apply pagination
+    $products = $products->paginate(8)->appends(request()->query()); // ✅ This will work
+
+    return view('user.shop', compact('brands', 'categories', 'products', 'sort', 'search'));
 }
+
+
  /**
      * Display the specified resource.
      */

@@ -188,11 +188,12 @@ tr:hover {
         <div class="main-content-wrap">
             <div class="flex">
                 <h3>Category</h3>
+                <a href="{{route('admin.add-category')}}" class="btn"> Add Category</a>
 
             </div>
 
             <div>
-                <div class="flex">
+                {{-- <div class="flex">
                     <!-- Search Bar -->
                     <form action="#" method="GET" class="search-container">
                         <!-- Search Bar -->
@@ -203,7 +204,7 @@ tr:hover {
                     </form>
                     <!-- Add New Brand -->
                     <a href="{{route('admin.add-category')}}" class="btn">+ Add New</a>
-                </div>
+                </div> --}}
 
                 @if (Session::has('status'))
                    <p class="alert alert-success">{{Session::get('status')}}</p>

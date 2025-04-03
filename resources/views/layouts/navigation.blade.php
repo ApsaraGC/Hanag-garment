@@ -176,7 +176,7 @@
             <a href="{{route('user.contact')}}">CONTACT</a>
         </nav>
         <div class="nav-icons">
-            <form class="search-form" method="GET" action="{{ route('user.search') }}">
+            <form class="search-form" method="GET" action="{{ route('user.shop') }}">
               <input type="text" name="search" value="{{ old('search', $search ?? '') }}" placeholder="Search products...">
               <button type="button" class="search-btn">
                 <i class="fa fa-search"></i>
@@ -193,7 +193,7 @@
                             <p>{{ Auth::user()->name }}</p>
                             <a href="{{ route('user.profile') }}" class="profile-link">View Profile</a>
                             <a href="{{ route('user.settings') }}" class="profile-link">Settings</a>
-                            
+
                             <form method="POST" action="{{ route('logout') }}" id="logout-form">
                                 @csrf
                                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

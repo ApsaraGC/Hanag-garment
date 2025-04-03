@@ -115,7 +115,9 @@ h3 {
     text-decoration: none;
     transition: 0.3s;
     cursor: pointer;
+    margin-left:30px;
     margin-left: 10px;
+
 }
 
 .btn:hover {
@@ -247,31 +249,24 @@ tr:hover {
             <div class="flex">
                 <h3>Brands</h3>
                 <ul class="breadcrumbs">
+
                 </ul>
+                <a href="{{route('admin.add-brand')}}" class="btn"> Add Brand</a>
+
             </div>
 
             <div>
                 <div class="flex">
-                    <!-- Search Bar -->
-                    {{-- <form action="#" method="GET" class="search-container">
-                        <input type="text" name="search" class="search-input" placeholder="Search brands...">
-                        <i class="fas fa-search search-icon"></i>
-                    </form>
-
-                    <form action="#" method="GET" class="search-container">
-                        <input type="text" name="search" class="search-input" placeholder="Search brands...">
-                        <i class="fas fa-search search-icon"></i>
-                    </form> --}}
-                    <form action="{{ route('admin.brands') }}" method="GET" class="search-container">
+                    {{-- <form action="{{ route('admin.brands') }}" method="GET" class="search-container">
                         <input type="text" name="search" class="search-input" value="{{ request()->input('search') }}" placeholder="Search brands...">
                         <i class="fas fa-search search-icon"></i>
-                    </form>
+                    </form> --}}
 
-                    @if($brands->isEmpty())
+                    {{-- @if($brands->isEmpty())
                         <p class="no-results-message">No brands found</p>
-                    @endif
+                    @endif --}}
                     <!-- Add New Brand -->
-                    <a href="{{route('admin.add-brand')}}" class="btn">+ Add New</a>
+                    {{-- <a href="{{route('admin.add-brand')}}" class="btn"> Add New</a> --}}
                 </div>
 
                 @if (Session::has('status'))

@@ -142,7 +142,7 @@ Route::post('/contact', [MessageController::class, 'store'])->name('messages.sto
 
 // Admin route to view messages
 Route::get('/admin/messages', [MessageController::class, 'index'])->middleware('auth')->name('admin.messages');
-Route::get('/search', [HomeController::class, 'searchResults'])->name('user.search');
+Route::get('/search', [HomeController::class, 'searchResults'])->name('usershop');
 
 // In web.php (routes file)
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');

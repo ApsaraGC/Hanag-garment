@@ -286,7 +286,6 @@ overflow-x: hidden;
         width: calc(50% - 10px); /* 2 items per row */
     }
 }
-
 @media (max-width: 480px) {
     .product-items {
         width: 100%; /* 1 item per row */
@@ -297,8 +296,6 @@ overflow-x: hidden;
         height: 120px;
     }
 }
-
-
         /* Featured Products Section */
         .featured-products {
             padding: 30px 20px;
@@ -385,7 +382,32 @@ overflow-x: hidden;
     gap: 20px;
 }
 
+.circle-container {
+        position: relative;
+        width: 450px;  /* Set the desired width of the circle */
+        height: 450px; /* Set the desired height of the circle */
+        background-color: pink; /* Pink background */
+        border-radius: 50%; /* Makes it circular */
+        display: flex;
+        margin-left:50px;
+        justify-content: center;
+        align-items: center;
+    }
 
+    .bag-image {
+        position: absolute;
+        width: 550px; /* Adjust the size of bag image */
+        height: 400px; /* Adjust the size of bag image */
+    }
+
+    .logo-image {
+        border-radius: 50%; /* Makes it circular */
+        position: absolute;
+        margin-left:85px;
+        margin-top:60px;
+        width: 120px;  /* Adjust the size of the logo */
+        height: 120px; /* Adjust the size of the logo */
+    }
 
     </style>
 </head>
@@ -412,7 +434,10 @@ overflow-x: hidden;
     </div>
     <div class="image-content">
         <div class="image-content">
-            <img id="banner-image" src="{{ asset('images/brands/Satin_Green.png') }}" alt="Hot Deal">
+            <div class="circle-container">
+                <img id="bannerr-image" class="bag-image" src="{{ asset('build/assets/images/bag.png') }}" alt="Hot Deal">
+                <img id="bannerr-image" class="logo-image" src="{{ asset('build/assets/images/logo1.png') }}" alt="Hot Deal">
+            </div>
         </div>
     </div>
 </section>
@@ -455,7 +480,7 @@ overflow-x: hidden;
                 <img src="{{ asset('images/brands/Midi_Grad.png') }}" alt="Item">
                 <p>Denim Skirts</p>
             </div>
-           
+
 
         </div>
     </section>

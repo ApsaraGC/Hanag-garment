@@ -26,29 +26,29 @@ public function dashboard(Request $request){
 
 
 }
-public function searchResults(Request $request)
-{
-    // Get the search query from the request
-    $search = $request->input('search');
+// public function searchResults(Request $request)
+// {
+//     // Get the search query from the request
+//     $search = $request->input('search');
 
-    if ($search) {
-        $products = Product::where('product_name', 'like', '%' . $search . '%')
-            ->orWhere('color', 'like', '%' . $search . '%')
-            ->orWhere('regular_price', 'like', '%' . $search . '%')
-            ->orWhere('sale_price', 'like', '%' . $search . '%')
-            ->orWhereHas('category', function ($query) use ($search) {
-                $query->where('category_name', 'like', '%' . $search . '%');
-            })
-            ->orWhereHas('brand', function ($query) use ($search) {
-                $query->where('brand_name', 'like', '%' . $search . '%');
-            })
-            ->get();
-    } else {
-        $products = collect(); // Return an empty collection if no search term is entered
-    }
+//     if ($search) {
+//         $products = Product::where('product_name', 'like', '%' . $search . '%')
+//             ->orWhere('color', 'like', '%' . $search . '%')
+//             ->orWhere('regular_price', 'like', '%' . $search . '%')
+//             ->orWhere('sale_price', 'like', '%' . $search . '%')
+//             ->orWhereHas('category', function ($query) use ($search) {
+//                 $query->where('category_name', 'like', '%' . $search . '%');
+//             })
+//             ->orWhereHas('brand', function ($query) use ($search) {
+//                 $query->where('brand_name', 'like', '%' . $search . '%');
+//             })
+//             ->get();
+//     } else {
+//         $products = collect(); // Return an empty collection if no search term is entered
+//     }
 
-    return view('user.search', compact('products', 'search'));
-}
+//     return view('user.search', compact('products', 'search'));
+// }
 
 public function hotDeals()
 {

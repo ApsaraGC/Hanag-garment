@@ -74,11 +74,11 @@ th {
         <!-- Total Users -->
         <p>Total Users: {{ $totalUsers ?? count($users) }}</p>
 
-        <!-- Search Form -->
+        {{-- <!-- Search Form -->
         <form method="GET" action="{{ route('admin.search.users') }}">
             <input type="text" name="search" placeholder="Search by name or email" value="{{ request('search') }}">
             <button type="submit">Search</button>
-        </form>
+        </form> --}}
 
         <!-- Users Table -->
         <table>
