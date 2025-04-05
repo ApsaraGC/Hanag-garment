@@ -44,25 +44,17 @@ class Product extends Model
     // app/Models/Product.php
     public function orders()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsToMany(Order::class, 'order_items')
+                    ->withPivot('quantity', 'price')
+                    ->withTimestamps();
     }
+
     public function reviews()
     {
         return $this->hasMany(Review::class);
     }
 
-    // public static function boot()
-    // {
-    //     parent::boot();
-
-    //     // Deleting associated images when a product is deleted
-    //     static::deleting(function ($product) {
-    //         $product->images->each(function ($image) {
-    //             Storage::disk('public')->delete('products/' . $image->filename);
-    //             $image->delete();
-    //         });
-    //     });
-    // }
+   
 
  // Accessor for average rating
  public function getAverageRatingAttribute()

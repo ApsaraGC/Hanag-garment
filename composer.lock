@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0061dc14f26d7b7ea47910744ae09aac",
+    "content-hash": "0cac1b8ce5b4f60e2e5389870bbcb40d",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -940,16 +940,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.9.2",
+            "version": "7.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "d281ed313b989f213357e3be1a179f02196ac99b"
+                "reference": "7b2f29fe81dc4da0ca0ea7d42107a0845946ea77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d281ed313b989f213357e3be1a179f02196ac99b",
-                "reference": "d281ed313b989f213357e3be1a179f02196ac99b",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/7b2f29fe81dc4da0ca0ea7d42107a0845946ea77",
+                "reference": "7b2f29fe81dc4da0ca0ea7d42107a0845946ea77",
                 "shasum": ""
             },
             "require": {
@@ -1046,7 +1046,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.9.2"
+                "source": "https://github.com/guzzle/guzzle/tree/7.9.3"
             },
             "funding": [
                 {
@@ -1062,7 +1062,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-24T11:22:20+00:00"
+            "time": "2025-03-27T13:37:11+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -4265,6 +4265,64 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
+            "name": "remotemerge/esewa-php-sdk",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/remotemerge/esewa-php-sdk.git",
+                "reference": "ca55ca791d4fb8eaf07b76b6b6a5fbef71521c9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/remotemerge/esewa-php-sdk/zipball/ca55ca791d4fb8eaf07b76b6b6a5fbef71521c9e",
+                "reference": "ca55ca791d4fb8eaf07b76b6b6a5fbef71521c9e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-simplexml": "*",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.70",
+                "phpunit/phpunit": "^10.5",
+                "rector/rector": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RemoteMerge\\Esewa\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Madan Sapkota",
+                    "email": "contact+github@madansapkota.com",
+                    "homepage": "https://madansapkota.com"
+                }
+            ],
+            "description": "eSewa payment gateway integration in PHP.",
+            "homepage": "https://github.com/remotemerge/esewa-php-sdk",
+            "keywords": [
+                "api",
+                "esewa",
+                "gateway",
+                "nepal",
+                "payment",
+                "php",
+                "token"
+            ],
+            "support": {
+                "issues": "https://github.com/remotemerge/esewa-php-sdk/issues",
+                "source": "https://github.com/remotemerge/esewa-php-sdk/tree/v3.1.1"
+            },
+            "time": "2025-03-01T12:23:45+00:00"
+        },
+        {
             "name": "sabberworm/php-css-parser",
             "version": "v8.8.0",
             "source": {
@@ -6890,6 +6948,42 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "xentixar/khalti-sdk",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xentixar/khalti-sdk.git",
+                "reference": "54353cfefa99c5cb5b091e925efec8f2cb97a87a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xentixar/khalti-sdk/zipball/54353cfefa99c5cb5b091e925efec8f2cb97a87a",
+                "reference": "54353cfefa99c5cb5b091e925efec8f2cb97a87a",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Xentixar\\KhaltiSdk\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "xentixar",
+                    "email": "xentixar@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/xentixar/khalti-sdk/issues",
+                "source": "https://github.com/xentixar/khalti-sdk/tree/v1.0.0"
+            },
+            "time": "2024-06-18T16:59:05+00:00"
         }
     ],
     "packages-dev": [

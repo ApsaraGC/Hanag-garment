@@ -80,7 +80,6 @@ class ProductController extends Controller
     $product->size = $request->size;
     $product->category_id = $request->category_id;
     $product->brand_id = $request->brand_id;
-
     // Handle Single Image Upload
     if ($request->hasFile('image')) {
         $image = $request->file('image');
@@ -88,10 +87,8 @@ class ProductController extends Controller
         $image->move(public_path('build/assets/images/products'), $fileName);
         $product->image = 'build/assets/images/products/'.$fileName;
     }
-
    // Handle Multiple Image Uploads
    $allImagesPaths = [];  // Create an empty array to store multiple images
-
    if ($request->hasFile('images')) {
        foreach ($request->file('images') as $img) {
            // Generate a unique name for each image
@@ -104,7 +101,6 @@ class ProductController extends Controller
            $allImagesPaths[] = 'build/assets/images/products/' . $imageName;  // Store the relative path
        }
    }
-
    // Check if there are any images to save
    if (!empty($allImagesPaths)) {
        // Store the images as a JSON string in the database
@@ -112,7 +108,6 @@ class ProductController extends Controller
    }
    // Save the product to the database
    $product->save();
-
     // Redirect to the products page with success message
     return redirect()->route('admin.products')->with('success', 'Product added successfully!');
 }
@@ -122,17 +117,14 @@ public function showShop(Request $request)
 {
     $brands = Brand::all();
     $categories = Category::all(); // Fetch all categories
-
     $sort = $request->query('sort', 'default');
     $priceSort = ($sort == 'price-asc') ? 'asc' : 'desc';
-
     // Start the query builder
     $products = Product::query();
 
     if ($sort) {
         $products = $products->orderBy('sale_price', $priceSort);
     }
-
     // Handle search
     $search = $request->input('search');
 
@@ -148,7 +140,6 @@ public function showShop(Request $request)
                 $query->where('brand_name', 'like', '%' . $search . '%');
             });
     }
-
     // Apply sorting if needed
     if ($sort == 'price-asc') {
         $products = $products->orderBy('sale_price', 'asc');
@@ -177,12 +168,9 @@ public function showShop(Request $request)
  public function show($productId)
 {
     $product = Product::with(['category', 'brand', 'reviews'])->findOrFail($productId);
-
     // Calculate average rating
     $averageRating = $product->reviews->avg('rating');
-
     $relatedProducts = Product::where('category_id', $product->category_id)->limit(4)->get();
-
     return view('user.productDetails', compact('product', 'relatedProducts', 'averageRating'));
 }
 
@@ -198,22 +186,18 @@ public function submitRating(Request $request)
         'rating' => 'required|integer|between:1,5',
         'product_id' => 'required|exists:products,id', // Ensure product_id is valid
     ]);
-
     // Get the logged-in user
     $user = auth()->user();
-
     // Find the product
     $product = Product::find($request->input('product_id'));
 
     if (!$product) {
         return redirect()->back()->with('error', 'Product not found.');
     }
-
     // Check if the user has already reviewed the product
     $existingReview = Review::where('product_id', $product->id)
         ->where('user_id', $user->id)
         ->first();
-
     if ($existingReview) {
         // If review exists, update it
         $existingReview->rating = $request->input('rating');
@@ -225,12 +209,9 @@ public function submitRating(Request $request)
             'rating' => $request->input('rating'),
         ]);
     }
-
     // Redirect back with a success message
     return redirect()->back()->with('success', 'Rating submitted successfully!');
 }
-
-
 
 /**
      * Show the form for editing the specified resource.
@@ -244,10 +225,6 @@ public function submitRating(Request $request)
 
         return view('admin.editProduct', compact('product', 'categories', 'brands'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     /**
  * Update the specified resource in storage.
  */
@@ -270,10 +247,8 @@ public function update(Request $request, string $id)
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
-
     // Find the product by ID
     $product = Product::findOrFail($id);
-
     // Update product details
     $product->product_name = $request->product_name;
     $product->short_description = $request->short_description;
@@ -295,7 +270,6 @@ public function update(Request $request, string $id)
         $image->move(public_path('build/assets/images/products'), $fileName);
         $product->image = 'build/assets/images/products/'.$fileName;
     }
-
     $allImagesPaths = [];  // Create an empty array to store multiple images
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $img) {

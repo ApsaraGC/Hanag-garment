@@ -19,6 +19,16 @@ class Order extends Model
     // Define the relationship with the Product model
     public function products()
     {
-        return $this->belongsTo(Product::class); // Assuming a many-to-many relationship
+        return $this->belongsToMany(Product::class, 'order_items')
+                    ->withPivot('quantity', 'price') // Include additional pivot fields
+                    ->withTimestamps();
     }
+
+    // Add the relationship method
+    public function order_items()
+    {
+        return $this->hasMany(order_items::class); // Assuming the related model is OrderItem
+    }
+
+
 }

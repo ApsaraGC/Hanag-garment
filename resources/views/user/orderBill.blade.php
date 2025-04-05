@@ -15,9 +15,10 @@
         }
 
         .payment-container {
-            max-width: 400px;
+            max-width: 450px;
             margin: 40px auto;
-            padding: 25px;
+            height: 470px;
+            padding: 15px;
             background-color: #fff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -32,6 +33,12 @@
             margin-bottom: 15px;
         }
 
+        .logo-image {
+            display: block;
+            margin: 0 auto 20px; /* Center the logo image */
+            width: 120px; /* Adjust width as needed */
+        }
+
         .transaction-details {
             background-color: #fafafa;
             padding: 20px;
@@ -42,6 +49,7 @@
         .transaction-details h3 {
             font-size: 18px;
             margin-bottom: 20px;
+            color:#504d4d;
         }
 
         .transaction-details p {
@@ -70,40 +78,23 @@
             color: #333;
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
 
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
 
-        .form-group input {
-            width: 90%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
 
-        .save-btn {
-            background-color: #F070BB;
-            color: #fff;
-            justify-content: center;
-            padding: 12px;
-            text-align: center;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 50%;
-            transition: 0.3s ease;
-        }
+        /* Responsive Design for smaller screens */
+        @media (max-width: 600px) {
+            .payment-container {
+                width: 90%;
+                padding: 15px;
+            }
 
-        .save-btn:hover {
-            background-color: #ec49a8;
+            .header {
+                font-size: 18px;
+            }
+
+            .transaction-details p {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -112,45 +103,48 @@
     @include('layouts.navigation')
 
     <div class="payment-container">
+        <form action="{{ route('order.confirm') }}" method="POST" id="orderForm">
+            @csrf
 
-        <div class="transaction-details">
-            <div class="header">Hanag Garments - Payment</div>
-            <h1>Order Bill</h1>
+            <!-- Centered logo image -->
+            <img id="bannerr-image" class="logo-image" src="{{ asset('build/assets/images/logo1.png') }}" alt="Hot Deal">
 
-            <h3>Order ID: {{ $order->id }}</h3>
-            <p>User: {{ $user->name }}</p> <!-- Assuming 'name' is a field on the User model -->
+            <div class="header">Hanag Garments - Invoice</div>
+            <h3 style="text-align: center;">Order ID: {{ $order->id }}</h3>
+            <h3 style="text-align: center;">{{ $user->full_name }}</h3> <!-- Assuming 'name' is a field on the User model -->
+            <h3>{{ $user->address }}</h3> <!-- Assuming 'name' is a field on the User model -->
+
             <p>Order Type: {{ $order->order_type }}</p>
             <p>Subtotal: Rs.{{ number_format($order->sub_total, 2) }}</p>
-            <p>Discount: Rs.{{ number_format($order->discount, 2) }}</p>
             <p>Total Amount: Rs.{{ number_format($order->total_amount, 2) }}</p>
             <p>Status: {{ $order->status }}</p>
-            <p>Description: {{ $order->description }}</p>
-        </div>
+            <p>Description:{{ $order->description }}</p>
+
+            <!-- Submit button -->
+        </form>
     </div>
+
     @include('layouts.footer')
 
+    <script>
+        // Handling the confirmation order submission and triggering SweetAlert
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent the form from submitting immediately
 
-       <script>
-    // Handling the confirmation order submission and triggering SweetAlert
-    document.getElementById('orderForm').addEventListener('submit', function(event) {
-        event.preventDefault();  // Prevent the form from submitting immediately
-
-        // Here, you can make an Ajax request if needed to confirm the order and then trigger the popup.
-        Swal.fire({
-            title: 'Order Confirmed!',
-            text: 'Your order has been confirmed successfully.',
-            icon: 'success',
-            confirmButtonText: 'Close',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // After clicking 'Close', submit the form
-                this.submit();  // Submit the form after the popup closes
-            }
+            // Here, you can make an Ajax request if needed to confirm the order and then trigger the popup.
+            Swal.fire({
+                title: 'Order Confirmed!',
+                text: 'Your order has been confirmed successfully.',
+                icon: 'success',
+                confirmButtonText: 'Close',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // After clicking 'Close', submit the form
+                    this.submit();  // Submit the form after the popup closes
+                }
+            });
         });
-    });
-</script>
-
-
+    </script>
 </body>
 
 </html>

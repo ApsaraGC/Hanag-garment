@@ -179,24 +179,38 @@ tr:hover {
     </div>
     <div class="main-content-inner">
         <div class="main-content-wrap">
-            <div class="flex">
+            <div class="flex" style="display: flex; justify-content: space-between; align-items: center;">
                 <h3>All Orders</h3>
-                {{-- <a href="{{ route('admin.createOrder') }}" class="btn">Create Order</a> --}}
+                <a href="{{ route('admin.createOrder') }}" class="btn">Create Order</a>
             </div>
 
-            <!-- Display success message -->
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
+            @if(session('popup_message'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ session('popup_message') }}',
+                    timer: 3000,
+                    showConfirmButton: false,
+                    width: '350px',  // Adjust width as needed
+                    padding: '5px', // Optional: Adjust padding
+                    customClass: {
+                        popup: 'swal-popup-small'
+                    }
+                });
+            </script>
+        @endif
 
             <!-- Orders Table -->
             <table border="1">
                 <thead>
                     <tr>
                         <th>Order ID</th>
+                        <th>User Name</th>
+                        <th>User Address</th>
                         <th>Order Type</th>
+                        <th>Product Name</th>
+                        <th>Product Size</th>
                         <th>Total Amount</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -206,15 +220,31 @@ tr:hover {
                     @foreach($orders as $order)
                         <tr>
                             <td>{{ $order->id }}</td>
+                            <td>{{ $order->user->full_name ?? 'N/A' }}</td> <!-- User Name -->
+                            <td>{{ $order->user->address ?? 'N/A' }}</td> <!-- User Address -->
                             <td>{{ $order->order_type }}</td>
+                            <td>
+                                    @if ($order->products->isNotEmpty())
+                                        @foreach($order->products as $product)
+                                             {{ $product->product_name }}
+                                             <br>
+                                        @endforeach
+                                    @else
+                                        N/A
+                                    @endif
+                            </td>
+                            <td>
+                                @foreach($order->products as $product)
+                                    {{ $product->size ?? 'N/A' }} <br> <!-- Product Size -->
+                                @endforeach
+                            </td>
+
                             <td>{{ $order->total_amount }}</td>
                             <td>{{ $order->status }}</td>
                             <td class="action-icons">
                                 <a href="{{ route('admin.update-order', ['order' => $order->id]) }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-
-
                                 <form action="{{ route('admin.destroyOrder', ['order' => $order->id]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
@@ -222,20 +252,20 @@ tr:hover {
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
 
-
-
-        </div>
-          <!-- Pagination -->
-          <div class="pagination">
-            {{ $orders->links('vendor.pagination.bootstrap-5') }} <!-- Or 'bootstrap-5' depending on your version -->
+            <!-- Pagination -->
+            <div class="pagination">
+                {{ $orders->links('vendor.pagination.bootstrap-5') }}
+            </div>
         </div>
     </div>
 </body>
+
 
 </html>

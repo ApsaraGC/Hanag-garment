@@ -88,23 +88,48 @@
             font-size: 14px;
         }
 
-        .save-btn {
-            background-color: #F070BB;
-            color: #fff;
-            justify-content: center;
-            padding: 12px;
-            text-align: center;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 50%;
-            transition: 0.3s ease;
-        }
 
-        .save-btn:hover {
-            background-color: #ec49a8;
-        }
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.save-btn {
+    background-color: #F070BB;
+    color: #fff;
+    padding: 12px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%; /* Ensure buttons take up half the width */
+    transition: 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #ec49a8;
+}
+.cancel-btn {
+    background-color: #ff3333;
+    color: #fff;
+    padding: 12px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 20%; /* Ensure buttons take up half the width */
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #e02b2b;
+}
+
     </style>
 </head>
 
@@ -115,19 +140,26 @@
 
         <div class="transaction-details">
             <div class="header">Hanag Garments - Payment</div>
-            <form action="{{ route('order.confirm') }}" method="POST" id="orderForm">
-                @csrf
+            {{-- <form action="{{ route('user.orderBill') }}" method="POST" id="orderForm">
+                @csrf --}}
+
+
                 <h3>Hello, <span>{{ Auth::user()->full_name }}</span></h3>
                 <p><span>Address</span> <span>{{ $user->address ?? 'No address set' }}</span></p>
                 <hr>
                 <p><span>Payment Type</span> <span>{{ $paymentType }}</span></p>
-                <p><span>Subtotal</span> <span>Rs.{{ number_format($subtotal, 2) }}</span></p>
-                <p><span>Delivery Charge</span> <span>Rs.{{ number_format($deliveryCharge, 2) }}</span></p>
+                <p><span>Subtotal</span> <span>Rs. {{ number_format($subtotal, 2) }}</span></p>
+                <p><span>Delivery Charge</span> <span>Rs. {{ number_format($deliveryCharge, 2) }}</span></p>
                 <hr>
-                <p><span>Total</span> <span>Rs.{{ number_format($total, 2) }}</span></p>
-                <button type="submit" class="save-btn">Confirm Your order</button>
-                <a href="{{ route('user.cart') }}" class="cancel-btn" style="text-decoration:none;display:inline-block;padding:12px 20px;border-radius:5px;font-size:14px;color:#fff;background-color:#ff3333;width:39git%;text-align:center;margin-top:15px;">Cancel</a>
-            </form>
+                <p><span>Total</span> <span>Rs. {{ number_format($total, 2) }}</span></p>
+                <div class="button-group">
+                    <form action="{{ route('user.placeOrder') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="save-btn">Confirm Your Order</button>
+                    </form>
+                    <a href="{{ route('user.cart') }}" class="cancel-btn">Cancel</a>
+                </div>
+
         </div>
 
         <div class="address-section">
@@ -135,8 +167,7 @@
             <form action="{{ route('update.address') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="address">New Address</label>
-                    <input type="text" id="address" name="address" value="{{ $user->address ?? '' }}" placeholder="Enter your new address" required>
+                    <input type="text" id="address" name="address" value="{{ Auth::user()->address ?? '' }}" placeholder="Enter your new address" required>
                 </div>
                 <button type="submit" class="save-btn">Save Address</button>
             </form>
@@ -145,7 +176,7 @@
     @include('layouts.footer')
 
 
-    <script>
+    {{-- <script>
     // Handling the confirmation order submission and triggering SweetAlert
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();  // Prevent the form from submitting immediately
@@ -163,9 +194,54 @@
             }
         });
     });
-</script>
+</script> --}}
 
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector('.save-btn').addEventListener('click', function () {
+        let formData = new FormData(document.getElementById("orderForm"));
+
+        fetch("{{ route('user.placeOrder') }}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector("meta[name='csrf-token']").content,
+                "Accept": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.order_id) {
+                Swal.fire({
+                    title: "Order Confirmed!",
+                    text: "Your order has been placed successfully.",
+                    icon: "success",
+                    confirmButtonText: "View Order Bill"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to the order bill page with the order ID
+                        window.location.href = "{{ url('/order') }}/" + data.order_id + "/bill";
+                    }
+                });
+            } else {
+                Swal.fire("Error", "Failed to place the order.", "error");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            Swal.fire("Error", "Something went wrong!", "error");
+        });
+    });
+});
+</script>
+
+
+
+
+
 
 </html>

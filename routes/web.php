@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MessageController;
@@ -23,10 +24,7 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::get('/', [HomeController::class, 'dashboard']);
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-// Route to dashboard
+
 Route::get('/dashboard', [HomeController::class, 'dashboard'])
     // ->middleware(['auth', 'verified']) // Only authenticated users can access
     ->name('dashboard');
@@ -39,8 +37,15 @@ Route::middleware('auth')->group(function () {
 
    // User settings route
    Route::get('user/settings', [ProfileController::class, 'settings'])->name('user.settings');
+   Route::middleware(['auth'])->group(function () {
+    Route::get('/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
+    Route::post('/place-order', [InvoiceController::class, 'placeOrder'])->name('user.placeOrder');
+    Route::get('/order/{orderId}/bill', [InvoiceController::class, 'orderBill'])->name('user.orderBill');
+    Route::post('/order/confirm', [InvoiceController::class, 'placeOrder'])->name('order.confirm');
 
-
+});
+//Route::get('user/orderBill', [OrderController::class, 'checkout'])->name('user.orderBill');
+   Route::get('/order/bill/download/{orderId}', [OrderController::class, 'downloadOrderBill'])->name('download.orderBill');
 
 });
 
@@ -82,7 +87,6 @@ Route::post('/update-address', [ProfileController::class, 'updateAddress'])->nam
 
 Route::middleware(['auth',AuthAdmin::class])->group(function(){
     Route::get('admin/navbar', [AdminController::class, 'navbar'])->name('admin.navbar');
-
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/admin/brands',[AdminController::class,'brands'])->name('admin.brands');
@@ -118,6 +122,7 @@ Route::get('/admin/orders/{order}/edit', [OrderController::class, 'edit'])->name
 Route::put('/admin/orders/{order}', [OrderController::class, 'update'])->name('admin.updateOrder');
 Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.destroyOrder');
 
+
     // In routes/web.php
 
 
@@ -146,20 +151,12 @@ Route::get('/search', [HomeController::class, 'searchResults'])->name('usershop'
 
 // In web.php (routes file)
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-//Route::get('/user/esewa/payment', [PaymentController::class, 'esewaPayment'])->name('user.esewa.payment');
+Route::get('/user/esewa/payment', [PaymentController::class, 'esewaPayment'])->name('user.esewa.payment');
 Route::get('/user/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
-Route::get('/user/esewa/payment', [PaymentController::class, 'showPaymentPage'])->name('user.esewa.payment');
-// Success and failure routes for the payment
-Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
-Route::get('/payment/failure', [PaymentController::class, 'paymentFailure'])->name('payment.failure');
-
-
-Route::post('/order/confirm', [OrderController::class, 'store'])->name('order.confirm');
-Route::get('/order/{orderId}/checkout', [OrderController::class, 'checkout'])->name('user.orderBill');
-
-//Route::get('user/orderBill', [OrderController::class, 'checkout'])->name('user.orderBill');
-Route::get('/order/bill/download/{orderId}', [OrderController::class, 'downloadOrderBill'])->name('download.orderBill');
-
+// Route::post('/cart/checkout', [InvoiceController::class, 'placeOrder'])->name('cart.checkout');
+Route::post('/khalti/verify', [PaymentController::class, 'verifyPayment'])->name('khalti.verify');
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/place-order', [InvoiceController::class, 'placeOrder'])->name('user.placeOrder');
 
 Route::post('/submit-rating', [ProductController::class, 'submitRating'])->name('submit.rating');
 
@@ -175,4 +172,9 @@ Route::post('reset-password', [PasswordResetLinkController::class, 'store'])->na
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/user/settings', [SettingController::class, 'settings'])->name('user.settings');
+    Route::delete('/settings/delete-account', [SettingController::class, 'destroy'])->name('user.delete');
 });
+
+Route::post('/checkout/esewa/initiate', [EsewaController::class, 'initiatePaymentFromCart'])->name('esewa.initiate');
+Route::get('/checkout/esewa/success', [EsewaController::class, 'paymentSuccess'])->name('esewa.success');
+Route::get('/checkout/esewa/failure', [EsewaController::class, 'paymentFailure'])->name('esewa.failure');

@@ -18,8 +18,11 @@
         .cart-container {
             display: flex;
             flex-wrap: wrap;
-            padding: 20px;
-            gap: 20px;
+            padding: 30px;
+            gap: 10px;
+            max-width: 400px;
+            margin-left: 190px;
+
 
         }
 
@@ -37,11 +40,11 @@
             color: #F070BB;
             text-align: center;
             font-size: 30px;
+
         }
 
         .cart-totals {
             flex: 1;
-            max-width: 400px;
             border: 1.5px solid  #F070BB;
         }
 
@@ -87,68 +90,19 @@
             background: #F070BB;
         }
 
-        .checkout-btn {
-            background: #F070BB;
-            display: block;
-            text-align: center;
-        }
 
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .quantity-selector input {
-            text-align: center;
-            border: 1px solid #ddd;
-            width: 40px;
-            height: 30px;
-            margin: 0 5px;
-        }
 
-        .cart-totals .totals-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
 
-        .payment-method {
-            margin-top: 10px;
 
-        }
-        input[type="checkbox"] {
-    border: 1px solid #F070BB;
-    width: 16px; /* Optional: Adjust size if needed */
-    height: 16px; /* Optional: Adjust size if needed */
-    border-radius: 3px; /* Optional: Add a slight rounding for aesthetics */
-    appearance: none; /* Removes default styling */
-    outline: none; /* Removes outline on focus */
-    cursor: pointer;
-}
-/* General Button Styling */
-
-    /* Remove Button */
-    .btn-danger {
-        background-color: #E63946;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s, box-shadow 0.3s;
-    }
-    .btn-danger:hover {
-        background-color: #D62828;
-        box-shadow: 0 0 8px rgba(230, 57, 70, 0.4);
-    }
 
     /* Clear All Cart Button */
     .btn-light {
         background-color: #F070BB;
         color: white;
         border: none;
-        padding: 8px 16px;
+        width:140px;
+        padding: 8px 12px;
         border-radius: 5px;
         margin: 0 0 0 630px;  /* Centers it horizontally */
         cursor: pointer;
@@ -175,28 +129,32 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+
     height: 80vh; /* Adjust height to center properly */
     padding: 5px;
 }
 
 .empty-cart img {
-    max-width: 700px; /* Larger image */
+    max-width: 800px; /* Larger image */
     opacity: 0.9;
-    margin-left: 310px;
+
 }
 
 .empty-cart h1 {
     font-size: 32px;
     font-weight: bold;
     color: #333;
-    margin-left: 270px;
+    margin-right: 90px;
+
     margin-bottom: 5px;
 }
 
 .empty-cart p {
     font-size: 20px;
     color: #666;
-    margin-left: 270px;
+    margin-right: 90px;
+
+    margin-left: 0px;
     margin-bottom: 20px;
     text-decoration: none;
 }
@@ -209,13 +167,13 @@
         text-decoration: none;
         font-weight: bold;
         text-align: center;
-        margin-left: 270px;
+        margin-right: 90px;
         border-radius: 5px;
         transition: background-color 0.3s ease;
 }
 
 .empty-cart .btn:hover {
-    background-color: #138496;
+    background-color: #e62fa0;
 }
 .add-to-cart {
         color: white;
@@ -223,10 +181,12 @@
         transition: background-color 0.3s, box-shadow 0.3s;
     background: #F070BB;
     color: #fff;
+    font-weight: bold;
+
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     margin-top: 20px;
 }
 
@@ -239,6 +199,19 @@
     font-size: 12px;
 }
 
+.out-of-stock {
+    background-color: #ff3333;
+    color:#fff;
+    font-weight: bold;
+
+    font-size: 14px;
+    width:100px;
+    border-radius: 5px;
+
+    margin-right: 15px;
+    text-align: center;
+    padding: 8px;
+}
 
 
     </style>
@@ -292,23 +265,36 @@
                         </td>
                         <td>Rs. {{ $item->product->sale_price }}</td>
                         <td>
-                            <form action="{{ route('wishlist.remove', $item->product->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Remove</button>
-                            </form>
-                                  <!-- Add to Cart Form -->
-                <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
-                    @csrf
-                    <input type="hidden" name="id" value="{{ $item->product->id }}">
-                    <input type="hidden" name="quantity" value="1">
-                    <input type="hidden" name="name" value="{{ $item->product->product_name }}">
-                    <input type="hidden" name="price" value="{{ $item->product->sale_price ?: $item->product->regular_price }}">
-                    <button type="submit" class="add-to-cart">
-                        <i class="fas fa-cart-plus"></i> Add to Cart
-                    </button>
-                </form>
+                            <div class="product-actions" style="display: flex; align-items: center; gap: 10px;">
+                                <!-- Remove from Wishlist Form (Icon Only) -->
+                                <form action="{{ route('wishlist.remove', $item->product->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" style="border: none; background: transparent; padding: 5px; margin-top: 15px;">
+                                        <i class="fas fa-times" style="font-size: 20px; color: red;"></i>
+                                    </button>
+                                </form>
+
+                                <!-- Check if product is out of stock -->
+                                @if ($item->product->stock_status === 'outofstock')
+                                    <!-- Display "Out of Stock" text -->
+                                    <p class="out-of-stock">Out of Stock</p>
+                                @else
+                                    <!-- Add to Cart Form (Icon Only) -->
+                                    <form name="addtocart-form" method="post" action="{{route('cart.add')}}" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $item->product->id }}">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <input type="hidden" name="name" value="{{ $item->product->product_name }}">
+                                        <input type="hidden" name="price" value="{{ $item->product->sale_price ?: $item->product->regular_price }}">
+                                        <button type="submit" class="add-to-cart" style="border: none; background: transparent; padding: 0;">
+                                            <i class="fas fa-cart-plus" style="font-size: 20px; color: #F070BB;"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
                         </td>
+
                     </tr>
                     @endforeach
                 </tbody>

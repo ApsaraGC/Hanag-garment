@@ -1,0 +1,394 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Header */
+/* Banner Section */
+/* Banner Section */
+.banner {
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 550px;
+padding: 60px;
+background-color: #f9f9f9;
+}
+
+.banner .text-content {
+flex: 1;
+max-width: 50%;
+margin-top: -20px;
+}
+
+.banner .text-content h2 {
+font-size: 40px;
+color: #888;
+margin-bottom: 5px;
+}
+
+.banner .text-content h1 {
+font-size: 60px;
+color: #F070BB;
+margin-bottom: 10px;
+}
+
+.banner .text-content p {
+font-size: 16px;
+margin-bottom: 15px;
+color: #555;
+}
+
+.banner .shop-now-btn {
+display: inline-block;
+padding: 8px 16px;
+background-color: #F070BB;
+color: #fff;
+text-decoration: none;
+border-radius: 5px;
+}
+
+.banner .shop-now-btn:hover {
+background-color: #e4419d;
+}
+
+.banner .image-content {
+flex: 1;
+max-width: 100%;
+position: relative;
+}
+
+.banner .image-content img {
+max-height: 480px; /* Increased height */
+transition: all 1s ease;
+}
+
+
+.image-content {
+flex: 1;
+max-width: 50%;
+text-align: center;
+}
+/* Container styles for the 'You Might Like' section */
+.you-might-like {
+padding: 30px 20px;
+text-align: center;
+background-color: #FFF;
+
+}
+.you-might-like h2{
+font-size: 35px;
+margin-bottom: 20px;
+color: #F070BB;
+}
+
+/* Carousel container that holds the items */
+.carousel {
+margin-top: 10px;
+display: flex;
+justify-content: center;
+}
+
+/* Items inside the carousel */
+.carousel-items {
+display: flex;
+gap: 45px; /* Adjusted gap between images */
+justify-content: center; /* Initially center the images */
+animation: scroll-right-to-left 15s linear infinite; /* Animation for moving right to left */
+
+}
+.carousel-items::-webkit-scrollbar {
+display: none;
+}
+/* Styling each carousel item */
+.carousel-item {
+justify-content: center; /* Initially center the images */
+text-align: center;
+
+}
+
+/* Styling for images inside the carousel items */
+.carousel-item img {
+width: 80px;
+height: 80px;
+border-radius: 50%;
+object-fit: cover;
+margin-bottom: 5px;
+}
+
+/* Keyframes for the scrolling effect from right to left */
+@keyframes scroll-right-to-left {
+0% {
+transform: translateX(20%); /* Start from the right side (out of view) */
+}
+50% {
+transform: translateX(0%); /* Move to the center (visible) */
+}
+100% {
+transform: translateX(-50%); /* Move out of view to the left side */
+}
+}
+/* Hot Deals Section */
+.hot-deals {
+padding: 30px 20px;
+display: flex;
+justify-content: flex-start;  /* Align all items in one row */
+align-items: center;
+background-color: #F8F8F8;
+border-radius: 10px;
+/* flex-wrap: nowrap;  /* Prevent wrapping of elements */
+/* overflow-x: hidden;  Allows horizontal scrolling if needed */ */
+}
+
+.hot-deals .sale-banner {
+background-color: #e42121;
+text-align: center;
+padding: 20px 10px;
+border-radius: 100%;
+width: 350px; /* Adjust size of the banner */
+height: 180px; /* Adjust size of the banner */
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+color: #fff;
+margin-left:30px;
+margin-right: 40px;  /* Space between sale banner and product images */
+}
+.hot-deals .sale-banner h2 {
+font-size: 20px;
+font-weight: bold;
+margin-bottom: 5px;
+}
+
+.hot-deals .sale-banner p {
+font-size: 14px;
+font-weight: bold;
+}
+/* Product image container */
+.deals-images {
+display: flex;
+justify-content: flex-start;
+gap: 16px;
+}
+
+.product-items {
+    text-align: center;
+    border: 0.5px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.product-items:hover {
+transform: translateY(-5px);
+}
+.product-items img {
+max-width: 100%;
+height: auto;
+border-radius: 10px;
+transition: transform 0.3s ease;
+}
+.product-items img:hover {
+transform: scale(1.05);
+}
+.product-items h3 {
+font-size: 16px;
+font-weight: bold;
+color: #757272;
+text-align: left;
+margin-top: 10px;
+}
+/* Regular and sale price styling */
+.product-info {
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 100%;
+}
+/* Price Section */
+.price-section {
+display: flex;
+justify-content: flex-start;
+align-items: center;
+gap: 10px; /* Add space between sale price and regular price */
+}
+
+/* Sale Price */
+.sale-price {
+font-weight: bold;
+color: #28a745;
+font-size: 16px;
+margin-right: 45px; /* Space between sale price and regular price */
+}
+/* Regular Price */
+.regular-price {
+text-align: left;
+text-decoration: line-through;
+color: #ff0000;
+font-size: 14px;
+margin-bottom: 5px;
+}
+.cart-icon {
+color: #F070BB;
+cursor: pointer;
+margin-top:10px;
+margin-left: 10px;
+transition: color 0.3s ease;
+}
+.cart-icon:hover {
+color: #12f312;
+}
+.product-items:hover .add-to-cart-btn {
+opacity: 1;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 1024px) {
+.product-items {
+width: calc(33.33% - 10px); /* 3 items per row */
+}
+}
+
+@media (max-width: 768px) {
+.product-items {
+width: calc(50% - 10px); /* 2 items per row */
+}
+}
+@media (max-width: 480px) {
+.product-items {
+width: 100%; /* 1 item per row */
+}
+
+.hot-deals .sale-banner {
+width: 120px;
+height: 120px;
+}
+}
+/* Featured Products Section */
+.featured-products {
+    padding: 30px 20px;
+    background-color: #FFF;
+    text-align: center;
+}
+
+.featured-products h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+ /* Ensure a row has exactly 5 products */
+.product-list {
+display: grid;
+grid-template-columns: repeat(5, 1fr); /* 5 products per row */
+gap: 20px;
+padding: 20px;
+}
+
+.product-item {
+    text-align: center;
+    border: 0.5px solid #ddd;
+    padding: 10px;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Uniform Image Size */
+.product-item img {
+width: 100%; /* Ensures full width */
+height: 220px; /* Fixed height for uniformity */
+object-fit: contain; /* Ensures images fit well without distortion */
+margin-bottom: 10px;
+background: rgba(0, 0, 0, 0.3);
+}
+
+.product-item h4,
+.product-item p {
+    margin: 5px 0;
+}
+
+/* Hover effect */
+.product-item:hover {
+    transform: scale(1.05);
+}
+
+.add-to-cart-btn { display: none; position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); background: transparent; color: #fff; border: 2px solid #eea5a5; padding: 12px 18px; font-size: 16px; border-radius: 5px; width: 200px; transition: 0.3s; }
+.product-item:hover .add-to-cart-btn { display: block; background: #ede8e8; color: rgb(236, 151, 164); }
+
+/* Wishlist Button */
+.wishlist-btn {
+    background: none; /* Remove button background */
+border: none; /* Remove border */
+padding: 0; /* Remove padding */
+cursor: pointer; /* Make it clickable */
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: red;
+    border-radius: 60%;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.load-more {
+    margin-top: -25px;
+    display: inline-block;
+    background-color: #F070BB;
+    color: white;
+    margin-left: 550px;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom:20px;
+}
+
+.banner {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 20px;
+}
+
+.circle-container {
+position: relative;
+width: 450px;  /* Set the desired width of the circle */
+height: 450px; /* Set the desired height of the circle */
+background-color: pink; /* Pink background */
+border-radius: 50%; /* Makes it circular */
+display: flex;
+margin-left:50px;
+justify-content: center;
+align-items: center;
+}
+.bag-image {
+position: absolute;
+width: 550px; /* Adjust the size of bag image */
+height: 400px; /* Adjust the size of bag image */
+}
+.logo-image {
+border-radius: 50%; /* Makes it circular */
+position: absolute;
+margin-left:85px;
+margin-top:60px;
+width: 120px;  /* Adjust the size of the logo */
+height: 120px; /* Adjust the size of the logo */
+}

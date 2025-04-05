@@ -2,71 +2,94 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
+use App\Models\UserCart;
+use Carbon\Carbon;
+use RemoteMerge\Esewa\Config;
+
+use Illuminate\Support\Str;
+
+use Illuminate\Support\Facades\Http;
+// Init composer autoloader.
+
+use RemoteMerge\Esewa\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    public function esewaPayment()
-{
-    // You can implement the eSewa payment API integration here
-    return view('user.esewa.payment');
-}
-public function showPaymentPage(Request $request)
-{
-    $user = auth()->user();  // Get the logged-in user
-    $cartItems = $user->UserCart;  // Get cart items from the logged-in user's cart
-    $subtotal = 0;
+    public function verifyPayment(Request $request)
+    {
+        $token = $request->input('token');
+        $amount = $request->input('amount'); // Amount in paisa
 
-    // Loop through the cart items to calculate the subtotal
-    foreach ($cartItems as $item) {
-        $subtotal += $item->product->sale_price * $item->quantity;
+        // 1. Verify payment with Khalti
+        $secretKey = config('services.khalti.live_secret_key');
+        $verificationUrl = 'https://khalti.com/api/v2/payment/verify/';
+        $response = Http::post($verificationUrl, [
+            'token' => $token,
+            'amount' => $amount,
+        ], [
+            'Authorization' => 'Key ' . $secretKey,
+        ]);
+
+        if ($response->successful()) {
+            $verificationData = $response->json();
+
+            // 2. Retrieve cart information
+            $cartItems = Session::get('cart', []); // Adjust how you retrieve cart items
+            $totalAmount = $amount / 100; // Convert paisa to rupees
+            $subTotal = 0; // Calculate subtotal based on cart items
+
+            if (!empty($cartItems)) {
+                // Calculate subtotal here
+                foreach ($cartItems as $item) {
+                    $subTotal += $item['product']->sale_price * $item['quantity'];
+                }
+
+                // 3. Create Order
+                $order = Order::create([
+                    'user_id' => auth()->id(), // Assuming user is logged in
+                    'order_type' => 'online',
+                    'sub_total' => $subTotal,
+                    'total_amount' => $totalAmount,
+                    'status' => 'completed',
+                    // Add other order details
+                ]);
+
+                // 4. Create Order Items
+                foreach ($cartItems as $item) {
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $item['product']->id,
+                        'quantity' => $item['quantity'],
+                        'price' => $item['product']->sale_price,
+                    ]);
+                }
+
+                // 5. Create Payment
+                Payment::create([
+                    'order_id' => $order->id,
+                    'amount' => $totalAmount,
+                    'payment_method' => 'khalti',
+                    'payment_date' => now(),
+                ]);
+
+                // 6. Clear Cart
+                Session::forget('cart'); // Adjust how you clear the cart
+
+                // 7. Redirect with success message
+                return redirect()->route('user.order.success')->with('success', 'Your order has been placed successfully!');
+            } else {
+                // Handle case where cart is empty
+                return redirect()->route('user.cart')->with('error', 'Your cart is empty.');
+            }
+
+        } else {
+            // Payment verification failed
+            return redirect()->route('user.cart')->with('error', 'Khalti payment verification failed.');
+        }
     }
-
-    $deliveryCharge = 50;  // Example: Static value
-    $total = $subtotal + $deliveryCharge;
-
-
-    // Handle any errors, for example:
-    $errorMessage = null;
-    // If eSewa service is unavailable, we can pass the message
-    // If you are setting this manually or based on some API status, it should be assigned to $errorMessage.
-
-    // Generate unique transaction ID and signature as usual
-    $transactionUuid = uniqid('txn_');
-    $data = "total_amount" . $total . "transaction_uuid" . $transactionUuid . "product_code" . "EPAYTEST";
-    $secretKey = "8gBm/:&EnhH.1/q( ";
-    $signature = base64_encode(hash_hmac('sha256', $data, $secretKey, true));
-
-    // Success and failure URLs
-    $successUrl = route('payment.success');
-    $failureUrl = route('payment.failure');
-
-    // Return the view with all data and the error message
-    return view('user.esewa.payment', [
-        'user' => $user,
-        'cartItems' => $cartItems,
-        'subtotal' => $subtotal,
-        'deliveryCharge' => $deliveryCharge,
-        'total' => $total,
-        'signature' => $signature,
-        'successUrl' => $successUrl,
-        'failureUrl' => $failureUrl,
-        'error_message' => $errorMessage // Pass error message
-    ]);
-}
-
-
-
-public function paymentSuccess()
-{
-    // Handle successful payment, e.g., show a success page or update the database
-    return view('user.esewa.payment_success');
-}
-
-public function paymentFailure()
-{
-    // Handle payment failure, e.g., show an error page or log the issue
-    return view('user.esewa.payment_failure');
-}
 }

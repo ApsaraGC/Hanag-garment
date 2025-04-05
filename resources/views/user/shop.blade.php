@@ -66,10 +66,10 @@
         .sidebar {
             width: 20%;
             background: #fff;
-            padding: 20px;
+            padding: 15px;
             height: 100vh;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 23px 0 20px;
+            margin: 23px 10px 15px;
             border-right: 1px solid #ddd;
         }
 

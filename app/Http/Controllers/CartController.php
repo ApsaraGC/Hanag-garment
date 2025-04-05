@@ -170,19 +170,19 @@ public function decrease_cart_quantity($productId)
      */
     public function checkout(Request $request)
     {
-        $cartItems = UserCart::where('user_id', Auth::id())
-                         ->where('status', 'pending')
-                         ->get();
+        // $cartItems = UserCart::where('user_id', Auth::id())
+        //                  ->where('status', 'pending')
+        //                  ->get();
 
-        if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
-        }
+        // if ($cartItems->isEmpty()) {
+        //     return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        // }
 
-        // Update status to completed after checkout
-        foreach ($cartItems as $cartItem) {
-            $cartItem->status = 'completed';
-            $cartItem->save();
-        }
+        // // Update status to completed after checkout
+        // foreach ($cartItems as $cartItem) {
+        //     $cartItem->status = 'completed';
+        //     $cartItem->save();
+        // }
 
         // Redirect to the invoice page or another route
         return redirect()->route('user.invoice');

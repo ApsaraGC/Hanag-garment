@@ -480,13 +480,9 @@ overflow-x: hidden;
                 <img src="{{ asset('images/brands/Midi_Grad.png') }}" alt="Item">
                 <p>Denim Skirts</p>
             </div>
-
-
         </div>
     </section>
-
  <div>
-   <!-- Hot Deals Section -->
     <!-- Hot Deals Section -->
     <section class="hot-deals">
         <!-- Sale Banner -->
@@ -494,15 +490,13 @@ overflow-x: hidden;
             <h2>Summer Sale</h2>
             <p>Up to 10% off</p>
         </div>
-
         <!-- Product Images & Information -->
         <div class="deals-images">
             @foreach($hotDeals as $product)
                 <div class="product-items">
                     <!-- Product Image -->
                     <img src="{{ asset($product->image) }}" alt="{{ $product->product_name }}">
-
-                    <!-- Product Info -->
+                <!-- Product Info -->
                     <div class="product-info">
                         <h3>{{ $product->product_name }}</h3>
                         <form name="addtocart-form" method="post" action="{{ route('cart.add') }}">

@@ -66,7 +66,6 @@ public function hotDeals()
         $product->discount_price = $product->sale_price;
     }
 }
-
     return $hotDeals;
 }
 

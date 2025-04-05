@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart - Hanag's Garments</title>
+    <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+
     <!-- Include SweetAlert2 from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -37,6 +39,36 @@ input[type="checkbox"] { background-color: #4CAF50; border: 1px solid #F070BB; w
 .empty-cart p { font-size: 20px; color: #666; margin-bottom: 20px; text-decoration: none; }
 .empty-cart .btn { display: inline-block; padding: 10px 20px; background-color: #F070BB; color: #fff; font-weight: bold; text-align: center; border-radius: 5px; transition: background-color 0.3s ease; }
 .empty-cart .btn:hover { background-color: #e62fa0; }
+.address-section h4 {
+    color: #F070BB;
+    margin-bottom: 10px;
+}
+.address-section .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.address-section .form-group input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+.address-section .form-group button.save-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+
+}
+.address-section .form-group button.save-btn:hover {
+    background-color: #45a049;
+}
 
     </style>
 </head>
@@ -102,7 +134,6 @@ input[type="checkbox"] { background-color: #4CAF50; border: 1px solid #F070BB; w
                                         <!-- Display current quantity -->
                                         <input type="text" value="{{ $item->quantity }}" readonly
                                             style="border: none; width: 40px; text-align: center;">
-
                                         <!-- Display Available Stock -->
                                         <!-- Form for increasing the quantity -->
                                         <!-- Increase Button -->
@@ -113,8 +144,6 @@ input[type="checkbox"] { background-color: #4CAF50; border: 1px solid #F070BB; w
                                         </form>
                                     </div>
                                 </td>
-
-
                                 <td id="subtotal-{{ $item->product->id }}" class="product-subtotal">
                                     Rs. {{ $item->product->sale_price * $item->quantity }}
                                 </td>
@@ -125,9 +154,7 @@ input[type="checkbox"] { background-color: #4CAF50; border: 1px solid #F070BB; w
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Remove</button>
                                     </form>
-
                                 </td>
-
                             </tr>
                         @endforeach
                     </tbody>
@@ -137,12 +164,22 @@ input[type="checkbox"] { background-color: #4CAF50; border: 1px solid #F070BB; w
                     @method('DELETE')
                     <button type="submit" class="btn btn-light">Clear All Cart</button>
                 </form>
-
             </div>
-
             <!-- Cart Totals -->
             <div class="cart-totals">
-                <h2>Cart Totals</h2>
+
+                <h2 style="color: #F070BB; text-align: center;">Cart Totals</h2>
+                <div class="address-section">
+                    <h4>Shipping Address</h4>
+                    <form action="{{ route('update.address') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <input type="text" id="address" name="address" value="{{ Auth::user()->address ?? '' }}" placeholder="Enter your new address" required>
+                            <button type="submit" class="save-btn">Save</button>
+                        </div>
+                    </form>
+
+                </div>
                 <div class="totals-row">
                     <span>Subtotal</span>
                     <span>Rs. {{ number_format($subtotal, 2) }}</span>
@@ -159,24 +196,27 @@ input[type="checkbox"] { background-color: #4CAF50; border: 1px solid #F070BB; w
                     <span>Rs. {{ number_format($total, 2) }}</span>
                 </div>
                 <hr>
-                <form method="POST" action="{{ route('cart.checkout') }}">
+                <form  id="checkout-form" method="POST" action="{{ route('cart.checkout') }}">
                     @csrf
                     <div class="payment-method">
                         <p>Payment Method</p>
                         <label>
-                            <input type="checkbox" name="payment_method[]" value="esewa" id="esewa">
-                            eSewa
+                            <input type="checkbox" name="payment_method[]" value="khalti" id="khalti">
+                            Khalti
                         </label>
                         <br>
                         <label>
+                            <input type="checkbox" name="payment_method[]" value="esewa" id="esewa">
+                            eSewa
+                        </label><br>
+                        <label>
                             <input type="checkbox" name="payment_method[]" value="cod" id="cod">
-                            COD
+                            COD<span style="font-size: 12px; color:#666; margin-bottom: 5px;"> (Inside Pokhara value only)</span>
                         </label>
-                    </div>
 
+                    </div>
                     <a id="checkout-link" href="#" class="checkout-btn">Proceed to Checkout</a>
                 </form>
-                <!-- eSewa Payment Form -->
             </div>
         @else
             <div class="row">
@@ -190,67 +230,200 @@ input[type="checkbox"] { background-color: #4CAF50; border: 1px solid #F070BB; w
                 </div>
             </div>
         @endif
+
+        {{-- @php
+        $publicKeyFromConfig = config('services.khalti.live_public_key');
+        dd($publicKeyFromConfig); // Script will stop here and show the key
+    @endphp --}}
+
     </div>
+    <form id="esewa-payment-form" action="https://epay.esewa.com.np/api/epay/main/v2/form" method="POST" style="display: none;">
+        <input type="hidden" name="amt" id="esewa-amt">
+        <input type="hidden" name="pdc" value="0">
+        <input type="hidden" name="psc" value="0">
+        <input type="hidden" name="txAmt" value="0">
+        <input type="hidden" name="tAmt" id="esewa-tAmt">
+        <input type="hidden" name="pid" id="esewa-pid">
+        <input type="hidden" name="scd" value="{{ config('app.esewa_client_id') }}">
+        <input type="hidden" name="su" id="esewa-su" value="{{ route('esewa.success') }}">
+        <input type="hidden" name="fu" id="esewa-fu" value="{{ route('esewa.failure') }}">
+    </form>
     <!-- Include Footer -->
     @include('layouts.footer')
+    {{-- <script>
+        console.log('Public Key from Blade Config:', "{{ config('services.khalti.live_public_key') }}");
+
+        var config = {
+            // replace the publicKey with yours
+            "publicKey": "{{ config('services.khalti.live_public_key') }}",
+            "productIdentity": "YOUR_UNIQUE_PRODUCT_ID", // Replace with a dynamic product ID if needed
+            "productName": "Hanag's Garments Cart", // More relevant product name
+            "productUrl": "{{ url('/') }}", // Your website URL
+            "paymentPreference": [
+                "KHALTI",
+                "EBANKING",
+                "MOBILE_BANKING",
+                "CONNECT_IPS",
+                "SCT",
+            ],
+            "eventHandler": {
+                onSuccess: function (payload) {
+                    console.log(payload);
+                    // Send the payload to your server for verification
+                    document.getElementById('checkout-form').action = "{{ route('khalti.verify') }}";
+                    document.getElementById('checkout-form').innerHTML += '<input type="hidden" name="token" value="' + payload.token + '">';
+                    document.getElementById('checkout-form').innerHTML += '<input type="hidden" name="amount" value="' + {{ $total * 100 }} + '">'; // Amount in paisa
+                    document.getElementById('checkout-form').submit();
+                },
+                onError: function (error) {
+                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Payment Failed',
+                        text: error.message || 'Something went wrong during payment.',
+                        showConfirmButton: true
+                    });
+                },
+                onClose: function () {
+                    console.log('widget is closing');
+                }
+            }
+        };
+
+        var checkout = new KhaltiCheckout(config);
+        var checkoutLink = document.getElementById('checkout-link');
+        var khaltiCheckbox = document.getElementById('khalti');
+        var codCheckbox = document.getElementById('cod');
+        var khaltiInitiated = false; // Flag to track if Khalti checkout was initiated
+
+        checkoutLink.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (khaltiCheckbox.checked && codCheckbox.checked) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Please select only one payment method',
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            if (khaltiCheckbox.checked) {
+                // Ensure the amount is in paisa (multiply by 100)
+                checkout.show({ amount: {{ $total * 100 }} });
+                khaltiInitiated = true; // Set the flag
+            } else if (codCheckbox.checked) {
+                window.location.href = "{{ route('user.invoice') }}";
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Please select a payment method',
+                    showConfirmButton: true
+                });
+            }
+        });
+
+        khaltiCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                codCheckbox.disabled = true;
+            } else {
+                codCheckbox.disabled = false;
+                khaltiInitiated = false; // Reset the flag if Khalti is unchecked
+            }
+        });
+
+        codCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                khaltiCheckbox.disabled = true;
+                khaltiInitiated = false; // Reset the flag if COD is checked
+            } else {
+                khaltiCheckbox.disabled = false;
+            }
+        });
+    </script> --}}
+    <script>
+        console.log('Public Key from Blade Config:', "{{ config('services.khalti.live_public_key') }}");
+
+       var config = {
+        "publicKey": "{{ config('services.khalti.live_public_key') }}",
+        "productIdentity": "YOUR_UNIQUE_PRODUCT_ID",
+        "productName": "Hanag's Garments Cart",
+        "productUrl": "{{ url('/') }}",
+        "paymentPreference": ["KHALTI", "EBANKING", "MOBILE_BANKING", "CONNECT_IPS", "SCT"],
+        "eventHandler": {
+            onSuccess: function (payload) {
+            console.log(payload);
+            document.getElementById('checkout-form').action = "{{ route('user.placeOrder') }}"; // Submit to placeOrder
+            document.getElementById('checkout-form').innerHTML += '<input type="hidden" name="token" value="' + payload.token + '">';
+            document.getElementById('checkout-form').innerHTML += '<input type="hidden" name="amount" value="' + {{ $total * 100 }} + '">';
+            document.getElementById('checkout-form').submit();
+                        },
+                        onError: function (error) {
+                            console.log(error);
+                            Swal.fire({icon: 'error', title: 'Payment Failed', text: error.message || 'Something went wrong during payment.', showConfirmButton: true});
+                        },
+                        onClose: function () {
+                            console.log('widget is closing');
+                        }
+                    }
+                };
+
+                var checkout = new KhaltiCheckout(config);
+                var checkoutLink = document.getElementById('checkout-link');
+                var khaltiCheckbox = document.getElementById('khalti');
+                var esewaCheckbox = document.getElementById('esewa');
+                var codCheckbox = document.getElementById('cod');
+                var esewaForm = document.getElementById('esewa-payment-form');
+                var esewaAmt = document.getElementById('esewa-amt');
+                var esewaTAmt = document.getElementById('esewa-tAmt');
+                var esewaPid = document.getElementById('esewa-pid');
+                var khaltiInitiated = false;
+
+                checkoutLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    let checkedCount = [khaltiCheckbox, esewaCheckbox, codCheckbox].filter(cb => cb.checked).length;
+
+                    if (checkedCount > 1) {
+                        Swal.fire({icon: 'warning', title: 'Please select only one payment method', showConfirmButton: true});
+                        return;
+                    }
+
+                    document.getElementById('checkout-form').action = "{{ route('user.placeOrder') }}"; // Set form action
+
+                    if (khaltiCheckbox.checked) {
+                        checkout.show({ amount: {{ $total * 100 }} });
+                        khaltiInitiated = true;
+                    } else if (esewaCheckbox.checked) {
+                        esewaAmt.value = "{{ number_format($total, 2, '.', '') }}";
+                        esewaTAmt.value = "{{ number_format($total, 2, '.', '') }}";
+                        esewaPid.value = 'HANAGS-' + Date.now();
+                        esewaForm.submit();
+                    } else if (codCheckbox.checked) {
+                        document.getElementById('checkout-form').submit(); // Submit form for COD
+                    } else {
+                        Swal.fire({icon: 'warning', title: 'Please select a payment method', showConfirmButton: true});
+                    }
+                });
+
+                khaltiCheckbox.addEventListener('change', function () {
+                    esewaCheckbox.disabled = this.checked;
+                    codCheckbox.disabled = this.checked;
+                    khaltiInitiated = false;
+                });
+
+                esewaCheckbox.addEventListener('change', function () {
+                    khaltiCheckbox.disabled = this.checked;
+                    codCheckbox.disabled = this.checked;
+                });
+
+                codCheckbox.addEventListener('change', function () {
+                    khaltiCheckbox.disabled = this.checked;
+                    esewaCheckbox.disabled = this.checked;
+                });
+            </script>
 </body>
-<script>
-    document.getElementById('checkout-link').addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent the default anchor click behavior
 
-        // Check if eSewa is selected
-        const isEsewaSelected = document.getElementById('esewa').checked;
-        // Check if COD is selected
-        const isCODSelected = document.getElementById('cod').checked;
-
-        // Prevent both payment methods from being selected at the same time
-        if (isEsewaSelected && isCODSelected) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Please select only one payment method',
-                showConfirmButton: true
-            });
-            return;
-        }
-        if (isEsewaSelected) {
-            // If eSewa is selected, check if the user is logged in
-            @auth
-                // Redirect to eSewa payment page
-                window.location.href = "{{route('user.esewa.payment')}}";
-            @else
-                // If not logged in, redirect to login page
-                window.location.href = "{{ route('login') }}";
-            @endauth
-    } else if (isCODSelected) {
-            // If COD is selected, proceed with generating invoice
-            window.location.href = "{{ route('user.invoice') }}";
-        } else {
-            // If neither is selected, show a SweetAlert or an alert
-            Swal.fire({
-                icon: 'warning',
-                title: 'Please select a payment method',
-                showConfirmButton: true
-            });
-        }
-    });
-
-    // Disable the other checkbox when one is selected
-    document.getElementById('esewa').addEventListener('change', function () {
-        if (this.checked) {
-            document.getElementById('cod').disabled = true; // Disable COD
-        } else {
-            document.getElementById('cod').disabled = false; // Enable COD
-        }
-    });
-
-    document.getElementById('cod').addEventListener('change', function () {
-        if (this.checked) {
-            document.getElementById('esewa').disabled = true; // Disable eSewa
-        } else {
-            document.getElementById('esewa').disabled = false; // Enable eSewa
-        }
-    });
-</script>
 <!-- Add this script to update the quantity dynamically -->
 
 </html>

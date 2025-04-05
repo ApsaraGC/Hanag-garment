@@ -321,6 +321,15 @@
         .fa-star.checked {
             color: yellow;
         }
+        .out-of-stock {
+    background: #F070BB;
+    color: #fff;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
 
         /* Half star effect using background gradient */
         .fa-star-half {
@@ -402,6 +411,10 @@
                 <!-- Quantity Selector -->
                 <div class="quantity">
                     <!-- Add to Cart Form -->
+                    @if ($product->stock_status === 'outofstock')
+                    <!-- Out of Stock Message -->
+                    <p class="out-of-stock">Out of Stock</p>
+                @else
                     <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
                         @csrf
                         <input type="hidden" name="id" value="{{ $product->id }}">
@@ -412,6 +425,7 @@
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
                     </form>
+                    @endif
                 </div>
                 <!-- Wishlist Button -->
                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
@@ -422,10 +436,6 @@
                 </form>
                 <p class="categories">Category:{{ $product->category->category_name }}</p>
                 <p class="tags">Brand:{{$product->brand->brand_name}}</p>
-                {{-- <p class="categories">Categories: {{ implode(', ',
-                    $product->category->pluck('category_name')->toArray()) }}</p> --}}
-                {{-- <p class="tags">Brand: {{ implode(', ', $product->brand->pluck('brand_name')->toArray()) }}</p>
-                --}}
 
             </div>
         </div>

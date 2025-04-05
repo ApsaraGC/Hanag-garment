@@ -46,61 +46,12 @@ class OrderController extends Controller
     }
 
     public function destroy($id)
-    {
-        $order = Order::findOrFail($id);
-        $order->delete();
-        return redirect()->route('admin.destroyOrder', ['order' => $id])->with('success', 'Order deleted successfully');
-    }
+{
+    $order = Order::findOrFail($id);
+    $order->delete();
+    return redirect()->route('admin.order')->with('popup_message', 'Order deleted successfully');
+}
 
-    public function store(Request $request)
-    {
-        $user = auth::user(); // Get logged-in user
-
-        // Retrieve cart items
-        $cartItems = UserCart::where('user_id', $user->id)->get();
-
-        if ($cartItems->isEmpty()) {
-            return redirect()->route('user.cart')->with('error', 'Your cart is empty!');
-        }
-        // Calculate subtotal
-        $subtotal = 0;
-        foreach ($cartItems as $item) {
-            $subtotal += $item->product->sale_price * $item->quantity;
-        }
-
-        $deliveryCharge = 150.00; // Fixed delivery charge
-        $discount = 0; // You can add discount logic here
-        $totalAmount = ($subtotal + $deliveryCharge) - $discount;
-
-        // Store order details in the database
-        $order = Order::create([
-            'user_id' => $user->id,
-            'sub_total' => $totalAmount,
-            'discount' => $discount,
-            'total_amount' => $totalAmount,
-            'order_type' => 'online',
-            'status' => 'pending',
-            'description' => 'Order placed successfully.',
-        ]);
-
-        // Clear user cart after placing order
-         UserCart::where('user_id', $user->id)->delete();
-
-        // Pass the order ID to the redirect route
-        return redirect()->route('dashboard')->with('success', 'Order placed successfully!');
-
-        // return redirect()->route('user.invoice', ['orderId' => $order->id])->with('success', 'Order placed successfully!');
-    }
-    // public function checkout($orderId)
-    // {
-    //     // Fetch order details for the given orderId
-    //     $order = Order::findOrFail($orderId);
-    //     $user = auth()->user();
-    //     return redirect()->route('user.orderBill', ['orderId' => $order->id])->with('success', 'Order placed successfully!');
-
-    //     // Pass order and user details to view
-    //     // view('user.orderBill', compact('user', 'order'));
-    // }
 
 
     public function downloadOrderBill($id)
