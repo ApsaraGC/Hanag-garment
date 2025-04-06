@@ -28,8 +28,11 @@ class CartController extends Controller
 
         $deliveryCharge = 150; // Fixed delivery charge
         $total = $subtotal + $deliveryCharge;
-        // Return the cart view with the necessary data
-        return view('user.cart', compact('cartItems', 'subtotal', 'deliveryCharge', 'total'));
+        // $user = Auth()->user();
+        // // Return the cart view with the necessary data
+        // $order = $user->order()->latest()->first();  // Or any other method to get the order
+
+        return view('user.cart', compact('cartItems', 'subtotal', 'deliveryCharge', 'total',));
     }
 
 
@@ -170,21 +173,7 @@ public function decrease_cart_quantity($productId)
      */
     public function checkout(Request $request)
     {
-        // $cartItems = UserCart::where('user_id', Auth::id())
-        //                  ->where('status', 'pending')
-        //                  ->get();
-
-        // if ($cartItems->isEmpty()) {
-        //     return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
-        // }
-
-        // // Update status to completed after checkout
-        // foreach ($cartItems as $cartItem) {
-        //     $cartItem->status = 'completed';
-        //     $cartItem->save();
-        // }
-
         // Redirect to the invoice page or another route
-        return redirect()->route('user.invoice');
+        return redirect()->route('user.orderBill');
     }
 }

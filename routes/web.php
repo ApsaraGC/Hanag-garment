@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\KhaltiController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
@@ -133,6 +134,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 });
 
 use App\Http\Controllers\WishlistController;
+use App\Models\Payment;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('user.wishlist');
@@ -153,10 +155,37 @@ Route::get('/search', [HomeController::class, 'searchResults'])->name('usershop'
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::get('/user/esewa/payment', [PaymentController::class, 'esewaPayment'])->name('user.esewa.payment');
 Route::get('/user/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
+
+
 // Route::post('/cart/checkout', [InvoiceController::class, 'placeOrder'])->name('cart.checkout');
-Route::post('/khalti/verify', [PaymentController::class, 'verifyPayment'])->name('khalti.verify');
+// Route::post('/khalti/initiate', [PaymentController::class, 'initiate'])->name('khalti.initiate');
+// Route::post('/khalti/verify', [PaymentController::class, 'verify'])->name('khalti.verify');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+// Handle both initiate and verify actions in the same method
+// Route to handle payment initiation
+// Route::post('/payment/handle', [PaymentController::class, 'handlePayment'])->name('payment.handle');
+
+// // Route to verify the payment after user is redirected back
+// Route::post('/payment/khalti', [PaymentController::class, 'khalti'])->name('khalti.initiate');
+// Show Khalti payment form
+Route::get('/khalti/pay/{orderId}', [KhaltiController::class, 'showPaymentForm'])->name('user.khalti');
+
+// Verify Khalti payment
+Route::post('/khalti/verify', [KhaltiController::class, 'verifyPayment'])->name('khalti.payment.verify');
+
+
+
+Route::get('/khalti/{orderId}', [InvoiceController::class, 'showKhaltiPaymentForm'])->name('khalti');
+
+
+// Route for payment success (can be a simple view showing success message)
+Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+
+// Route for payment failure (can be a simple view showing failure message)
+Route::get('/payment/failure', [PaymentController::class, 'paymentFailure'])->name('payment.failure');
 Route::post('/place-order', [InvoiceController::class, 'placeOrder'])->name('user.placeOrder');
+
+
 
 Route::post('/submit-rating', [ProductController::class, 'submitRating'])->name('submit.rating');
 

@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Models\order_items;
 use App\Models\Payment;
 use App\Models\Product;
+use Illuminate\Support\Facades\Http; // If you're using Laravel's HTTP client
+
 use App\Models\UserCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,15 +48,16 @@ public function generateInvoice(Request $request)
 
 public function placeOrder(Request $request)
 {
+    $paymentMethod = $request->input('payment_method');
+
+    if (!$paymentMethod) {
+        return response()->json(['error' => 'Please select a valid payment method'], 400);
+    }
+
     $user = Auth::user();
     $cartItems = UserCart::where('user_id', $user->id)->get();
-    $paymentMethods = $request->input('payment_method'); // Get the payment_method array
 
-    $paymentType = null;
-
-    if (is_array($paymentMethods) && !empty($paymentMethods)) {
-        $paymentType = $paymentMethods[0]; // Get the first element
-    }    if ($cartItems->isEmpty()) {
+    if ($cartItems->isEmpty()) {
         return response()->json(['error' => 'Cart is empty'], 400);
     }
 
@@ -73,18 +76,16 @@ public function placeOrder(Request $request)
     $deliveryCharge = 150.00;
     $totalAmount = $subtotal + $deliveryCharge;
 
-    // Store the order in the `orders` table
     $order = Order::create([
         'user_id' => $user->id,
         'sub_total' => $subtotal,
         'total_amount' => $totalAmount,
         'delivery_charge' => $deliveryCharge,
-        'payment_type' => $request->paymentType ?? 'COD',
+        'payment_type' => $paymentMethod,
         'status' => 'pending',
         'description' => 'Order placed successfully.',
-
     ]);
-    // Store ordered items in the `order_items` table
+
     foreach ($products as $product) {
         order_items::create([
             'order_id' => $order->id,
@@ -93,24 +94,69 @@ public function placeOrder(Request $request)
             'price' => $product['price'],
         ]);
     }
-    // Create a new payment record
-       Payment::create([
+
+    Payment::create([
         'order_id' => $order->id,
         'amount' => $totalAmount,
-        'payment_method' => $paymentType,
-        'payment_date' => now(), // You might want to adjust this based on actual payment completion
+        'payment_method' => $paymentMethod,
+        'payment_date' => now(),
     ]);
 
-    // Clear the user's cart after placing the order
+
+    // Redirect based on payment method
+    // if ($paymentMethod === 'cod') {
+    //     return redirect()->route('user.orderBill', ['orderId' => $order->id]);
+    // }  elseif ($paymentMethod === 'khalti') {
+    //     return redirect()->route('user.khalti', ['orderId' => $order->id]);
+    // } elseif ($paymentMethod === 'esewa') {
+    //     return $this->handleEsewaPayment($request);
+    // }
+     // If payment is COD, complete the order immediately
+     if ($paymentMethod === 'cod') {
+        return redirect()->route('user.orderBill', ['orderId' => $order->id]);
+    }
     UserCart::where('user_id', $user->id)->delete();
-      // Redirect to the orderBill route after confirmation
+
     return redirect()->route('user.orderBill', ['orderId' => $order->id]);
-    // return response()->json(['order_id' => $order->id]);
 }
+
+
 public function orderBill($orderId)
 {
     $order = Order::with('order_items.product')->findOrFail($orderId);
     $user = Auth::user();
     return view('user.orderBill', compact('order', 'user'));
 }
+
+public function showKhaltiPaymentForm($orderId)
+{
+    $order = Order::findOrFail($orderId);
+
+    // Prepare Khalti payment data (make sure this data is valid and appropriate for Khalti API)
+    $apiUrl = 'https://khalti.com/api/v2/epayment/initiate/';
+
+    $secretKey = env('KHALTI_LIVE_SECRET_KEY');  // Store your key in .env
+
+    // Send the POST request to initiate Khalti payment
+    $response = Http::withHeaders([
+        'Authorization' => 'Key ' . $secretKey
+    ])->post($apiUrl, [
+        'amount' => $order->total_amount * 100, // Amount in paisa
+        'product_identity' => 'Order-' . $order->id,
+        'product_name' => 'Product for Order ' . $order->id,
+        'product_url' => route('user.orderBill', ['orderId' => $order->id]),
+    ]);
+
+    if ($response->successful()) {
+        $data = $response->json();
+        return view('user.khalti', [
+            'token' => $data['token'],
+            'amount' => $order->total_amount,
+            'order' => $order
+        ]);
+    } else {
+        return back()->with('error', 'Failed to initiate payment');
+    }
+}
+
 }

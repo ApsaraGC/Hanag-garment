@@ -392,7 +392,11 @@ overflow-x: hidden;
         margin-left:50px;
         justify-content: center;
         align-items: center;
+        overflow: hidden;  /* Optional: ensures image doesn’t overflow */
+
     }
+
+
 
     .bag-image {
         position: absolute;
@@ -435,8 +439,9 @@ overflow-x: hidden;
     <div class="image-content">
         <div class="image-content">
             <div class="circle-container">
-                <img id="bannerr-image" class="bag-image" src="{{ asset('build/assets/images/bag.png') }}" alt="Hot Deal">
-                <img id="bannerr-image" class="logo-image" src="{{ asset('build/assets/images/logo1.png') }}" alt="Hot Deal">
+                <img id="banner-image-1" class="bag-image" src="{{ asset('build/assets/images/bag.png') }}" alt="Bag">
+                <img id="banner-image-2" class="bag-image" src="{{ asset('build/assets/images/Bag1.png') }}" alt="Shopping Bag">
+                <img class="logo-image" src="{{ asset('build/assets/images/logo1.png') }}" alt="Hanag's Logo">
             </div>
         </div>
     </div>
@@ -517,7 +522,6 @@ overflow-x: hidden;
                             </button>
                         </form>
                     </div>
-
                     <!-- Price Section -->
                     <div class="price-section">
                         <p><span class="sale-price">${{ number_format($product->discount_price, 0) }}</span></p>
@@ -580,33 +584,52 @@ overflow-x: hidden;
     carousel.style.animationDuration = animationDuration;
 });
 
-let images = ['Maroon_3.png', 'light_pink.png','satin_green.png']; // Array of image filenames
-        let currentImage = 0; // To keep track of the current image
-        const bannerImage = document.getElementById('banner-image'); // Select the image element
+let bannerImages = ['bag.png', 'Bag1.png'];
+let currentBannerImage = 0;
 
-        // Function to change the image
-        function changeImage() {
-            currentImage = (currentImage + 1) % images.length; // Loop back to the first image after the last
-            bannerImage.src = `{{ asset('images/brands') }}/${images[currentImage]}`; // Update the image source
+const bannerImage1 = document.getElementById('banner-image-1');
+const bannerImage2 = document.getElementById('banner-image-2');
 
-            // Remove any previously added classes
-            bannerImage.classList.remove('home2-height');
+[ bannerImage2].forEach(image => {
+    image.style.width = "440px";
+    image.style.height = "300px";
+    image.style.marginLeft="75px";
+    image.style.marginBottom="25px";
+    image.style.marginTop="20px";
+    image.style.objectFit = "contain";
+    image.style.transition = "opacity 1s ease-in-out";
+    image.style.position = "absolute";
+});
 
-            if (images[currentImage] === 'Maroon_3.png') {
-             bannerImage.style.height = '800px';
-             bannerImage.style.width='100%';
-}
+// Initial states
+bannerImage1.style.opacity = 1;
+bannerImage2.style.opacity = 0;
+bannerImage1.src = `{{ asset('build/assets/images/') }}/${bannerImages[0]}`;
+bannerImage2.src = `{{ asset('build/assets/images/') }}/${bannerImages[1]}`;
 
+function swapBannerImages() {
+    if (currentBannerImage % 2 === 0) {
+        bannerImage1.style.opacity = 0;
+        bannerImage2.style.opacity = 1;
+    } else {
+        bannerImage1.style.opacity = 1;
+        bannerImage2.style.opacity = 0;
+    }
 
-else {
-    bannerImage.style.height = '480px';
-    bannerImage.style.width='40%';// Reset to auto for other images
-}
+    setTimeout(() => {
+        currentBannerImage = (currentBannerImage + 1) % bannerImages.length;
 
+        const nextImage = bannerImages[currentBannerImage];
+        if (currentBannerImage % 2 === 0) {
+            bannerImage1.src = `{{ asset('build/assets/images/') }}/${nextImage}`;
+        } else {
+            bannerImage2.src = `{{ asset('build/assets/images/') }}/${nextImage}`;
         }
+    }, 1000); // After fade transition
+}
 
-        // Change image every 3 seconds
-        setInterval(changeImage, 3000);
+setInterval(swapBannerImages, 4000); // Every 4 seconds
+
 
         function showPrice(productId) {
         // Replace the displayed price with the sale price and show the "Add to Cart" button

@@ -41,7 +41,6 @@ return [
     'redirect' => env('GOOGLE_REDIRECT_URI'),
 ],
 'khalti' => [
-    'live_public_key' => env('KHALTI_LIVE_PUBLIC_KEY'),
     'live_secret_key' => env('KHALTI_LIVE_SECRET_KEY'),
 ],
 
