@@ -220,14 +220,11 @@
         }
 
         /* Add to Cart Button for Related Products */
-
-
         .related-product-add-to-cart {
             position: absolute;
             top: 60%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: #fff;
             border: none;
             padding: 12px 18px;
             border-radius: 5px;
@@ -284,7 +281,6 @@
 
         }
 
-
         .product-item h4,
         .product-item p {
             margin: 5px 0;
@@ -295,7 +291,6 @@
         .product-item:hover {
             transform: scale(1.05);
         }
-
 
         /* Wishlist Button */
         .wishlist-btn {
@@ -321,15 +316,16 @@
         .fa-star.checked {
             color: yellow;
         }
+
         .out-of-stock {
-    background: #F070BB;
-    color: #fff;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-}
+            background: #F070BB;
+            color: #fff;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
 
         /* Half star effect using background gradient */
         .fa-star-half {
@@ -346,6 +342,12 @@
         .thumbnail.active {
             border: 2px solid #F070BB;
             /* Optional: Add a border to highlight the active thumbnail */
+        }
+
+        .related-products.product-name {
+            font-size: bold;
+            color: #333;
+
         }
     </style>
     <!-- Add icon library -->
@@ -412,19 +414,19 @@
                 <div class="quantity">
                     <!-- Add to Cart Form -->
                     @if ($product->stock_status === 'outofstock')
-                    <!-- Out of Stock Message -->
-                    <p class="out-of-stock">Out of Stock</p>
-                @else
-                    <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $product->id }}">
-                        <input type="hidden" name="quantity" value="1">
-                        <input type="hidden" name="name" value="{{ $product->product_name }}">
-                        <input type="hidden" name="price" value="{{ $product->sale_price ?: $product->regular_price }}">
-                        <button type="submit" class="add-to-cart">
-                            <i class="fas fa-cart-plus"></i> Add to Cart
-                        </button>
-                    </form>
+                        <!-- Out of Stock Message -->
+                        <p class="out-of-stock">Out of Stock</p>
+                    @else
+                        <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $product->id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="name" value="{{ $product->product_name }}">
+                            <input type="hidden" name="price" value="{{ $product->sale_price ?: $product->regular_price }}">
+                            <button type="submit" class="add-to-cart">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </form>
                     @endif
                 </div>
                 <!-- Wishlist Button -->
@@ -448,7 +450,6 @@
                 @foreach ($relatedProducts as $relatedProduct)
                     <div class="product-item">
                         <img src="{{ asset($relatedProduct->image) }}" alt="Related Product">
-
                         <!-- Add to Cart button - will appear centered over image on hover -->
                         <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
                             @csrf
@@ -464,9 +465,7 @@
 
                         <p class="product-name">{{$relatedProduct->brand->brand_name}}</p>
                         <p class="product-name">{{ $relatedProduct->product_name }}</p>
-                        <p class="product-price">Rs. {{ $relatedProduct->sale_price }}</p>
-
-                        <!-- Wishlist Button -->
+                        <p class="">Rs. {{ $relatedProduct->sale_price }}</p>
                         <!-- Wishlist Button -->
                         <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                             @csrf
@@ -478,7 +477,6 @@
                 @endforeach
             </div>
         </div>
-
     </div>
     <!-- Include Footer -->
     @include('layouts.footer')
@@ -543,5 +541,4 @@
         thumbnail.src = currentMainImageSrc;
     }
 </script>
-
 </html>

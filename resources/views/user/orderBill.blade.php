@@ -29,7 +29,7 @@
             text-align: center;
             font-size: 22px;
             font-weight: bold;
-            color: black;
+            color: rgb(59, 58, 58);
             margin-bottom: 15px;
         }
 
@@ -61,7 +61,7 @@
 
         .transaction-details p span {
             font-weight: bold;
-            color: #333;
+            color: #4a4848;
         }
 
         .address-section {
@@ -77,10 +77,6 @@
             margin-bottom: 15px;
             color: #333;
         }
-
-
-
-
         /* Responsive Design for smaller screens */
         @media (max-width: 600px) {
             .payment-container {
@@ -112,7 +108,7 @@
             <div class="header">Hanag Garments - Invoice</div>
             <h3 style="text-align: center;">Order ID: {{ $order->id }}</h3>
             <h3 style="text-align: center;">{{ $user->full_name }}</h3> <!-- Assuming 'name' is a field on the User model -->
-            <h3>{{ $user->address }}</h3> <!-- Assuming 'name' is a field on the User model -->
+            <h3>Shipping Address: {{ $user->address }}</h3> <!-- Assuming 'name' is a field on the User model -->
 
             <p>Order Type: {{ $order->order_type }}</p>
             <p>Subtotal: Rs.{{ number_format($order->sub_total, 2) }}</p>

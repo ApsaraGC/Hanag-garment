@@ -181,7 +181,7 @@ tr:hover {
         <div class="main-content-wrap">
             <div class="flex" style="display: flex; justify-content: space-between; align-items: center;">
                 <h3>All Orders</h3>
-                <a href="{{ route('admin.createOrder') }}" class="btn">Create Order</a>
+                {{-- <a href="{{ route('admin.createOrder') }}" class="btn">Create Order</a> --}}
             </div>
 
             @if(session('popup_message'))
@@ -208,6 +208,7 @@ tr:hover {
                         <th>Order ID</th>
                         <th>User Name</th>
                         <th>User Address</th>
+                        <th>User Email</th>
                         <th>Order Type</th>
                         <th>Product Name</th>
                         <th>Product Size</th>
@@ -222,6 +223,8 @@ tr:hover {
                             <td>{{ $order->id }}</td>
                             <td>{{ $order->user->full_name ?? 'N/A' }}</td> <!-- User Name -->
                             <td>{{ $order->user->address ?? 'N/A' }}</td> <!-- User Address -->
+                            <td>{{ $order->user->email ?? 'N/A' }}</td> <!-- User Address -->
+
                             <td>{{ $order->order_type }}</td>
                             <td>
                                     @if ($order->products->isNotEmpty())

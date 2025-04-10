@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\HomeController;
@@ -201,3 +202,15 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/checkout/esewa/initiate', [EsewaController::class, 'initiatePaymentFromCart'])->name('esewa.initiate');
 Route::get('/checkout/esewa/success', [EsewaController::class, 'paymentSuccess'])->name('esewa.success');
 Route::get('/checkout/esewa/failure', [EsewaController::class, 'paymentFailure'])->name('esewa.failure');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::get('/chat/fetch', [ChatController::class, 'fetchMessages'])->name('chat.fetch');
+});
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/chat/{userId}', [ChatController::class, 'adminChat'])->name('admin.chat');
+    // Route::delete('/chat/delete/{id}', [ChatController::class, 'delete'])->name('chat.delete');
+
+});

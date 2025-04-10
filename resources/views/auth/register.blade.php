@@ -146,7 +146,14 @@
         p a:hover {
             text-decoration: underline;
         }
-
+        .form-group span {
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    bottom: -18px; /* Position the error message below the input */
+    left: 0;
+    font-weight: normal;
+}
     </style>
 </head>
 <body>
@@ -227,7 +234,7 @@
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
                         <input type="password" id="confirm_password" name="password_confirmation" placeholder="Confirm Password">
-                        <i class="fa fa-lock"></i> <!-- Password icon -->
+                        <i class="fa fa-eye" id="togglePassword"></i> <!-- Eye icon for toggling visibility -->
                     </div>
                 </div>
             </div>

@@ -106,7 +106,30 @@
         canvas {
             height: 320px !important;
         }
+        .chat-float-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #ff69b4;
+    color: white;
+    font-size: 24px;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-decoration: none;
+    z-index: 999;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.chat-float-button:hover {
+    background-color: #e0569a;
+    transform: scale(1.1);
+}
+
+
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
     <div class="admin-panels">
@@ -148,15 +171,15 @@
         <div class="revenue-cards">
             <div class="revenue-card">
                 <h3>Total Revenue</h3>
-                <p>${{ number_format($totalEarnings, 2,) }}</p>
+                <p>Rs.{{ number_format($totalEarnings, 2,) }}</p>
             </div>
             <div class="revenue-card">
                 <h3>Pending (COD)</h3>
-                <p>${{ number_format($pendingRevenue, 2) }}</p>
+                <p>Rs.{{ number_format($pendingRevenue, 2) }}</p>
             </div>
             <div class="revenue-card">
                 <h3>Online Payment</h3>
-                <p>${{ number_format($onlineRevenue, 2) }}</p>
+                <p>Rs.{{ number_format($onlineRevenue, 2) }}</p>
             </div>
         </div>
 
@@ -170,6 +193,9 @@
                 <canvas id="brandChart"></canvas>
             </div>
         </div>
+        <a href="{{ route('admin.chat', ['userId' => Auth::id()]) }}" class="chat-float-button" title="Chat with Users">
+            <i class="fas fa-comment-dots"></i>
+        </a>
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -185,6 +211,15 @@
                 var brandLabels = brandData.map(brand => brand.brand_name);
                 var brandCounts = brandData.map(brand => brand.products_count);
 
+                // Generate different colors for each category bar
+                const barColors = [
+                    '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40',
+                    '#c9cbcf', '#9ad0f5', '#f5b041', '#52be80'
+                ];
+
+                const backgroundColors = categoryLabels.map((_, i) => barColors[i % barColors.length]);
+                const borderColors = categoryLabels.map((_, i) => barColors[i % barColors.length].replace('0.7', '1'));
+
                 // Bar Chart for Categories
                 new Chart(categoryCtx, {
                     type: 'bar',
@@ -193,15 +228,17 @@
                         datasets: [{
                             label: 'Products per Category',
                             data: categoryCounts,
-                            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: backgroundColors,
+                            borderColor: borderColors,
                             borderWidth: 1
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        scales: { y: { beginAtZero: true } }
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
                     }
                 });
 
@@ -222,5 +259,6 @@
                 });
             });
         </script>
+
 </body>
 </html>

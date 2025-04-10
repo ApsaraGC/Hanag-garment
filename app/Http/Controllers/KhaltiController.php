@@ -96,17 +96,14 @@ class KhaltiController extends Controller
             return DB::transaction(function () use ($request, $order_id, $response) {
                 $order = Order::findOrFail($order_id);
                 $order->update(['status' => 'completed']);
-
-
                 UserCart::where('user_id', Auth::id())->delete();
-
                 return redirect()->route('user.orderBill', ['orderId' => $order_id])
                     ->with('popup_message', 'Payment successful! Your order is being processed.');
             });
         } else {
             // Payment verification failed
             $order = Order::findOrFail($order_id);
-            $order->update(['status' => 'cancelled']);
+            $order->update(['status' => 'pending']);
             return redirect()->route('user.orderBill', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
         }
     }
@@ -141,7 +138,6 @@ class KhaltiController extends Controller
                 'payment_method' => $request->payment_method,
                 'description' => 'Order placed by ' . Auth::user()->full_name,
             ]);
-
             // Create order items
             foreach ($cartItems as $cartItem) {
                 order_items::create([
@@ -152,7 +148,6 @@ class KhaltiController extends Controller
                     'subtotal' => $cartItem->quantity * $cartItem->product->sale_price,
                 ]);
             }
-
             // Create payment record
             Payment::create([
                 'order_id' => $order->id,
@@ -161,10 +156,9 @@ class KhaltiController extends Controller
                 'status' => ($request->payment_method === 'cod') ? 'pending' : 'processing',
                 'payment_date' => now(),
             ]);
-
-
             // Handle redirection based on payment method
             if ($request->payment_method === 'khalti') {
+                UserCart::where('user_id', Auth::id())->delete();
                 return response()->json(['order_id' => $order->id, 'amount' => $grandTotal]);
             } elseif ($request->payment_method === 'cod') {
                 UserCart::where('user_id', Auth::id())->delete();

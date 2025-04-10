@@ -16,24 +16,29 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $search = $request->input('search');
+    {
+        $search = $request->input('search');
+        // dd($search);
+        if ($search) {
+            $products = Product::query() // Start with a query builder instance
+                ->where('product_name', 'like', '%' . $search . '%')
+                ->orWhere('color', 'like', '%' . $search . '%')
+                ->orWhere('regular_price', 'like', '%' . $search . '%')
+                ->orWhere('sale_price', 'like', '%' . $search . '%')
+                ->orWhereHas('category', function ($query) use ($search) {
+                    $query->where('category_name', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('brand', function ($query) use ($search) {
+                    $query->where('brand_name', 'like', '%' . $search . '%');
+                })
+                ->paginate(8);
+        } else {
+            // No search term, show all products
+            $products = Product::paginate(8);
+        }
 
-    // Check if search term is provided
-    if ($search) {
-        $products = Product::where('product_name', 'like', '%' . $search . '%')
-                           ->orWhere('category_name', 'like', '%' . $search . '%')
-                           ->orWhere('brand_name', 'like', '%' . $search . '%')
-                           ->orWhere('sale_price', 'like', '%' . $search . '%')
-                           ->paginate(8);
-    } else {
-        // No search term, show all products
-        $products = Product::paginate(8);
+        return view('admin.products', compact('products', 'search'));
     }
-
-    return view('admin.products', compact('products', 'search'));
-}
-
     /**
      * Show the form for creating a new resource.
      */
@@ -149,7 +154,7 @@ public function showShop(Request $request)
         $products = $products->orderBy('created_at', 'desc'); // Default sorting
     }
     // Apply pagination
-    $products = $products->paginate(8)->appends(request()->query()); // ✅ This will work
+    $products = $products->paginate(8)->appends(request()->query()); // This will work
 
     return view('user.shop', compact('brands', 'categories', 'products', 'sort', 'search'));
 }
@@ -309,7 +314,5 @@ public function destroy(string $id)
         $product->delete();
         return redirect()->route('admin.products')->with('popup_message', 'Product deleted successfully!');
     }
-
-
 
 }

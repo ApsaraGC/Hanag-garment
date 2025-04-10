@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,13 +22,13 @@ class AdminController extends Controller
         $totalProducts = Product::count();
         $totalBrands = Brand::count();
         $totalOrders = Order::count();
-        $totalEarnings = Order::sum('total_amount'); // Assuming `total_price` stores order revenue
+        $totalEarnings = Payment::sum('amount'); // Assuming `total_price` stores order revenue
         // Fetch product count per category
         $categories = Category::withCount('products')->get();
 
         // Filter Revenue Based on Payment Type
-        $pendingRevenue = Order::where('order_type', 'cod')->sum('total_amount');
-        $onlineRevenue = Order::where('order_type', 'online')->sum('total_amount');
+        $pendingRevenue = Payment::where('payment_method', 'cod')->sum('amount');
+        $onlineRevenue = Payment::where('payment_method', 'khalti')->sum('amount');
     // Fetch brands with product count
     $brands = Brand::withCount('products')->get();
         return view('admin.dashboard',compact('totalUsers', 'onlineRevenue','pendingRevenue','totalProducts', 'totalBrands', 'totalOrders', 'categories','brands','totalEarnings'));
@@ -72,11 +73,7 @@ class AdminController extends Controller
 
         return redirect()->route('admin.brands')->with('status', 'Brand Added Successfully');
     }
-    // public function GenerateBrandThumbnailImage($image, $imageName){
-    //     $destinationPath=public_path('/build/assets/images/brands');
-    //     $img=Image::read($image->path);
-    // }
-    // Display the edit form
+
 public function editBrand($id)
 {
     $brand = Brand::findOrFail($id);
@@ -97,7 +94,6 @@ public function updateBrand(Request $request, $id)
     if ($request->has('brand_name') && $request->brand_name !== null) {
         $brand->brand_name = $request->brand_name;
     }
-
     // Handle Image Upload
     if ($request->hasFile('image')) {
         $image = $request->file('image');
@@ -105,16 +101,13 @@ public function updateBrand(Request $request, $id)
         $image->move(public_path('build/assets/images/brands'), $fileName);
         $brand->image = $fileName;  // Correct column name from migration
     }
-
     $brand->save();
-
     return redirect()->route('admin.brands')->with('success', 'Brand updated successfully!');
 }
 
 public function deleteBrand($id)
 {
     $brand = Brand::findOrFail($id);
-
     // Delete the image file from the server if it exists
     if ($brand->image && file_exists(public_path('images/brands/' . $brand->image))) {
         unlink(public_path('images/brands/' . $brand->image));
@@ -205,7 +198,5 @@ $brandRatings = $products->groupBy('brand_id')->map(function ($group) {
     // Pass to the view
     return view('admin.rating', compact('brandRatings'));
 }
-
-
 
 }

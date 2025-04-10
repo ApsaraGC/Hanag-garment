@@ -4,11 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Hanag's Garments</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
 .container { padding: 10px; max-width: 1200px; margin: auto; border-radius: 10px; }
-h1 { text-align: center; color: #444; margin: 15px 0 20px; font-size: 2.5rem; }
+h1 { text-align: center; color: #444; margin: 15px 0 20px; font-size: 2.0rem; }
+ /* Underline for heading */
+ .container h1::after {
+            content: '';
+            display: block;
+            width: 140px;
+            height: 3px;
+            background-color: #F070BB;
+            margin: 2px auto 0;
+        }
+
 .full-width-image img, .left-side img { width: 100%; border-radius: 8px; object-fit: cover; }
 .full-width-image img { margin-bottom: 20px; }
 .left-side img { height: 250px; }

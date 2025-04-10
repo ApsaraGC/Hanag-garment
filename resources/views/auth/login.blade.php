@@ -36,6 +36,7 @@
 
         .form-group {
             margin-bottom: 20px;
+
             position: relative;
         }
 
@@ -65,6 +66,7 @@
 
         .form-group i {
             position: absolute;
+
             right: 10px;
             top: 65%;
             transform: translateY(-50%);
@@ -105,6 +107,14 @@
         p a:hover {
             text-decoration: underline;
         }
+        .form-group span {
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    bottom: -18px; /* Position the error message below the input */
+    left: 0;
+    font-weight: normal;
+}
 
     </style>
 </head>
@@ -124,9 +134,9 @@
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="Email Address" value="{{ old('email') }}">
-                <i class="fa fa-envelope"></i> <!-- Email icon -->
+                <i class="fa fa-envelope" ></i> <!-- Email icon -->
                 @error('email')
-                    <span style="color: red; font-size: 14px;">{{ $message }}</span>
+                    <span>{{ $message }}</span>
                 @enderror
             </div>
             <div class="form-group">
@@ -134,7 +144,7 @@
                 <input type="password" id="password" name="password" placeholder="Password">
                 <i class="fa fa-eye" id="togglePassword"></i> <!-- Eye icon for toggling visibility -->
                 @error('password')
-                    <span style="color: red; font-size: 14px;">{{ $message }}</span>
+                    <span>{{ $message }}</span>
                 @enderror
             </div>
             <button type="submit" class="btn">LOGIN</button>

@@ -322,15 +322,14 @@
             </div>
         @endif
         <div class="flex">
-            <!-- Search Bar -->
             <form action="{{ route('admin.products') }}" method="GET">
                 <div class="search-container">
-                    <input type="text" id="search" class="search-input" placeholder="Search products...">
+                    <input type="text" id="search" class="search-input" name="search" placeholder="Search products...">
                     <i class="fas fa-search search-icon"></i>
                 </div>
+                <input type="hidden" name="page" value="1">
             </form>
 
-            <!-- Add Product Button -->
             <a href="{{ route('admin.add-product') }}" class="btn">Add Product</a>
         </div>
         <!-- Product Table -->
@@ -367,9 +366,7 @@
                             <td>{{ $product->stock_status }}</td>
                             <td>{{ $product->quantity }}</td>
                             <td>
-
-            <a href="{{ route('admin.editProducts', $product->id) }}" title="Edit"><i class="fas fa-edit" style="color:rgb(255, 0, 200);"></i></a>
-
+                           <a href="{{ route('admin.editProducts', $product->id) }}" title="Edit"><i class="fas fa-edit" style="color:rgb(255, 0, 200);"></i></a>
                                 <form action="{{ route('admin.deleteProducts', $product->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
@@ -390,8 +387,6 @@
                 @endif
             </tbody>
         </table>
-
-
         <!-- Pagination -->
         <div class="pagination">
             {{ $products->appends(request()->query())->links('pagination::bootstrap-5') }}

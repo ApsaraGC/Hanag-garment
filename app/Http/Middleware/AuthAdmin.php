@@ -17,6 +17,8 @@ class AuthAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // dd('AuthAdmin middleware is running for: ' . $request->fullUrl());
+
         if(Auth::check())
         {
         if(Auth::user()->role==='ADM')

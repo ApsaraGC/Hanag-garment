@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -14,7 +16,6 @@
         body {
             font-family: Arial, sans-serif;
         }
-
         .container {
             max-width: 900px;
             margin: -130px auto;
@@ -26,6 +27,7 @@
             margin-bottom: 20px;
             font-size: 28px;
             position: relative;
+            color: #444
         }
 
         /* Underline for heading */
@@ -40,6 +42,7 @@
 
         .form-group {
             margin-bottom: 15px;
+            color: #444
         }
 
         .form-group label {
@@ -56,13 +59,11 @@
             border-radius: 5px;
             font-size: 14px;
         }
-
         /* Adjusting the size of the textarea */
         .form-group textarea {
             height: 100px;
             resize: vertical; /* Allows the user to resize the textarea vertically */
         }
-
         .btn {
             background-color: #F070BB;
             color: white;
@@ -73,7 +74,6 @@
             cursor: pointer;
             font-size: 16px;
         }
-
         .btn:hover {
             background-color: #F070BB;
         }
@@ -100,9 +100,6 @@
         });
     </script>
 @endif
-
-
-
     <div class="container">
         <div class="form-container">
             <h2>Contact</h2>

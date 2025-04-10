@@ -392,10 +392,8 @@
                         <label>
                             <input type="checkbox" name="payment_method" value="khalti" id="khalti"> Khalti
                         </label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="payment_method" value="esewa" id="esewa">
-                            eSewa
+                        <label name="payment_method" value="" id="esewa">
+                            {{-- < type="" name="payment_method" value="" id="esewa"> --}}
                         </label><br>
                         <label>
                             <input type="checkbox" name="payment_method" value="cod" id="cod">

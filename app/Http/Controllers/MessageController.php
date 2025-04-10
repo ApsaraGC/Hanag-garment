@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -15,9 +16,7 @@ class MessageController extends Controller
             'phone' => 'required|string|max:15',
             'message' => 'required|string',
         ]);
-
-        Message::create($request->all());
-
+        Review::create($request->all());
         return redirect()->back()->with('popup_message', 'Message sent successfully!');
     }
 

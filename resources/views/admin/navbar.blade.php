@@ -84,7 +84,10 @@
                 <li><a href="{{route('admin.categorys')}}">Category</a></li>
                 <li><a href="{{route('admin.order')}}">Order</a></li>
                 <li><a href="{{route('admin.users')}}">Users</a></li>
-                <li><a href="{{route('admin.messages')}}">Messages</a></li>
+                <li><a href="">Messages</a></li>
+                <li><a href="{{ route('admin.chat', ['userId' => Auth::id()]) }}
+">Messages</a></li>
+
                 <li><a href="{{route('admin.rating')}}">Rating</a></li>
                 <!-- Authentication (login/logout) -->
                 <li>
