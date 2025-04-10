@@ -35,16 +35,6 @@ class CartController extends Controller
         return view('user.cart', compact('cartItems', 'subtotal', 'deliveryCharge', 'total',));
     }
 
-
-    /**
-     * Add a product to the cart.
-     */
-   /**
- * Add a product to the cart.
- */
-/**
- * Add a product to the cart.
- */
 public function addToCart(Request $request)
 {
     $request->validate([
@@ -113,7 +103,6 @@ public function addToCart(Request $request)
        return redirect()->back()->with('popup_message', 'Product not found!');
    }
 
-
 // Decrease the quantity of a product in the cart
 public function decrease_cart_quantity($productId)
 {
@@ -130,12 +119,6 @@ public function decrease_cart_quantity($productId)
 
     return redirect()->back()->with('popup_message', 'Cannot decrease quantity below 1!');
 }
-
-
-
-
-
-
     /**
      * Remove an item from the cart.
      */
@@ -157,7 +140,6 @@ public function decrease_cart_quantity($productId)
         // Redirect back with a success message
         return redirect()->back()->with('popup_message', 'Item removed successfully!');
     }
-
 
     /**
      * Empty the cart.

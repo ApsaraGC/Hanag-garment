@@ -9,7 +9,8 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+
+  public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
@@ -23,7 +24,6 @@ return new class extends Migration
     $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      */

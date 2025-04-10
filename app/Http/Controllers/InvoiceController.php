@@ -46,79 +46,72 @@ public function generateInvoice(Request $request)
     return view('user.invoice', compact('user', 'cartItems', 'paymentType', 'subtotal', 'deliveryCharge', 'total'));
 }
 
-public function placeOrder(Request $request)
-{
-    $paymentMethod = $request->input('payment_method');
+// public function placeOrder(Request $request)
+// {
+//     $paymentMethod = $request->input('payment_method');
 
-    if (!$paymentMethod) {
-        return response()->json(['error' => 'Please select a valid payment method'], 400);
-    }
+//     if (!$paymentMethod) {
+//         return response()->json(['error' => 'Please select a valid payment method'], 400);
+//     }
 
-    $user = Auth::user();
-    $cartItems = UserCart::where('user_id', $user->id)->get();
+//     $user = Auth::user();
+//     $cartItems = UserCart::where('user_id', $user->id)->get();
 
-    if ($cartItems->isEmpty()) {
-        return response()->json(['error' => 'Cart is empty'], 400);
-    }
+//     if ($cartItems->isEmpty()) {
+//         return response()->json(['error' => 'Cart is empty'], 400);
+//     }
 
-    $subtotal = 0;
-    $products = [];
+//     $subtotal = 0;
+//     $products = [];
 
-    foreach ($cartItems as $item) {
-        $subtotal += $item->product->sale_price * $item->quantity;
-        $products[] = [
-            'product_id' => $item->product_id,
-            'quantity' => $item->quantity,
-            'price' => $item->product->sale_price,
-        ];
-    }
+//     foreach ($cartItems as $item) {
+//         $subtotal += $item->product->sale_price * $item->quantity;
+//         $products[] = [
+//             'product_id' => $item->product_id,
+//             'quantity' => $item->quantity,
+//             'price' => $item->product->sale_price,
+//         ];
+//     }
 
-    $deliveryCharge = 150.00;
-    $totalAmount = $subtotal + $deliveryCharge;
+//     $deliveryCharge = 150.00;
+//     $totalAmount = $subtotal + $deliveryCharge;
 
-    $order = Order::create([
-        'user_id' => $user->id,
-        'sub_total' => $subtotal,
-        'total_amount' => $totalAmount,
-        'delivery_charge' => $deliveryCharge,
-        'payment_type' => $paymentMethod,
-        'status' => 'pending',
-        'description' => 'Order placed successfully.',
-    ]);
+//     $order = Order::create([
+//         'user_id' => $user->id,
+//         'oder_type'=>$paymentMethod,
+//         'sub_total' => $subtotal,
+//         'total_amount' => $totalAmount,
+//         'delivery_charge' => $deliveryCharge,
+//         'payment_type' => $paymentMethod,
+//         'status' => 'pending',
+//         'description' => 'Order placed successfully.',
+//     ]);
 
-    foreach ($products as $product) {
-        order_items::create([
-            'order_id' => $order->id,
-            'product_id' => $product['product_id'],
-            'quantity' => $product['quantity'],
-            'price' => $product['price'],
-        ]);
-    }
+//     foreach ($products as $product) {
+//         order_items::create([
+//             'order_id' => $order->id,
+//             'product_id' => $product['product_id'],
+//             'quantity' => $product['quantity'],
+//             'price' => $product['price'],
+//         ]);
+//     }
 
-    Payment::create([
-        'order_id' => $order->id,
-        'amount' => $totalAmount,
-        'payment_method' => $paymentMethod,
-        'payment_date' => now(),
-    ]);
+//     Payment::create([
+//         'order_id' => $order->id,
+//         'amount' => $totalAmount,
+//         'payment_method' => $paymentMethod,
+//         'payment_date' => now(),
+//     ]);
+//     UserCart::where('user_id', $user->id)->delete();
 
 
-    // Redirect based on payment method
-    // if ($paymentMethod === 'cod') {
-    //     return redirect()->route('user.orderBill', ['orderId' => $order->id]);
-    // }  elseif ($paymentMethod === 'khalti') {
-    //     return redirect()->route('user.khalti', ['orderId' => $order->id]);
-    // } elseif ($paymentMethod === 'esewa') {
-    //     return $this->handleEsewaPayment($request);
-    // }
-     // If payment is COD, complete the order immediately
-     if ($paymentMethod === 'cod') {
-        return redirect()->route('user.orderBill', ['orderId' => $order->id]);
-    }
-    UserCart::where('user_id', $user->id)->delete();
 
-    return redirect()->route('user.orderBill', ['orderId' => $order->id]);
-}
+//      if ($paymentMethod === 'cod') {
+//         return redirect()->route('user.orderBill', ['orderId' => $order->id]);
+//     }
+
+//     return redirect()->route('user.orderBill', ['orderId' => $order->id]);
+// }
 
 
 public function orderBill($orderId)
@@ -128,35 +121,35 @@ public function orderBill($orderId)
     return view('user.orderBill', compact('order', 'user'));
 }
 
-public function showKhaltiPaymentForm($orderId)
-{
-    $order = Order::findOrFail($orderId);
+// public function showKhaltiPaymentForm($orderId)
+// {
+//     $order = Order::findOrFail($orderId);
 
-    // Prepare Khalti payment data (make sure this data is valid and appropriate for Khalti API)
-    $apiUrl = 'https://khalti.com/api/v2/epayment/initiate/';
+//     // Prepare Khalti payment data (make sure this data is valid and appropriate for Khalti API)
+//     $apiUrl = 'https://khalti.com/api/v2/epayment/initiate/';
 
-    $secretKey = env('KHALTI_LIVE_SECRET_KEY');  // Store your key in .env
+//     $secretKey = env('KHALTI_LIVE_SECRET_KEY');  // Store your key in .env
 
-    // Send the POST request to initiate Khalti payment
-    $response = Http::withHeaders([
-        'Authorization' => 'Key ' . $secretKey
-    ])->post($apiUrl, [
-        'amount' => $order->total_amount * 100, // Amount in paisa
-        'product_identity' => 'Order-' . $order->id,
-        'product_name' => 'Product for Order ' . $order->id,
-        'product_url' => route('user.orderBill', ['orderId' => $order->id]),
-    ]);
+//     // Send the POST request to initiate Khalti payment
+//     $response = Http::withHeaders([
+//         'Authorization' => 'Key ' . $secretKey
+//     ])->post($apiUrl, [
+//         'amount' => $order->total_amount * 100, // Amount in paisa
+//         'product_identity' => 'Order-' . $order->id,
+//         'product_name' => 'Product for Order ' . $order->id,
+//         'product_url' => route('user.orderBill', ['orderId' => $order->id]),
+//     ]);
 
-    if ($response->successful()) {
-        $data = $response->json();
-        return view('user.khalti', [
-            'token' => $data['token'],
-            'amount' => $order->total_amount,
-            'order' => $order
-        ]);
-    } else {
-        return back()->with('error', 'Failed to initiate payment');
-    }
-}
+//     if ($response->successful()) {
+//         $data = $response->json();
+//         return view('user.khalti', [
+//             'token' => $data['token'],
+//             'amount' => $order->total_amount,
+//             'order' => $order
+//         ]);
+//     } else {
+//         return back()->with('error', 'Failed to initiate payment');
+//     }
+// }
 
 }

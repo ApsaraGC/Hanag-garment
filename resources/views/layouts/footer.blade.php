@@ -106,7 +106,7 @@
                 <h4>SHOP</h4>
                 <ul>
                     <li><a href="#">New Arrivals</a></li>
-                    <li><a href="#">Men</a></li>
+                    <li><a href="#">Baby Girl</a></li>
                     <li><a href="#">Women</a></li>
                     <li><a href="#">Shop All</a></li>
                 </ul>
@@ -116,10 +116,10 @@
             <div class="footer-section">
                 <h4>BRAND</h4>
                 <ul>
-                    <li><a href="#">Adidas</a></li>
-                    <li><a href="#">Chanel</a></li>
-                    <li><a href="#">Levi's</a></li>
-                    <li><a href="#">Seed Nepal</a></li>
+                    <li><a href="#">Flare $ Frill</a></li>
+                    <li><a href="#">Hanag's Garments</a></li>
+                    <li><a href="#">Lush Skirts</a></li>
+                    <li><a href="#">ModaCharm</a></li>
                 </ul>
             </div>
 
@@ -127,10 +127,10 @@
             <div class="footer-section">
                 <h4>CATEGORY</h4>
                 <ul>
-                    <li><a href="#">Shirts</a></li>
-                    <li><a href="#">T-shirts</a></li>
-                    <li><a href="#">Jeans</a></li>
-                    <li><a href="#">Active Wear</a></li>
+                    <li><a href="#">Formal Skirts</a></li>
+                    <li><a href="#">A Line Skirts</a></li>
+                    <li><a href="#">Wrap Skirts</a></li>
+                    <li><a href="#">Denim Skirts</a></li>
                 </ul>
             </div>
 
@@ -139,8 +139,8 @@
                 <h4>HELP</h4>
                 <ul>
                     <li><a href="#">Customer Service</a></li>
-                    <li><a href="#">Find a Store</a></li>
-                    <li><a href="#">Legal & Privacy</a></li>
+                    <li><a href="{{route('user.privilege')}}">Privilege Policy</a></li>
+                    <li><a href="{{route('user.policy')}}">Legal & Privacy</a></li>
                     <li><a href="#">Gift Card</a></li>
                 </ul>
             </div>

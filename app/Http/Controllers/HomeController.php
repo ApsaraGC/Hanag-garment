@@ -109,4 +109,12 @@ public  function contact(){
     return view('user.contact');
 }
 
+public function policy(){
+    return view('user.policy');
+}
+
+public function privilege(){
+    return view('user.privilege');
+}
+
 }

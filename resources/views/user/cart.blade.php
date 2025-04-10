@@ -7,6 +7,9 @@
     <title>Cart - Hanag's Garments</title>
     <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://khalti.com/static/khalti-checkout.js"></script>
+    <script src="https://cdn.khalti.com/payment/gateway.js"></script>
+
 
     <!-- Include SweetAlert2 from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -438,99 +441,105 @@
     </form>
     <!-- Include Footer -->
     @include('layouts.footer')
-    <script src="https://khalti.com/static/khalti-checkout.js"></script>
 
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const checkoutLink = document.getElementById('checkout-link');
-        const checkoutForm = document.getElementById('checkout-form');
-        const khaltiCheckbox = document.getElementById('khalti');
-        const esewaCheckbox = document.getElementById('esewa');
-        const codCheckbox = document.getElementById('cod');
+document.addEventListener('DOMContentLoaded', function () {
+    const checkoutLink = document.getElementById('checkout-link');
+    const checkoutForm = document.getElementById('checkout-form');
+    const khaltiCheckbox = document.getElementById('khalti');
+    const esewaCheckbox = document.getElementById('esewa');
+    const codCheckbox = document.getElementById('cod');
+    const esewaForm = document.getElementById('esewa-payment-form');
+    const esewaAmtInput = document.getElementById('esewa-amt');
+    const esewaTAmtInput = document.getElementById('esewa-tAmt');
+    const esewaPidInput = document.getElementById('esewa-pid');
 
-        // Disable other payment methods on selection
-        [khaltiCheckbox, esewaCheckbox, codCheckbox].forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    [khaltiCheckbox, esewaCheckbox, codCheckbox].forEach(cb => {
-                        if (cb !== this) cb.disabled = true;
-                    });
+    checkoutLink.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default link behavior
+
+        let selectedPayment = null;
+        let isChecked = false;
+
+        if (khaltiCheckbox.checked) {
+            selectedPayment = 'khalti';
+            isChecked = true;
+        } else if (esewaCheckbox.checked) {
+            selectedPayment = 'esewa';
+            isChecked = true;
+        } else if (codCheckbox.checked) {
+            selectedPayment = 'cod';
+            isChecked = true;
+        }
+
+        if (isChecked) {
+            // Create a hidden input for the payment method
+            const paymentMethodInput = document.createElement('input');
+            paymentMethodInput.setAttribute('type', 'hidden');
+            paymentMethodInput.setAttribute('name', 'payment_method');
+            paymentMethodInput.setAttribute('value', selectedPayment);
+            checkoutForm.appendChild(paymentMethodInput);
+
+            // Submit the form to the placeOrder route
+            fetch(checkoutForm.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: new URLSearchParams(new FormData(checkoutForm)).toString()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (selectedPayment === 'khalti' && data.order_id && data.amount) {
+                    // const amountInPaisa = Math.round(parseFloat(document.getElementById('total-amount').innerText) * 100); // Get total and convert to paisa
+                    const amountInPaisa = Math.trunc(data.amount);                      // Ensure this is echoed correctly
+                    // Redirect to Khalti initiation route with amount in paisa
+                    window.location.href = `/khalti/initiate?order_id=${data.order_id}&amount=${amountInPaisa}`;
+                } else if (selectedPayment === 'esewa' && data.redirect_url) {
+                    fetch(`/esewa/payment-details/${data.order_id}`)
+                        .then(response => response.json())
+                        .then(esewaData => {
+                            if (esewaData.amount && esewaData.orderId) {
+                                esewaAmtInput.value = esewaData.amount;
+                                esewaTAmtInput.value = esewaData.amount;
+                                esewaPidInput.value = esewaData.orderId;
+                                esewaForm.submit();
+                            } else {
+                                alert('Error preparing eSewa payment.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching eSewa details:', error);
+                            alert('Failed to process eSewa payment.');
+                        });
+                } else if (data.redirect_url) { // Handles COD and other potential redirects
+                    window.location.href = data.redirect_url;
                 } else {
-                    [khaltiCheckbox, esewaCheckbox, codCheckbox].forEach(cb => cb.disabled = false);
+                    alert('Failed to process order.');
+                }
+            })
+            .catch(error => {
+                console.error('Error placing order:', error);
+                alert('An error occurred while placing your order.');
+            });
+        } else {
+            alert('Please select a payment method.');
+        }
+    });
+
+    // Ensure only one payment method is checked at a time
+    const paymentCheckboxes = document.querySelectorAll('input[name="payment_method"]');
+    paymentCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            paymentCheckboxes.forEach(otherCheckbox => {
+                if (otherCheckbox !== this) {
+                    otherCheckbox.checked = false;
                 }
             });
         });
-
-        // Khalti config
-        var khaltiConfig = {
-            publicKey: "test_public_key_dc74d69a62ec4fbb9a615e6c38038bd1",
-            productIdentity: "1234567890",
-            productName: "Hanag’s Garment",
-            productUrl: "http://yourwebsite.com/product",
-            eventHandler: {
-                onSuccess(payload) {
-                    console.log("Khalti payment success:", payload);
-
-                    // Send to server for verification
-                    fetch("{{ route('khalti.payment.verify') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            token: payload.token,
-                            amount: "{{ $total * 100 }}" // Ensure this is echoed correctly
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire("Payment Successful", "Order placed!", "success").then(() => {
-                                window.location.href = "{{ route('user.orderBill', ['orderId' => ':orderId']) }}".replace(':orderId', data.order_id);
-                            });
-                        } else {
-                            Swal.fire("Payment Failed", "Something went wrong", "error");
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Verification error:", err);
-                        Swal.fire("Error", "Verification failed", "error");
-                    });
-                },
-                onError(error) {
-                    console.log("Khalti error:", error);
-                    Swal.fire("Error", "Payment failed", "error");
-                },
-                onClose() {
-                    console.log("Khalti popup closed.");
-                }
-            }
-        };
-
-        var khaltiCheckout = new KhaltiCheckout(khaltiConfig);
-
-        // Proceed button click
-        checkoutLink.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            const selectedMethods = [khaltiCheckbox, esewaCheckbox, codCheckbox].filter(cb => cb.checked);
-            if (selectedMethods.length !== 1) {
-                Swal.fire("Select one payment method", "", "warning");
-                return;
-            }
-
-            if (khaltiCheckbox.checked) {
-                const amountInPaisa = "{{ $total * 100 }}";  // Corrected this line
-                khaltiCheckout.show({ amount: amountInPaisa });
-            } else if (codCheckbox.checked) {
-                checkoutForm.submit();
-            } else {
-                Swal.fire("Unsupported method", "", "error");
-            }
-        });
     });
+});
 </script>
 
 </html>

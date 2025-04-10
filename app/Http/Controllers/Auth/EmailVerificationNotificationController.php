@@ -16,6 +16,7 @@ class EmailVerificationNotificationController extends Controller
         if ($request->user()->hasVerifiedEmail()) {
             return redirect()->intended(route('dashboard', absolute: false));
         }
+        set_time_limit(60);  // Increase the time limit to 60 seconds
 
         $request->user()->sendEmailVerificationNotification();
 
