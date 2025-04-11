@@ -68,9 +68,7 @@ class AdminController extends Controller
             $image->move(public_path('build/assets/images/brands'), $fileName);
             $brand->image = $fileName;  // Correct column name from migration
         }
-
         $brand->save(); // Ensure data is saved in the database
-
         return redirect()->route('admin.brands')->with('status', 'Brand Added Successfully');
     }
 
@@ -171,8 +169,6 @@ public function updateCategory(Request $request, $id)
 
      return redirect()->route('admin.categorys')->with('status', 'Category Deleted Successfully');
     }
-
-
 // AdminController.php
 
 public function showRatings()

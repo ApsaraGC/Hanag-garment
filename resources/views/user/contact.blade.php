@@ -104,7 +104,7 @@
         <div class="form-container">
             <h2>Contact</h2>
 
-            <form action="{{ route('messages.store') }}" method="POST">
+            <form action="{{ route('contacts.store') }}" method="POST">
                 @csrf
                 <!-- CSRF Token -->
                 <div class="form-group">

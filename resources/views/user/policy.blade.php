@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Hanag's Garment - Terms and Conditions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;

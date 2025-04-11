@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\HomeController;
@@ -145,13 +146,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/wishlist/remove/{product_id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
     Route::delete('/wishlist/clear', [WishlistController::class, 'clear'])->name('wishlist.clear');
 });
-Route::get('/admin/messages', [MessageController::class, 'index'])->name('admin.messages');
+Route::get('/admin/messages', [ContactController::class, 'index'])->name('admin.messages');
 
-// Store messages
-Route::post('/contact', [MessageController::class, 'store'])->name('messages.store');
 
-// Admin route to view messages
-Route::get('/admin/messages', [MessageController::class, 'index'])->middleware('auth')->name('admin.messages');
 Route::get('/search', [HomeController::class, 'searchResults'])->name('usershop');
 
 // In web.php (routes file)
@@ -160,16 +157,8 @@ Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.c
 Route::get('/user/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
 
 
-// Route::post('/cart/checkout', [InvoiceController::class, 'placeOrder'])->name('cart.checkout');
-// Route::post('/khalti/initiate', [PaymentController::class, 'initiate'])->name('khalti.initiate');
-// Route::post('/khalti/verify', [PaymentController::class, 'verify'])->name('khalti.verify');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
-// Verify Khalti payment
-// //Route::post('/khalti/verify', [KhaltiController::class, 'verifyPayment'])->name('khalti.payment.verify');
-// Route::post('/khalti/initiate', [KhaltiController::class, 'initiatePayment'])->name('khalti.payment.initiate');
-// Route::get('/khalti/verify', [KhaltiController::class, 'verifyPayment'])->name('khalti.payment.verify');
-// //Route::get('/khalti/{orderId}', [InvoiceController::class, 'showKhaltiPaymentForm'])->name('khalti');
 
 // Route::post('/place-order', [InvoiceController::class, 'placeOrder'])->name('user.placeOrder');
 
@@ -209,8 +198,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
     Route::get('/chat/fetch', [ChatController::class, 'fetchMessages'])->name('chat.fetch');
 });
-Route::middleware('auth')->group(function () {
-    Route::get('/admin/chat/{userId}', [ChatController::class, 'adminChat'])->name('admin.chat');
-    // Route::delete('/chat/delete/{id}', [ChatController::class, 'delete'])->name('chat.delete');
+Route::middleware(['auth'])->group(function () {
+    // User's chat with admin
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/fetch/{receiverId}', [ChatController::class, 'fetchUserMessages'])->name('chat.fetch'); // User's fetch route
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
 
+    // Admin chat interface
+    Route::get('/admin/chat/{userId}', [ChatController::class, 'adminChat'])->name('admin.chat');
+    Route::get('/admin/chat/fetch/{receiverId}', [ChatController::class, 'fetchMessages'])->name('admin.fetch.messages'); // Admin's fetch route
+    Route::delete('/admin/chat/delete/{id}', [ChatController::class, 'deleteMessage'])->name('chat.delete');
 });
+
+
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
+Route::post('/contact', [ContactController::class, 'store'])->name('contacts.store');

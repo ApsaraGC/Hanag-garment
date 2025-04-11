@@ -178,7 +178,7 @@
             <form class="search-form" method="GET" action="{{ route('user.shop') }}">
               <input type="text" name="search" value="{{ old('search', $search ?? '') }}" placeholder="Search products...">
               <button type="button" class="search-btn">
-                <i class="fa fa-search"></i>
+                <i class="fas fa-search"></i>
               </button>
             </form>
             {{-- <a href="#"><i class="fa fa-search"></i></a> --}}
@@ -187,7 +187,7 @@
                 @auth
                     <!-- User Card -->
                     <div class="user-card" onclick="this.classList.toggle('active')">
-                        <i class="fa fa-user"></i>
+                        <i class="fas fa-user"></i>
                         <div class="user-info">
                             <p>{{ Auth::user()->name }}</p>
                             <a href="{{ route('user.profile') }}" class="profile-link">View Profile</a>
@@ -203,13 +203,13 @@
                     </div>
                 @else
                     <a href="{{ route('login') }}">
-                        <i class="fa fa-user" ></i>
+                        <i class="fas fa-user" ></i>
                     </a>
                 @endauth
             </nav>
             @endif
 
-            <a href="{{route('user.cart')}}"><i class="fa fa-shopping-cart"></i></a>
+            <a href="{{route('user.cart')}}"><i class="fas fa-shopping-cart"></i></a>
             <a href="{{route('user.wishlist')}}"><i class="fa fa-heart-o"></i></a>
         </div>
     </header>

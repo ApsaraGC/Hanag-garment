@@ -16,7 +16,7 @@
         }
 
         .chat-container {
-            width:80%;
+            width: 80%;
             max-width: 300px;
             background: white;
             border-radius: 10px;
@@ -24,11 +24,11 @@
             padding: 20px;
         }
 
-        
+
         #chat-box {
             border: 1px solid #ddd;
             height: 300px;
-            width: 300px;
+            width: 280px;
             overflow-y: auto;
             padding: 15px;
             margin-bottom: 15px;
@@ -51,7 +51,7 @@
             background: #d1ffd1;
             align-self: flex-end; /* Sent messages align to the right */
             text-align: right;
-            margin-left: auto;  /* Push the message to the right */
+            margin-left: auto;   /* Push the message to the right */
         }
         .admin {
             background: #e1ecff;
@@ -99,49 +99,34 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function fetchMessages() {
-            $.get('{{ route("chat.fetch") }}', function(data) {
+            const receiverId = $('#receiver_id').val();
+            $.get(`/chat/fetch/${receiverId}`, function(data) { // Use a different route for user's fetch
                 let chatBox = $('#chat-box');
-                chatBox.html('');  // Clear chat box before re-rendering
+                chatBox.html('');
 
                 data.forEach(msg => {
-                    // Determine whether the message is from the user (me) or the admin
                     let senderClass = msg.sender_id == {{ auth()->id() }} ? 'me' : 'admin';
-
-                    // Dynamically set the styles for left or right alignment
-                    let messageElement = `<div class="message ${senderClass}" style="background-color: ${senderClass == 'me' ? '#d1ffd1' : '#e1ecff'};
-                                          text-align: ${senderClass == 'me' ? 'right' : 'left'};
-                                          align-self: ${senderClass == 'me' ? 'flex-end' : 'flex-start'};
-                                          margin-${senderClass == 'me' ? 'left' : 'right'}: auto;">${msg.message}</div>`;
-
-                    // Add message to the chat box
+                    let messageElement = `<div class="message ${senderClass}">${msg.message}</div>`;
                     chatBox.append(messageElement);
-
-                    // Scroll to the bottom of the chat box to show the latest messages
-                    chatBox.scrollTop(chatBox[0].scrollHeight);
                 });
+                chatBox.scrollTop(chatBox[0].scrollHeight);
             });
         }
 
         $('#chat-form').on('submit', function(e) {
             e.preventDefault();
-
-            // Send the message via AJAX
             $.post('{{ route("chat.send") }}', {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 receiver_id: $('#receiver_id').val(),
                 message: $('#message').val()
             }, function() {
-                $('#message').val('');  // Clear message input
-                fetchMessages();  // Fetch the latest messages
+                $('#message').val('');
+                fetchMessages();
             });
         });
 
-        // Fetch messages every 3 seconds
         setInterval(fetchMessages, 3000);
-        fetchMessages();  // Initial fetch of messages
+        fetchMessages();
     </script>
-
-
-
 </body>
 </html>

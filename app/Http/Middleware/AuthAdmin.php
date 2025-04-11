@@ -21,17 +21,22 @@ class AuthAdmin
 
         if(Auth::check())
         {
-        if(Auth::user()->role==='ADM')
-        {
-            return $next($request);
+            if(Auth::user()->role=='ADM')
+            {
+                dd('saaa');
+
+                return $next($request);
+            }
+            else{
+                     dd('saaxs');
+
+                Session::flush();
+                return redirect()->route('login');
+            }
         }
         else{
-            Session::flush();
+            dd('aaaa');
             return redirect()->route('login');
         }
-    }
-    else{
-        return redirect()->route('login');
-    }
     }
 }

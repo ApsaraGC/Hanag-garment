@@ -88,13 +88,14 @@
             background: #fafafa;
             flex-grow: 1;
             margin-bottom: 20px;
+            position: relative; /* To position delete button */
         }
 
         .message {
             padding: 10px 15px;
             margin: 5px 0;
             border-radius: 10px;
-            max-width: 50%;
+            max-width: 70%; /* Adjusted for delete button */
             word-wrap: break-word;
             clear: both;
             position: relative;
@@ -117,10 +118,16 @@
         .delete-btn {
             position: absolute;
             top: 5px;
-            right: 10px;
+            right: 5px;
             color: red;
             cursor: pointer;
             font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .message:hover .delete-btn {
+            opacity: 1;
         }
 
         #chat-form {
@@ -153,7 +160,6 @@
 <body>
 
     <div class="chat-container">
-        <!-- Left Side (User List) -->
         <div class="chat-links-container">
             <h4>Start a New Chat</h4>
             <div class="chat-links">
@@ -165,10 +171,10 @@
             </div>
         </div>
 
-        <!-- Right Side (Chat Box and Form) -->
         <div class="chat-box-container">
             <h3>Chat with {{ $userName }}</h3>
-            <div id="chat-box"></div>
+            <div id="chat-box">
+                </div>
 
             <form id="chat-form">
                 <input type="hidden" id="receiver_id" value="{{ $userId }}">
@@ -178,50 +184,79 @@
         </div>
     </div>
 
-    <!-- JS Section -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function fetchMessages() {
-            $.get('{{ route("chat.fetch") }}', function(data) {
+        function fetchMessages(receiverId) {
+            $.get(`/admin/chat/fetch/${receiverId}`, function(data) {
                 let chatBox = $('#chat-box');
-                chatBox.html('');  // Clear chat box before re-rendering
+                chatBox.html(''); // Clear chat box
 
                 data.forEach(msg => {
-                    // Determine whether the message is from the user (me) or the admin
-                    let senderClass = msg.sender_id == {{ auth()->id() }} ? 'me' : 'admin';
-
-                    // Dynamically set the styles for left or right alignment
-                    let messageElement = `<div class="message ${senderClass}" style="background-color: ${senderClass == 'me' ? '#d1ffd1' : '#e1ecff'};
-                                          text-align: ${senderClass == 'me' ? 'right' : 'left'};
-                                          align-self: ${senderClass == 'me' ? 'flex-end' : 'flex-start'};
-                                          margin-${senderClass == 'me' ? 'left' : 'right'}: auto;">${msg.message}</div>`;
-
-                    // Add message to the chat box
+                    let senderClass = msg.sender_id == {{ auth()->id() }} ? 'me' : 'user';
+                    let messageElement = `<div class="message ${senderClass}">${msg.message}`;
+                    @if (auth()->id() == 2) // Admin can see delete button
+                        messageElement += `<span class="delete-btn" data-message-id="${msg.id}"><i class="fas fa-trash-alt"></i></span>`;
+                    @endif
+                    messageElement += `</div>`;
                     chatBox.append(messageElement);
-
-                    // Scroll to the bottom of the chat box to show the latest messages
-                    chatBox.scrollTop(chatBox[0].scrollHeight);
                 });
+
+                chatBox.scrollTop(chatBox[0].scrollHeight);
             });
         }
 
         $('#chat-form').on('submit', function(e) {
             e.preventDefault();
+            let receiverId = $('#receiver_id').val();
 
-            // Send the message via AJAX
             $.post('{{ route("chat.send") }}', {
                 _token: $('meta[name="csrf-token"]').attr('content'),
-                receiver_id: $('#receiver_id').val(),
+                receiver_id: receiverId,
                 message: $('#message').val()
             }, function() {
-                $('#message').val('');  // Clear message input
-                fetchMessages();  // Fetch the latest messages
+                $('#message').val('');
+                fetchMessages(receiverId);
             });
         });
 
-        // Fetch messages every 3 seconds
-        setInterval(fetchMessages, 3000);
-        fetchMessages();  // Initial fetch of messages
+        // Fetch messages on initial load
+        $(document).ready(function() {
+            let initialReceiverId = $('#receiver_id').val();
+            fetchMessages(initialReceiverId);
+
+            // Periodically fetch new messages (adjust interval as needed)
+            setInterval(function() {
+                let currentReceiverId = $('#receiver_id').val();
+                fetchMessages(currentReceiverId);
+            }, 3000);
+
+            // Handle delete message
+            $('#chat-box').on('click', '.delete-btn', function() {
+                let messageId = $(this).data('message-id');
+                let receiverId = $('#receiver_id').val(); // Get the current receiver
+
+                if (confirm('Are you sure you want to delete this message?')) {
+                    $.ajax({
+                        url: `/admin/chat/delete/${messageId}`,
+                        type: 'DELETE',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            receiver_id: receiverId // Send receiver ID for server-side check
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                fetchMessages(receiverId); // Reload messages after deletion
+                            } else {
+                                alert(response.message || 'Failed to delete message.');
+                            }
+                        },
+                        error: function() {
+                            alert('An error occurred while trying to delete the message.');
+                        }
+                    });
+                }
+            });
+        });
     </script>
 
 </body>
