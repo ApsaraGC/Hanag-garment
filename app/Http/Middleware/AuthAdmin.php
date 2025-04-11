@@ -23,19 +23,16 @@ class AuthAdmin
         {
             if(Auth::user()->role=='ADM')
             {
-                dd('saaa');
 
                 return $next($request);
             }
             else{
-                     dd('saaxs');
 
                 Session::flush();
                 return redirect()->route('login');
             }
         }
         else{
-            dd('aaaa');
             return redirect()->route('login');
         }
     }

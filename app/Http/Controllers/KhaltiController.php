@@ -22,7 +22,6 @@ class KhaltiController extends Controller
         $orderId = $request->order_id;
         $amountInPaisa = ($request->amount * 100)  + $deliverycharge;
         $amount = intval($amountInPaisa); // Ensure it's an integer
-
         $args = [
             'return_url' => route('khalti.callback', ['order_id' => $orderId]),
             'website_url' => url('/'),
@@ -30,7 +29,6 @@ class KhaltiController extends Controller
             'purchase_order_id' => $orderId,
             'purchase_order_name' => 'Order #' . $orderId,
         ];
-
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'https://a.khalti.com/api/v2/epayment/initiate/');
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -40,17 +38,13 @@ class KhaltiController extends Controller
             'Content-Type: application/json',
             'Authorization: Key ' . config('services.khalti.secret_key'),
         ]);
-
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
-
         if ($err) {
             return redirect()->route('user.cart')->with('error', 'Khalti payment initiation failed: ' . $err);
         }
-
         $response = json_decode($response, true);
-
         if (isset($response['payment_url'])) {
             return redirect()->away($response['payment_url']);
         } else {
@@ -62,12 +56,10 @@ class KhaltiController extends Controller
     {
         $token = $request->token;
         $amount = $request->amount;
-
         $args = [
             'token' => $token,
             'amount' => $amount,
         ];
-
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'https://a.khalti.com/api/v2/payment/verify/');
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -77,20 +69,16 @@ class KhaltiController extends Controller
             'Content-Type: application/json',
             'Authorization: Key ' . config('services.khalti.secret_key'),
         ]);
-
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
-
         if ($err) {
             // Payment verification failed
             $order = Order::findOrFail($order_id);
             $order->update(['status' => 'cancelled']);
             return redirect()->route('user.orderBill', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
         }
-
         $response = json_decode($response, true);
-
         if (isset($response['status']) && $response['status'] === 'Completed') {
             // Payment successful
             return DB::transaction(function () use ($request, $order_id, $response) {
@@ -107,25 +95,20 @@ class KhaltiController extends Controller
             return redirect()->route('user.orderBill', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
         }
     }
-
     public function placeOrder(Request $request)
     {
         $request->validate([
             'payment_method' => 'required|in:khalti,esewa,cod',
         ]);
         $cartItems = UserCart::where('user_id', Auth::id())->with('product')->get();
-
         if ($cartItems->isEmpty()) {
             return redirect()->route('user.cart')->with('error', 'Your cart is empty.');
         }
-
         $totalAmount = $cartItems->sum(function ($item) {
             return $item->quantity * $item->product->sale_price;
         });
-
         $deliveryCharge = 150;
         $grandTotal = $totalAmount + $deliveryCharge;
-
         return DB::transaction(function () use ($request, $cartItems, $deliveryCharge, $grandTotal) {
             // Create the order
             $order = Order::create([
