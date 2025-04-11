@@ -12,14 +12,16 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: Arial, sans-serif;
         }
         .container {
-            max-width: 900px;
-            margin: -130px auto;
-            padding: 150px;
+            max-width: 600px;
+            margin:30px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
         .form-container h2 {
@@ -124,13 +126,11 @@
                     <label for="message">Message</label>
                     <textarea id="message" name="message" placeholder="Your Message" required></textarea>
                 </div>
-
                 <button type="submit" class="btn">Submit</button>
             </form>
         </div>
     </div>
-
-    <!-- Include Footer -->
+ <!-- Include Footer -->
     @include('layouts.Footer')
 </body>
 </html>
