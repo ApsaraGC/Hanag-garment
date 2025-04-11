@@ -184,7 +184,7 @@
                 <div class="order-list" id="orderList">
                     @foreach ($order as $orders)
                         <a href="{{ route('user.orderBill', ['orderId' => $orders->id]) }}">
-                            📦 Order-{{ $orders->id }}
+                            <i class="fas fa-gift"></i> Order-{{ $orders->id }}
                         </a>
                     @endforeach
                 </div>
