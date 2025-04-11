@@ -410,6 +410,8 @@
                 <p class="description">
                     {{ $product->description }}
                 </p>
+                <p class="categories">Category:{{ $product->category->category_name }}</p>
+                <p class="tags">Brand:{{$product->brand->brand_name}}</p>
                 <!-- Quantity Selector -->
                 <div class="quantity">
                     <!-- Add to Cart Form -->
@@ -427,7 +429,9 @@
                                 <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>
                         </form>
+
                     @endif
+
                 </div>
                 <!-- Wishlist Button -->
                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
@@ -436,8 +440,7 @@
                         <i class="fa fa-heart-o"></i> Add To Wishlist
                     </button>
                 </form>
-                <p class="categories">Category:{{ $product->category->category_name }}</p>
-                <p class="tags">Brand:{{$product->brand->brand_name}}</p>
+
 
             </div>
         </div>
@@ -462,7 +465,6 @@
                                 <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>
                         </form>
-
                         <p class="product-name">{{$relatedProduct->brand->brand_name}}</p>
                         <p class="product-name">{{ $relatedProduct->product_name }}</p>
                         <p class="">Rs. {{ $relatedProduct->sale_price }}</p>
