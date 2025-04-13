@@ -86,7 +86,7 @@ public  function faq(){
 }
 
 public  function shop(){
-    
+
     $products = Product::with('category')->get();  // Make sure you have a Product model and a category relationship defined
 
     return view('user.shop', compact('products'));

@@ -135,25 +135,15 @@
     <div class="admin-panels">
         @include('admin.navbar')
     </div>
-    <div class="main-content">
+     <div class="main-content">
         <header>
-            <div class="search-bar">
-                {{-- <input type="text" placeholder="Search here"> --}}
-                <p>Hi! Admin </p>
-
-            </div>
-            {{-- <div class="admin-info">
-                <p>Admin</p>
-                <span>Hanag GC</span>
-            </div> --}}
+            <h2>Welcome Back, Admin!</h2>
+            <p class="today-date">{{ \Carbon\Carbon::now()->format('l, d M Y') }}</p>
         </header>
-
         <div class="dashboard-container">
             <!-- Link wrapped around each card for redirection -->
             <a href="{{ route('admin.users') }}" class="card">
-                Total Users: {{ $totalUsers }}
-            </a>
-
+                Total Users: {{ $totalUsers }}</a>
             <a href="{{ route('admin.products') }}" class="card">
                 Total Products: {{ $totalProducts }}
             </a>
@@ -161,13 +151,10 @@
             <a href="{{ route('admin.brands') }}" class="card">
                 Total Brands: {{ $totalBrands }}
             </a>
-
             <a href="{{ route('admin.order') }}" class="card">
                 Total Orders: {{ $totalOrders }}
             </a> <!-- Static value for total orders -->
         </div>
-
-
         <div class="revenue-cards">
             <div class="revenue-card">
                 <h3>Total Revenue</h3>
@@ -182,7 +169,6 @@
                 <p>Rs.{{ number_format($onlineRevenue, 2) }}</p>
             </div>
         </div>
-
         <div class="chart-container">
             <div class="chart-box">
                 <h3>Products per Category</h3>
@@ -196,7 +182,6 @@
         <a href="{{ route('admin.chat', ['userId' => Auth::id()]) }}" class="chat-float-button" title="Chat with Users">
             <i class="fas fa-comment-dots"></i>
         </a>
-
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var categoryCtx = document.getElementById('categoryChart').getContext('2d');

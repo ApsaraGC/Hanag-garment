@@ -31,9 +31,6 @@
             text-decoration: none;
             color: inherit;
         }
-
-        /* Header */
-        /* Banner Section */
         /* Banner Section */
         .banner {
             display: flex;
@@ -76,30 +73,24 @@
             text-decoration: none;
             border-radius: 5px;
         }
-
         .banner .shop-now-btn:hover {
             background-color: #e4419d;
         }
-
         .banner .image-content {
             flex: 1;
             max-width: 100%;
             position: relative;
         }
-
         .banner .image-content img {
             max-height: 480px;
             /* Increased height */
             transition: all 1s ease;
         }
-
-
         .image-content {
             flex: 1;
             max-width: 50%;
             text-align: center;
         }
-
         /* Container styles for the 'You Might Like' section */
         .you-might-like {
             padding: 30px 20px;
@@ -107,7 +98,6 @@
             background-color: #FFF;
 
         }
-
         .you-might-like h2 {
             font-size: 35px;
             margin-bottom: 20px;
@@ -160,7 +150,6 @@
                 transform: translateX(20%);
                 /* Start from the right side (out of view) */
             }
-
             50% {
                 transform: translateX(0%);
                 /* Move to the center (visible) */
@@ -185,7 +174,6 @@
             /* overflow-x: hidden;  Allows horizontal scrolling if needed */
             */
         }
-
         .hot-deals .sale-banner {
             background-color: #e42121;
             text-align: center;
@@ -193,7 +181,7 @@
             border-radius: 100%;
             width: 350px;
             /* Adjust size of the banner */
-            height: 180px;
+            height: 280px;
             /* Adjust size of the banner */
             display: flex;
             align-items: center;
@@ -204,18 +192,16 @@
             margin-right: 40px;
             /* Space between sale banner and product images */
         }
-
         .hot-deals .sale-banner h2 {
-            font-size: 20px;
+            font-size: 30px;
             font-weight: bold;
             margin-bottom: 5px;
         }
 
         .hot-deals .sale-banner p {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: bold;
         }
-
         /* Product image container */
         .deals-images {
             display: flex;
@@ -231,6 +217,7 @@
             background: #fff;
             position: relative;
             overflow: hidden;
+            width: 100%;
             transition: transform 0.3s ease-in-out;
         }
 
@@ -238,11 +225,13 @@
             transform: translateY(-5px);
         }
         .product-items img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
+    width: 100%;
+    height: 200px; /* Set a fixed height for consistency */
+    object-fit: cover; /* Ensures the image covers the area without stretching */
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
 
         .product-items img:hover {
             transform: scale(1.05);
@@ -286,11 +275,14 @@
             margin-bottom: 5px;
         }
         .cart-icon {
-            color: #F070BB;
-            cursor: pointer;
-            margin-top: 10px;
-            margin-left: 10px;
-            transition: color 0.3s ease;
+            background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    color: #333;
         }
         .cart-icon:hover {
             color: #f312a4;
@@ -370,7 +362,6 @@
         .product-item:hover {
             transform: scale(1.05);
         }
-
         .add-to-cart-btn {
             display: none;
             position: absolute;
@@ -391,7 +382,6 @@
             background: #ede8e8;
             color: rgb(236, 151, 164);
         }
-
         /* Wishlist Button */
         .wishlist-btn {
             background: none;
@@ -436,7 +426,7 @@
             /* Set the desired width of the circle */
             height: 450px;
             /* Set the desired height of the circle */
-            background-color: pink;
+            background-color: #fbcbe1;
             /* Pink background */
             border-radius: 50%;
             /* Makes it circular */
@@ -467,30 +457,34 @@
             height: 120px;
             /* Adjust the size of the logo */
         }
-
         .chat-float-button {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    /* height: 50px;
-    width: 50px; */
+    width: 60px;
+    height: 60px;
     background-color: #ff69b4;
     color: white;
     font-size: 24px;
-    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     text-decoration: none;
     z-index: 999;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
-.chat-float-button i{
-    margin-bottom: 0px;
+
+.chat-float-button i {
+    margin: 0;
 }
+
 .chat-float-button:hover {
     background-color: #e0569a;
     transform: scale(1.1);
 }
+
     </style>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -524,7 +518,6 @@
     </section>
     <!-- You Might Like Section -->
     <section class="you-might-like">
-
         <h2>You Might Like</h2>
         <div class="carousel-items">
             <div class="carousel-item">

@@ -4,64 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Ratings - Hanag's Garment</title>
+  <!-- FontAwesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* Custom styles for the table */
-        /* Center the container */
+       /* Base Reset */
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container for the content */
         .container {
-            padding: 20px;
+            padding: 30px;
             display: flex;
-            margin-left:350px ;
-
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            flex-direction: column; /* Align content vertically */
-            height: 100vh; /* Full viewport height */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Table */
-        table {
-            width: 80%; /* Adjust width of the table */
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for effect */
+
+        /* Responsive table */
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                font-size: 12px;
+            }
         }
 
-        th,
-        td {
-            border: 1px solid #de7586;
-            padding: 10px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        th {
-            background: #ff66b2;
-            color: white;
-        }
-
-        tr:hover {
-            background: #ffe6f2;
-        }
-
-        /* Style for the chart */
+        /* Chart Styles */
         #ratingsPieChart {
             width: 100%;
+            max-width: 500px;
             height: 300px;
             margin-top: 30px;
         }
+
+        /* Popup message customization */
+        .swal-popup-small {
+            padding: 20px;
+        }
+
+        /* Styling for alert messages */
+        .alert {
+            padding: 10px;
+            background-color: #ff66b2;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .main-content-inner{
+            flex: 1;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow-y: auto;
+}
     </style>
 </head>
 <body>
-    <div class="admin-panels">
+   <div class="admin-panels">
         <!-- Sidebar -->
         @include('admin.navbar')
     </div>
-
     @if(session('popup_message'))
         <script>
             Swal.fire({

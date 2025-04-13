@@ -56,7 +56,8 @@ th, td {
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #ff66b2;
+    color:white;
 }
 
     </style>

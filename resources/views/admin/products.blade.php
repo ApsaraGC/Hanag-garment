@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Hanag's Garment</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <style>
-        /* General Styles */
         /* General Styles */
         body {
             font-family: Arial, sans-serif;
@@ -16,8 +14,6 @@
             padding: 0;
             display: flex;
         }
-
-
         /* Sidebar (Navbar) Styles */
         .admin-panels {
             color: white;
@@ -27,25 +23,21 @@
             position: fixed;
             height: 100%;
         }
-
         .main-content-inner {
             flex: 1;
             margin-left: 200px;
-            /* Offset for the sidebar */
             padding: 20px;
             background-color: #fff;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             border-radius: 15px;
             height: 100vh;
-            /* To prevent long size issues */
-
         }
-
         h3 {
             color: #ff1493;
             margin: 0;
+            text-align: center;
+            font-size: 20px;
         }
-
         /* Breadcrumbs */
         .breadcrumbs {
             list-style: none;
@@ -54,17 +46,14 @@
             gap: 10px;
             font-size: 14px;
         }
-
         .breadcrumbs a {
             text-decoration: none;
             color: #ff66b2;
         }
-
         .breadcrumbs a:hover {
             text-decoration: underline;
         }
-
-        /* Search Box */
+/* Search Box */
         .search-container {
             position: relative;
             display: flex;
@@ -72,7 +61,6 @@
             max-width: 300px;
             width: 100%;
         }
-
         .search-input {
             width: 100%;
             padding: 10px 15px;
@@ -81,7 +69,6 @@
             outline: none;
             font-size: 14px;
         }
-
         .search-icon {
             position: absolute;
             right: 10px;
@@ -89,7 +76,6 @@
             color: #ff66b2;
             cursor: pointer;
         }
-
         /* Buttons */
         .btn {
             padding: 10px 15px;
@@ -103,31 +89,33 @@
             transition: background 0.3s;
             cursor: pointer;
         }
-
         .btn:hover {
             background: #cc117a;
         }
-
         /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
             background: white;
         }
 
         th,
         td {
             border: 1px solid #de7586;
-            padding: 10px;
+            padding: 8px; /* Decrease the padding to reduce the space between columns */
             text-align: left;
             font-size: 14px;
         }
-
         th {
             background: #ff66b2;
             color: white;
         }
+        tr {
+    /* Removing any extra padding from the row itself */
+    line-height: 1.4; /* Adjust the line height to make the rows tighter */
+}
+
 
         tr:hover {
             background: #ffe6f2;
@@ -153,13 +141,11 @@
         .action-icons button:hover {
             color: #cc117a;
         }
-
         /* Pagination */
         .pagination {
             text-align: center;
             margin-top: 20px;
         }
-
         .pagination a {
             padding: 8px 15px;
             margin: 5px;
@@ -170,12 +156,10 @@
             font-size: 14px;
             transition: 0.3s;
         }
-
         .pagination a:hover {
             background: #ff1493;
             color: white;
         }
-
         /* Active Page */
         .pagination .active a {
             background: #ff1493;
@@ -195,19 +179,15 @@
             color: #ccc;
             cursor: not-allowed;
         }
-
         /* Adjust the pagination numbers */
         .pagination .page-item {
             display: inline-block;
         }
-
         /* Center pagination numbers properly */
         .pagination .page-item .page-link {
             display: inline-block;
             padding: 8px 16px;
         }
-
-
 
         /* Flexbox Utility */
         .flex {
@@ -222,12 +202,10 @@
             body {
                 flex-direction: column;
             }
-
-            .admin-panels {
+         .admin-panels {
                 width: 100%;
                 box-shadow: none;
             }
-
             .main-content-inner {
                 margin: 10px;
             }
@@ -265,7 +243,6 @@
                 text-align: center;
             }
         }
-
         /* custom styles for success alert */
         .alert-success {
             background-color: #28a745;
@@ -280,11 +257,9 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
-
 <body>
     <div class="admin-panels">
         <!-- Sidebar -->
@@ -306,26 +281,21 @@
             });
         </script>
     @endif
-
     <div class="main-content-inner">
         <h3>Products - Hanag's Garment</h3>
-
         <!-- Breadcrumbs -->
         <ul class="breadcrumbs">
-
         </ul>
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
-
-
             </div>
         @endif
         <div class="flex">
             <form action="{{ route('admin.products') }}" method="GET">
                 <div class="search-container">
-                    <input type="text" id="search" class="search-input" name="search" placeholder="Search products...">
-                    <i class="fas fa-search search-icon"></i>
+                    {{-- <input type="text" id="search" class="search-input" name="search" placeholder="Search products...">
+                    <i class="fas fa-search search-icon"></i> --}}
                 </div>
                 <input type="hidden" name="page" value="1">
             </form>
@@ -391,8 +361,6 @@
         <div class="pagination">
             {{ $products->appends(request()->query())->links('pagination::bootstrap-5') }}
         </div>
-
     </div>
 </body>
-
 </html>
