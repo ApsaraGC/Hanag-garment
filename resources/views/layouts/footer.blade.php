@@ -159,7 +159,7 @@
     <div class="footer-section">
       <h4>HELP</h4>
       <ul>
-        <li><a href="#">Customer Service</a></li>
+        <li><a href="{{route('user.customerservice')}}">Customer Service</a></li>
         <li><a href="{{ route('user.privilege') }}">Privilege Policy</a></li>
         <li><a href="{{ route('user.policy') }}">Legal & Privacy</a></li>
       </ul>
@@ -169,8 +169,8 @@
   <div class="footer-bottom">
     <p>© 2024 Hanag's Garments. All rights reserved.</p>
     <p>
-      <a href="#">Privacy Policy</a> |
-      <a href="#">Terms & Conditions</a>
+      <a href="{{ route('user.policy') }}">Privacy Policy</a> |
+      <a href="{{ route('user.policy') }}">Terms & Conditions</a>
     </p>
   </div>
 </footer>

@@ -40,27 +40,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-   // User profile route
-   Route::get('user/profile', [ProfileController::class, 'profile'])->name('user.profile');
+    // User profile route
+    Route::get('user/profile', [ProfileController::class, 'profile'])->name('user.profile');
 
-   // User settings route
-   Route::get('user/settings', [ProfileController::class, 'settings'])->name('user.settings');
-   Route::middleware(['auth'])->group(function () {
-    Route::get('/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
-    Route::post('/place-order', [InvoiceController::class, 'placeOrder'])->name('user.placeOrder');
-    Route::get('/order/{orderId}/bill', [InvoiceController::class, 'orderBill'])->name('user.orderBill');
-    Route::post('/order/confirm', [InvoiceController::class, 'placeOrder'])->name('order.confirm');
-
-});
-//Route::get('user/orderBill', [OrderController::class, 'checkout'])->name('user.orderBill');
-   Route::get('/order/bill/download/{orderId}', [OrderController::class, 'downloadOrderBill'])->name('download.orderBill');
-
+    // User settings route
+    Route::get('user/settings', [ProfileController::class, 'settings'])->name('user.settings');
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
+        Route::post('/place-order', [InvoiceController::class, 'placeOrder'])->name('user.placeOrder');
+        Route::get('/order/{orderId}/bill', [InvoiceController::class, 'orderBill'])->name('user.orderBill');
+        Route::post('/order/confirm', [InvoiceController::class, 'placeOrder'])->name('order.confirm');
+    });
+    //Route::get('user/orderBill', [OrderController::class, 'checkout'])->name('user.orderBill');
+    Route::get('/order/bill/download/{orderId}', [OrderController::class, 'downloadOrderBill'])->name('download.orderBill');
 });
 
 
 
-require __DIR__.'/auth.php';
-Route::get('admin/dashbord',[AdminController::class,'index']);
+require __DIR__ . '/auth.php';
+Route::get('admin/dashbord', [AdminController::class, 'index']);
 Route::get('/welcome', [HomeController::class, 'welcome']);
 Route::get('user/aboutus', [HomeController::class, 'index'])->name('user.aboutus');
 Route::get('user/shop', [HomeController::class, 'shop'])->name('user.shop');
@@ -70,9 +68,9 @@ Route::get('user/productDetails/{id}', [ProductController::class, 'show'])->name
 Route::get('user/shop', [ProductController::class, 'showShop'])->name('user.shop');
 Route::get('/shop/load-more', [ProductController::class, 'loadMoreProducts']);
 
-Route::get('user/faq',[HomeController::class,'faq'])->name('user.faq');
+Route::get('user/faq', [HomeController::class, 'faq'])->name('user.faq');
 // Inside routes/web.php
-Route::middleware('auth')->group(function() {
+Route::middleware('auth')->group(function () {
     // Protected routes
     Route::resource('cart', CartController::class);
 });
@@ -92,24 +90,24 @@ Route::get('user/contact', [HomeController::class, 'contact'])->name('user.conta
 Route::get('user/profile', [HomeController::class, 'profile'])->name('user.profile');
 Route::post('/update-address', [ProfileController::class, 'updateAddress'])->name('update.address');
 
-Route::middleware(['auth',AuthAdmin::class])->group(function(){
+Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::get('admin/navbar', [AdminController::class, 'navbar'])->name('admin.navbar');
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/admin/brands',[AdminController::class,'brands'])->name('admin.brands');
-    Route::get('admin/add-brand',[AdminController::class,'addBrand'])->name('admin.add-brand');
-    Route::post('admin/add-brand',[AdminController::class,'saveBrand'])->name('admin.saveBrand');
-// Display the edit form (GET request)
+    Route::get('/admin/brands', [AdminController::class, 'brands'])->name('admin.brands');
+    Route::get('admin/add-brand', [AdminController::class, 'addBrand'])->name('admin.add-brand');
+    Route::post('admin/add-brand', [AdminController::class, 'saveBrand'])->name('admin.saveBrand');
+    // Display the edit form (GET request)
     Route::get('admin/edit-brand/{id}', [AdminController::class, 'editBrand'])->name('admin.editBrand');
 
-// Handle the form submission and update the brand (POST request)
+    // Handle the form submission and update the brand (POST request)
     Route::put('admin/edit-brand/{id}', [AdminController::class, 'updateBrand'])->name('admin.updateBrand');
     Route::delete('/admin/delete-brand/{id}', [AdminController::class, 'deleteBrand'])->name('admin.deleteBrand');
 
-    Route::get('/admin/categorys',[AdminController::class,'categories'])->name('admin.categorys');
-    Route::get('admin/add-category',[AdminController::class,'addCategory'])->name('admin.add-category');
-    Route::post('admin/add-category',[AdminController::class,'saveCategory'])->name('admin.saveCategory');
-    Route::get('admin/edit-category/{id}',[AdminController::class,'editCategory'])->name('admin.edit-category');
+    Route::get('/admin/categorys', [AdminController::class, 'categories'])->name('admin.categorys');
+    Route::get('admin/add-category', [AdminController::class, 'addCategory'])->name('admin.add-category');
+    Route::post('admin/add-category', [AdminController::class, 'saveCategory'])->name('admin.saveCategory');
+    Route::get('admin/edit-category/{id}', [AdminController::class, 'editCategory'])->name('admin.edit-category');
     Route::put('admin/update-category/{id}', [AdminController::class, 'updateCategory'])->name('admin.updateCategory');
     Route::delete('admin/delete-category/{id}', [AdminController::class, 'deleteCategory'])->name('admin.deleteCategory');
 
@@ -123,18 +121,18 @@ Route::middleware(['auth',AuthAdmin::class])->group(function(){
     // Admin route to view orders
     // Order Routes
     Route::get('/admin/orders', [OrderController::class, 'viewOrders'])->name('admin.order');
-Route::get('/admin/orders/create', [OrderController::class, 'create'])->name('admin.createOrder');
-Route::post('/admin/orders', [OrderController::class, 'store'])->name('admin.storeOrder');
-Route::get('/admin/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.update-order');
-Route::put('/admin/orders/{order}', [OrderController::class, 'update'])->name('admin.updateOrder');
-Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.destroyOrder');
-    });
+    Route::get('/admin/orders/create', [OrderController::class, 'create'])->name('admin.createOrder');
+    Route::post('/admin/orders', [OrderController::class, 'store'])->name('admin.storeOrder');
+    Route::get('/admin/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.update-order');
+    Route::put('/admin/orders/{order}', [OrderController::class, 'update'])->name('admin.updateOrder');
+    Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.destroyOrder');
+});
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('users', [UserAdminController::class, 'showUsers'])->name('admin.users');
     Route::get('search-users', [UserAdminController::class, 'searchUsers'])->name('admin.search.users');
 });
-Route::get('/user/policy',[HomeController::class,'policy'])->name('user.policy');
-Route::get('/user/privilege',[HomeController::class,'privilege'])->name('user.privilege');
+Route::get('/user/policy', [HomeController::class, 'policy'])->name('user.policy');
+Route::get('/user/privilege', [HomeController::class, 'privilege'])->name('user.privilege');
 
 
 use App\Http\Controllers\WishlistController;
@@ -213,3 +211,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'store'])->name('contacts.store');
+
+
+// web.php
+Route::get('/user/customerservice', [HomeController::class, 'customerService'])->name('user.customerservice');

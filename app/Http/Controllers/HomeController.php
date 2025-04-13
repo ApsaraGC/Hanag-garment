@@ -26,36 +26,11 @@ public function dashboard(Request $request){
 
 
 }
-// public function searchResults(Request $request)
-// {
-//     // Get the search query from the request
-//     $search = $request->input('search');
-
-//     if ($search) {
-//         $products = Product::where('product_name', 'like', '%' . $search . '%')
-//             ->orWhere('color', 'like', '%' . $search . '%')
-//             ->orWhere('regular_price', 'like', '%' . $search . '%')
-//             ->orWhere('sale_price', 'like', '%' . $search . '%')
-//             ->orWhereHas('category', function ($query) use ($search) {
-//                 $query->where('category_name', 'like', '%' . $search . '%');
-//             })
-//             ->orWhereHas('brand', function ($query) use ($search) {
-//                 $query->where('brand_name', 'like', '%' . $search . '%');
-//             })
-//             ->get();
-//     } else {
-//         $products = collect(); // Return an empty collection if no search term is entered
-//     }
-
-//     return view('user.search', compact('products', 'search'));
-// }
 
 public function hotDeals()
 {
     // Fetch the first 6 products for hot deals
     $hotDeals = Product::take(5)->get();
-
-    // Calculate discounts for the hot deals (10% off)
    // Calculate discounts for the hot deals (10% off) if no sale price is set
    foreach ($hotDeals as $product) {
     if (empty($product->sale_price) || $product->sale_price >= $product->regular_price) {
@@ -68,11 +43,6 @@ public function hotDeals()
 }
     return $hotDeals;
 }
-
-
-// Controller (e.g., ProductController.php)
-
-
 
 public function welcome(){
     $products = Product::all(); // Fetch all products from the database
@@ -98,8 +68,9 @@ public  function payment(){
     return view('user.payment');
 }
 
-public function show($productId)
+public function customerService()
 {
+    return view('user.customerservice');
 }
 
 public  function profile(){
