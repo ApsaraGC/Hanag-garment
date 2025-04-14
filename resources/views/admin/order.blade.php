@@ -156,6 +156,13 @@ tr:hover {
     margin: 0 5px;
     margin-bottom: 5px;
 }
+tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
 
 
 

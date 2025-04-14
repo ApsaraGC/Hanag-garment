@@ -104,13 +104,14 @@
             color: white;
         }
 
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+        tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
 
-        tbody tr:hover {
-            background-color: #f5d3e9;
-        }
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
+
     </style>
 </head>
 <body>

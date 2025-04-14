@@ -115,6 +115,13 @@
     /* Removing any extra padding from the row itself */
     line-height: 1.4; /* Adjust the line height to make the rows tighter */
 }
+tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
 
 
         tr:hover {

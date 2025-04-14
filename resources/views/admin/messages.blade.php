@@ -59,6 +59,13 @@ th {
     background-color: #ff66b2;
     color:white;
 }
+tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
 
     </style>
 

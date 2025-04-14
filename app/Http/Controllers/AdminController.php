@@ -37,15 +37,13 @@ class AdminController extends Controller
     public function brands(Request $request)
 {
     $search = $request->input('search');
-
     if ($search) {
         $brands = Brand::where('brand_name', 'like', '%' . $search . '%')
                        ->orderBy('id', 'DESC')
-                       ->paginate(10);
+                       ->paginate(4);
     } else {
         $brands = Brand::orderBy('id', 'DESC')->paginate(5);
     }
-
     return view('admin.brands', compact('brands', 'search'));
 }
 
@@ -102,7 +100,6 @@ public function updateBrand(Request $request, $id)
     $brand->save();
     return redirect()->route('admin.brands')->with('success', 'Brand updated successfully!');
 }
-
 public function deleteBrand($id)
 {
     $brand = Brand::findOrFail($id);
@@ -110,7 +107,6 @@ public function deleteBrand($id)
     if ($brand->image && file_exists(public_path('images/brands/' . $brand->image))) {
         unlink(public_path('images/brands/' . $brand->image));
     }
-
     // Delete the brand record from the database
     $brand->delete();
 

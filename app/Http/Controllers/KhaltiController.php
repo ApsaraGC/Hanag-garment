@@ -9,7 +9,6 @@ use App\Models\UserCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
 class KhaltiController extends Controller
 {
     public function initiatePayment(Request $request)
@@ -76,7 +75,7 @@ class KhaltiController extends Controller
             // Payment verification failed
             $order = Order::findOrFail($order_id);
             $order->update(['status' => 'cancelled']);
-            return redirect()->route('user.orderBill', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
+            return redirect()->route('user.cart', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
         }
         $response = json_decode($response, true);
         if (isset($response['status']) && $response['status'] === 'Completed') {
@@ -92,7 +91,7 @@ class KhaltiController extends Controller
             // Payment verification failed
             $order = Order::findOrFail($order_id);
             $order->update(['status' => 'pending']);
-            return redirect()->route('user.orderBill', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
+            return redirect()->route('user.cart', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
         }
     }
     public function placeOrder(Request $request)

@@ -6,348 +6,245 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brands - Hanag's Garment</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        /* General Styles */
-      /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-/* Sidebar (Navbar) Styles */
-.admin-panels {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: fixed;
-    height: 100%;
-}
-
-/* Main Content Styles */
-.main-content-inner {
-    flex: 1;
-    margin-left: 200px; /* Offset for the sidebar */
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    height: 100vh; /* To prevent long size issues */
-
-}
-
-
-/* Header */
-h3 {
-    color: #ff1493;
-    margin: 0;
-}
-
-/* Breadcrumbs */
-.breadcrumbs {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 5px;
-}
-
-.breadcrumbs a {
-    text-decoration: none;
-    color: #ff66b2;
-}
-
-.breadcrumbs a:hover {
-    text-decoration: underline;
-}
-
-/* Search Box */
-/* Search Box */
-.search-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.search-input {
-    width: 40%;
-    padding: 10px 35px; /* Increased padding for better spacing around the text */
-    border: 1px solid #ff66b2;
-    border-radius: 5px; /* More rounded corners for a better look */
-    outline: none;
-    font-size: 14px;
-}
-
-.search-icon {
-    position: absolute;
-    right: 660px;
-    font-size: 18px;
-    color: #ff66b2;
-    cursor: pointer;
-    pointer-events: none; /* Prevent clicking the icon */
-}
-
-/* Focus Styles for Input */
-.search-input:focus {
-    border-color: #ff1493; /* Change border color when input is focused */
-    box-shadow: 0 0 5px rgba(255, 20, 147, 0.5); /* Subtle glow effect */
-}
-
-
-.no-results-message {
-    text-align: center;
-    color: #888;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-
-
-/* Buttons */
-.btn {
-    padding: 10px 15px;
-    background: #ff1493;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: 0.3s;
-    cursor: pointer;
-    margin-left:30px;
-    margin-left: 10px;
-
-}
-
-.btn:hover {
-    background: #cc117a;
-}
-
-/* Table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: white;
-    max-height: 50px; /* Set your desired max height */
-    overflow-y: auto; /* Enable vertical scrolling */
-}
-
-th, td {
-    border: 1px solid #ffc0cb;
-    padding: 12px;
-    text-align: left;
-
-}
-
-th {
-    background:  #ff66b2;
-    color: white;
-}
-
-tr:hover {
-    background: #ffe6f2;
-}
-
-/* Action Icons */
-.action-icons {
-    display: flex;
-    gap: 10px;
-}
-
-.action-icons a {
-    color: #ff1493;
-    text-decoration: none;
-    font-size: 18px;
-    transition: 0.3s;
-}
-
-.action-icons a:hover {
-    color: #cc117a;
-}
-
-/* Pagination */
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-}
-
-/* Pagination */
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.pagination a {
-    padding: 8px 15px;
-    margin: 5px;
-    border: 1px solid #ff1493;
-    color: #ff1493;
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-.pagination a:hover {
-    background: #ff1493;
-    color: white;
-}
-
-/* Active Page */
-.pagination .active a {
-    background: #ff1493;
-    color: white;
-    font-weight: bold;
-}
-.pagination .disabled a,
-.pagination .disabled .page-link {
-    color: #ccc;
-    cursor: not-allowed;
-}
-.pagination .prev:disabled,
-.pagination .next:disabled {
-    background: #e0e0e0;
-    color: #ccc;
-    cursor: not-allowed;
-}
-/* Adjust the pagination numbers */
-.pagination .page-item {
-    display: inline-block;
-}
-
-/* Center pagination numbers properly */
-.pagination .page-item .page-link {
-    display: inline-block;
-    padding: 8px 16px;
-}
-
-
-/* Flexbox Utility */
-.flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-    </style>
-
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f8f9fa;
+        }
+
+        .admin-panels {
+            position: fixed;
+            height: 100%;
+        }
+
+        .main-content-inner {
+            flex: 1;
+            margin-left: 220px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
+
+        h3 {
+            color: #ff1493;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.3s;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #cc117a;
+        }
+
+        .alert {
+            padding: 15px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: left;
+        }
+
+        th {
+            background-color: #ff66b2;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #fff0f5;
+        }
+
+        img {
+            border-radius: 6px;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-icons a {
+            color: #ff1493;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .action-icons a:hover {
+            color: #cc117a;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .pagination a {
+            padding: 8px 15px;
+            margin: 5px;
+            border: 1px solid #ff1493;
+            color: #ff1493;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .pagination a:hover,
+        .pagination .active a {
+            background: #ff1493;
+            color: white;
+        }
+
+        .no-results-message {
+            text-align: center;
+            color: #888;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="admin-panels">
-        <!-- Sidebar -->
         @include('admin.navbar')
     </div>
+
     <div class="main-content-inner">
         <div class="main-content-wrap">
             <div class="flex">
                 <h3>Brands</h3>
-                <ul class="breadcrumbs">
-
-                </ul>
-                <a href="{{route('admin.add-brand')}}" class="btn"> Add Brand</a>
-
+                <a href="{{ route('admin.add-brand') }}" class="btn">Add Brand</a>
             </div>
 
-            <div>
-                <div class="flex">
-                    {{-- <form action="{{ route('admin.brands') }}" method="GET" class="search-container">
-                        <input type="text" name="search" class="search-input" value="{{ request()->input('search') }}" placeholder="Search brands...">
-                        <i class="fas fa-search search-icon"></i>
-                    </form> --}}
-
-                    {{-- @if($brands->isEmpty())
-                        <p class="no-results-message">No brands found</p>
-                    @endif --}}
-                    <!-- Add New Brand -->
-                    {{-- <a href="{{route('admin.add-brand')}}" class="btn"> Add New</a> --}}
+            @if (Session::has('status'))
+                <div class="alert">
+                    {{ Session::get('status') }}
                 </div>
+            @endif
 
-                @if (Session::has('status'))
-                   <p class="alert alert-success">{{Session::get('status')}}</p>
-                @endif
-
-                <!-- Table -->
-                <table>
-                    <thead>
-                        <tr>
-                            <th>S.N</th>
-                            <th>Name</th>
-                            <th>Products</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($brands as $brand)
+            <table>
+                <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Name</th>
+                        <th>Products</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($brands as $brand)
                         <tr>
                             <td>{{ $brand->id }}</td>
                             <td>{{ $brand->brand_name }}</td>
                             <td>
-                                @if($brand->image)
+                                @if ($brand->image)
                                     <img src="{{ asset('build/assets/images/brands/' . $brand->image) }}" width="50">
                                 @else
-                                    No Image
+                                    <span style="color: #ccc;">No Image</span>
                                 @endif
                             </td>
-
-
                             <td>
                                 <div class="action-icons">
                                     <a href="{{ route('admin.editBrand', $brand->id) }}" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="{{route('admin.deleteBrand',$brand->id)}}" class="delete-button" data-id="{{ $brand->id }}" title="Delete">
+                                    <a href="#" class="delete-button" data-id="{{ $brand->id }}" title="Delete">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                 <!-- Pagination -->
-        <div class="pagination">
-            {{ $brands->appends(request()->query())->links('pagination::bootstrap-5') }}
-        </div>
-
+                    @empty
+                        <tr>
+                            <td colspan="4" class="no-results-message">No brands found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            <div class="pagination">
+                {{ $brands->appends(request()->query())->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
 
     <script>
-        // Delete confirmation popup
         document.querySelectorAll('.delete-button').forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault();
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
                 const brandId = this.getAttribute('data-id');
-                if (confirm('Are you sure you want to delete this brand?')) {
-                    // Submit delete request
-                    fetch(`/admin/delete-brand/${brandId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    }).then(response => response.json())
-                      .then(data => {
-                          if (data.success) {
-                              alert('Brand deleted successfully.');
-                              location.reload();
-                          } else {
-                              alert('Error deleting brand.');
-                          }
-                      });
-                }
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#ff1493',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/admin/delete-brand/${brandId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        }).then(response => response.json())
+                          .then(data => {
+                              if (data.success) {
+                                  Swal.fire('Deleted!', 'Brand has been deleted.', 'success')
+                                      .then(() => location.reload());
+                              } else {
+                                  Swal.fire('Error!', 'Something went wrong.', 'error');
+                              }
+                          });
+                    }
+                });
             });
         });
     </script>
-
 </body>
-
 </html>
