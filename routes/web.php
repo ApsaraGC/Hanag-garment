@@ -133,6 +133,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 });
 Route::get('/user/policy', [HomeController::class, 'policy'])->name('user.policy');
 Route::get('/user/privilege', [HomeController::class, 'privilege'])->name('user.privilege');
+Route::get('/search', [HomeController::class, 'searchResults'])->name('usershop');
 
 
 use App\Http\Controllers\WishlistController;
@@ -147,7 +148,6 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/admin/messages', [ContactController::class, 'index'])->name('admin.messages');
 
 
-Route::get('/search', [HomeController::class, 'searchResults'])->name('usershop');
 
 // In web.php (routes file)
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
@@ -170,7 +170,6 @@ Route::match(['get', 'post'], '/khalti/callback/{order_id}', [KhaltiController::
 Route::get('/order/{orderId}/bill', [InvoiceController::class, 'orderBill'])->name('user.orderBill');
 
 Route::post('/submit-rating', [ProductController::class, 'submitRating'])->name('submit.rating');
-
 Route::get('/admin/ratings', [AdminController::class, 'showRatings'])->name('admin.rating');
 
 Route::get('login/google', [LoginController::class, 'redirectToGoogle']);

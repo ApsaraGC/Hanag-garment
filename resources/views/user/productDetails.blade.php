@@ -314,7 +314,8 @@
 
         /* Full star (yellow) */
         .fa-star.checked {
-            color: yellow;
+            color:   #ffb400; /* Filled stars */
+            ;
         }
 
         .out-of-stock {
@@ -329,7 +330,8 @@
 
         /* Half star effect using background gradient */
         .fa-star-half {
-            background: linear-gradient(to right, yellow 50%, #ccc 50%);
+            background: linear-gradient(to right,   #ffb400; /* Filled stars */
+            50%, #ccc 50%);
             -webkit-background-clip: text;
             color: transparent;
         }
@@ -349,6 +351,141 @@
             color: #333;
 
         }
+        .write-review-btn {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background-color: #f693d5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-review {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#review-form {
+    transition: all 0.3s ease-in-out;}
+/* Reviews Section */
+.reviews-section {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.reviews-section h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+/* Review container for side-by-side layout */
+.reviews-section .review-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between each review box */
+}
+.review {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 100px; /* Minimum width for the review box */
+    max-width: 200px; /* Maximum width for the review box */
+    display: flex;
+    flex-direction: column;
+}
+
+/* User name */
+.review .d-block {
+    display: block;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Stars and Rating Box side by side */
+.review .stars {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #ffb400; /* Star color */
+}
+/* Stars styling */
+.review .stars .fa-star {
+    font-size: 1rem;
+    color: #d3d3d3; /* Empty stars */
+}
+
+.review .stars .fa-star.checked {
+    color: #ffb400; /* Filled stars */
+}
+
+/* Rating Box styling */
+.review .rating-box {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: #333;
+    margin-left: 12px; /* Adds space between the stars and the rating box */
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Review Text */
+.review p {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.review small {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.review .mb-1 {
+    margin-bottom: 10px;
+}
+
+/* Empty Reviews Message */
+.reviews-section p {
+    text-align:left;
+    font-size: 1.2rem;
+    color: #888;
+}
+.review .border {
+    border-color: #e0e0e0;
+}
+.review .p-3 {
+    padding: 16px;
+}
+.review .rounded {
+    border-radius: 8px;
+}
+.review .shadow-sm {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.review p strong {
+    color: #333;
+
+}
+
+
     </style>
     <!-- Add icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -399,9 +536,17 @@
                             </span>
                         @endfor
                         <span id="review-count">{{ $product->reviews->count() }} reviews</span>
+                      <!-- Write Review Button -->
+                      <button type="button" class="write-review-btn" onclick="toggleReviewForm()">Write a Review</button>
+
+                      <div id="review-form" style="display: none;">
+                          <textarea name="message" rows="4" cols="50" placeholder="Write your review here..."></textarea>
+                          <br>
+                          <button type="submit" class="submit-review ">Submit Review</button>
+
+                      </div>
                     </form>
                 </div>
-
                 <p class="price">Rs. <span
                         style="text-decoration: line-through; color: #5e5c5c; font-size: 20px;">{{ number_format($product->regular_price, 0) }}</span>
                 </p>
@@ -444,6 +589,31 @@
 
             </div>
         </div>
+        <div class="reviews-section">
+            <h3>User Reviews ({{ $product->reviews->count() }})</h3>
+            <div class="review-container">
+                @forelse($product->reviews as $review)
+                    <div class="review">
+                        <strong class="d-block mb-1">{{ $review->user->full_name }}</strong>
+                        <div class="stars mb-2">
+                            @for($i = 1; $i <= 5; $i++)
+                                <span class="fa fa-star{{ $i <= $review->rating ? ' checked' : '' }}"></span>
+                            @endfor
+                            <!-- Rating Box (Side by Side with Stars) -->
+                            <div class="rating-box">
+                                {{ $review->rating }} / 5
+                            </div>
+                        </div>
+                        <p class="mb-1"><strong>Review:</strong> {{ $review->message }}</p>
+                        <small class="text-muted">Reviewed on {{ $review->created_at->format('M d, Y') }}</small>
+                    </div>
+                @empty
+                    <p>No reviews yet.</p>
+                @endforelse
+            </div>
+        </div>
+
+
 
         <!-- Related Products -->
         <div class="related-products">
@@ -484,6 +654,18 @@
     @include('layouts.footer')
 </body>
 <script>
+    function toggleReviewForm() {
+        const form = document.getElementById("review-form");
+        if (form.style.display === "none" || form.style.display === "") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+</script>
+
+<script>
+
     function submitRating(rating) {
         // Set the selected rating in the hidden input field
         document.getElementById('selected-rating').value = rating;
@@ -513,7 +695,7 @@
         }
 
         // Submit the form
-        document.getElementById('rating-form').submit();
+       // document.getElementById('rating-form').submit();
     }
 </script>
 <script>

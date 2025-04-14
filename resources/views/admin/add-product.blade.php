@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product - Hanag's Garment</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <style>
         /* General Styles */
         body {
@@ -50,7 +50,9 @@
         }
 
         /* Input Fields */
-        input, textarea, select {
+        input,
+        textarea,
+        select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ff66b2;
@@ -100,79 +102,79 @@
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-
-
         /* Submit Button */
         .button-container {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    gap:10px;
-    margin-top: 20px;
-}
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
 
-.btn-submit, .btn-cancel {
-    padding: 10px 20px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-}
+        .btn-submit,
+        .btn-cancel {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
 
-.btn-submit {
-    background-color: #ff66b2;
-}
+        .btn-submit {
+            background-color: #ff66b2;
+        }
 
-.btn-submit:hover {
-    background-color: #ff1493;
-}
+        .btn-submit:hover {
+            background-color: #ff1493;
+        }
 
-.btn-cancel {
-    background-color: #dc3545;
-}
+        .btn-cancel {
+            background-color: #dc3545;
+        }
 
-.btn-cancel:hover {
-    background-color: #c82333;
-}
+        .btn-cancel:hover {
+            background-color: #c82333;
+        }
 
-       /* Custom Checkbox */
-       .custom-checkbox label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-}
+        /* Custom Checkbox */
+        .custom-checkbox label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
 
-.custom-checkbox input[type="checkbox"] {
-    display: none;
-}
+        .custom-checkbox input[type="checkbox"] {
+            display: none;
+        }
 
-.custom-checkbox .checkbox-box {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #ff1493;
-    border-radius: 4px;
-    display: inline-block;
-    transition: 0.3s;
-    position: relative;
-}
+        .custom-checkbox .checkbox-box {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ff1493;
+            border-radius: 4px;
+            display: inline-block;
+            transition: 0.3s;
+            position: relative;
+        }
 
-.custom-checkbox input[type="checkbox"]:checked + .checkbox-box {
-    background-color: #ff1493;
-    border-color: #ff1493;
-}
+        .custom-checkbox input[type="checkbox"]:checked+.checkbox-box {
+            background-color: #ff1493;
+            border-color: #ff1493;
+        }
 
-.custom-checkbox input[type="checkbox"]:checked + .checkbox-box::after {
-    content: "✔";
-    font-size: 14px;
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+        .custom-checkbox input[type="checkbox"]:checked+.checkbox-box::after {
+            content: "✔";
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
         /* Image Preview */
         .image-preview {
             display: flex;
@@ -190,10 +192,20 @@
             border: 1px solid #ff66b2;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
+        /* Hide number input arrows in WebKit browsers (Chrome, Safari, Edge) */
+input[type=number]#regular_price::-webkit-inner-spin-button,
+input[type=number]#regular_price::-webkit-outer-spin-button,
+input[type=number]#sale_price::-webkit-inner-spin-button,
+input[type=number]#sale_price::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-
-
-
+/* Hide number input arrows in Firefox */
+input[type=number]#regular_price,
+input[type=number]#sale_price {
+    -moz-appearance: textfield;
+}
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -201,10 +213,28 @@
                 grid-template-columns: 1fr;
             }
         }
-
     </style>
+       <!-- Include SweetAlert2 from CDN -->
+       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
+    @if(session('popup_message'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('popup_message') }}',
+            timer: 3000,
+            showConfirmButton: false,
+            width: '350px',  // Adjust width as needed
+            padding: '5px', // Optional: Adjust padding
+            customClass: {
+                popup: 'swal-popup-small'
+            }
+        });
+    </script>
+@endif
     <div class="container">
         <h2>Add New Product</h2>
         <form action="{{route('admin.storeProduct')}}" method="POST" enctype="multipart/form-data">
@@ -215,60 +245,62 @@
                     <input type="text" id="product_name" name="product_name" value="{{ old('product_name') }}">
                 </div>
                 @error('product_name')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
                 <div class="form-group">
                     <label for="color">Color</label>
                     <input type="text" id="color" name="color" value="{{ old('color') }}">
                 </div>
                 @error('color')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
                 <div class="form-group">
                     <label for="size">Size</label>
                     <input type="number" id="size" name="size" value="{{ old('size') }}">
                 </div>
                 @error('size')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
                 <div class="form-group">
                     <label for="short_description">Short Description</label>
-                    <input type="text" id="short_description" name="short_description" value="{{ old('short_description') }}">
+                    <input type="text" id="short_description" name="short_description"
+                        value="{{ old('short_description') }}">
                 </div>
                 @error('short_description')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
                 <div class="form-group full-width">
                     <label for="description">Long Description</label>
                     <textarea id="description" name="description">{{ old('description') }}</textarea>
                 </div>
                 @error('description')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
 
                 <div class="form-group">
                     <label for="regular_price">Regular Price ($)</label>
-                    <input type="number" id="regular_price" name="regular_price" value="{{ old('regular_price') }}" >
+                    <input type="number" id="regular_price" name="regular_price" value="{{ old('regular_price') }}">
                 </div>
                 @error('regular_price')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
                 <div class="form-group">
                     <label for="sale_price">Sale Price ($)</label>
                     <input type="number" id="sale_price" name="sale_price" value="{{ old('sale_price') }}">
                 </div>
                 @error('sale_price')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
                 <div class="col-md-6 form-group">
                     <label>Stock Status</label>
                     <select name="stock_status" required>
                         <option value="instock" {{ old('stock_status') == 'instock' ? 'selected' : '' }}>In Stock</option>
-                        <option value="outofstock" {{ old('stock_status') == 'outofstock' ? 'selected' : '' }}>Out of Stock</option>
+                        <option value="outofstock" {{ old('stock_status') == 'outofstock' ? 'selected' : '' }}>Out of
+                            Stock</option>
                     </select>
                 </div>
                 @error('stock_status')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
 
                 <div class="col-md-6 form-group">
                     <label>Quantity</label>
                     <input type="number" name="quantity" value="{{ old('quantity') }}" min="1">
                 </div>
                 @error('quantity')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
                 <div class="col-md-6 form-group">
                     <label>Category</label>
                     <select name="category_id">
@@ -278,7 +310,7 @@
                     </select>
                 </div>
                 @error('category_id')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
                 <div class="col-md-6 form-group">
                     <label>Brand</label>
                     <select name="brand_id">
@@ -288,26 +320,26 @@
                     </select>
                 </div>
                 @error('brand_id')<span style="color:red;">{{$message}}</span>
-         @enderror
+                @enderror
 
-        @error('image')<span style="color:red;">{{$message}}</span>
-        @enderror
-        <div class="form-group full-width file-upload">
-            <label for="image">Main Image</label>
-            <input type="file" id="image" name="image" onchange="previewImage(event, 'mainPreview')">
-            <div class="image-preview" id="mainPreview"></div>
-        </div>
+                @error('image')<span style="color:red;">{{$message}}</span>
+                @enderror
+                <div class="form-group full-width file-upload">
+                    <label for="image">Main Image</label>
+                    <input type="file" id="image" name="image" onchange="previewImage(event, 'mainPreview')">
+                    <div class="image-preview" id="mainPreview"></div>
+                </div>
 
-        <!-- Additional Images -->
-        @error('images')
-            <span style="color:red;">{{$message}}</span>
-        @enderror
+                <!-- Additional Images -->
+                @error('images')
+                    <span style="color:red;">{{$message}}</span>
+                @enderror
 
 
-        <div class="form-group">
-            <label for="images">Product Images</label>
-            <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
-            {{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
+                <div class="form-group">
+                    <label for="images">Product Images</label>
+                    <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
+                    {{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
                 </div>
                 <br>
                 <div class="form-group custom-checkbox">
@@ -318,7 +350,7 @@
                     </label>
                 </div>
                 @error('is_featured')<span style="color:red;">{{$message}}</span>
-                 @enderror
+                @enderror
 
             </div>
             <div class="button-container">
@@ -328,49 +360,50 @@
         </form>
     </div>
     <script>
-    // Preview the main image
-    function previewImage(event, previewId) {
-        const preview = document.getElementById(previewId);
-        preview.innerHTML = ''; // Clear previous previews
-        const file = event.target.files[0];
+        // Preview the main image
+        function previewImage(event, previewId) {
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = ''; // Clear previous previews
+            const file = event.target.files[0];
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const img = document.createElement('img');
-                img.src = reader.result;
-                img.style.maxWidth = '100px'; // Optional, to resize the preview
-                img.style.maxHeight = '100px';
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    img.style.maxWidth = '100px'; // Optional, to resize the preview
+                    img.style.maxHeight = '100px';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
         }
-    }
 
-    // Preview multiple additional images
-    function previewImages(event) {
-        const previewContainer = document.getElementById('additionalImagePreview');
-        previewContainer.innerHTML = ''; // Clear previous previews
-        const files = event.target.files;
+        // Preview multiple additional images
+        function previewImages(event) {
+            const previewContainer = document.getElementById('additionalImagePreview');
+            previewContainer.innerHTML = ''; // Clear previous previews
+            const files = event.target.files;
 
-        // Loop through the selected files and add them to the preview container
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const reader = new FileReader();
+            // Loop through the selected files and add them to the preview container
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
 
-            reader.onload = function() {
-                const img = document.createElement('img');
-                img.src = reader.result;
-                img.style.maxWidth = '100px'; // Optional, to resize the preview
-                img.style.maxHeight = '100px';
-                previewContainer.appendChild(img);
-            };
+                reader.onload = function () {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    img.style.maxWidth = '100px'; // Optional, to resize the preview
+                    img.style.maxHeight = '100px';
+                    previewContainer.appendChild(img);
+                };
 
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
+            }
         }
-    }
-</script>
+    </script>
 
     </script>
 </body>
+
 </html>
