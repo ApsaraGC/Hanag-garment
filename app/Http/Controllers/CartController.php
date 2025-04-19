@@ -96,11 +96,11 @@ public function addToCart(Request $request)
                $cartItem->save();
                return redirect()->back()->with('popup_message', 'Product quantity updated successfully!');
            } else {
-               return redirect()->back()->with('popup_message', 'Not enough stock available!');
+               return redirect()->back()->with('message', 'Not enough stock available!');
            }
        }
 
-       return redirect()->back()->with('popup_message', 'Product not found!');
+       return redirect()->back()->with('message', 'Product not found!');
    }
 
 // Decrease the quantity of a product in the cart
@@ -117,7 +117,7 @@ public function decrease_cart_quantity($productId)
         return redirect()->back()->with('popup_message', 'Product quantity updated successfully!');
     }
 
-    return redirect()->back()->with('popup_message', 'Cannot decrease quantity below 1!');
+    return redirect()->back()->with('message', 'Cannot decrease quantity below 1!');
 }
     /**
      * Remove an item from the cart.

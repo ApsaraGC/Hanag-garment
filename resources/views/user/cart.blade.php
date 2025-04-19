@@ -279,6 +279,22 @@
             });
         </script>
     @endif
+    @if(session('message'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Sorry!',
+                text: '{{ session('message') }}',
+                timer: 3000,
+                showConfirmButton: false,
+                width: '350px',  // Adjust width as needed
+                padding: '5px', // Optional: Adjust padding
+                customClass: {
+                    popup: 'swal-popup-small'
+                }
+            });
+        </script>
+    @endif
     <div class="cart-container">
         @if($cartItems->count() > 0)
             <!-- Cart Items -->
