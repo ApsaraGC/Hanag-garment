@@ -10,9 +10,8 @@
     <meta name="author" content="Hanag's Garments">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Hanag's Garments</title>
-
     <style>
         /* General Reset */
         * {
@@ -31,6 +30,7 @@
             text-decoration: none;
             color: inherit;
         }
+
         /* Banner Section */
         .banner {
             display: flex;
@@ -73,24 +73,29 @@
             text-decoration: none;
             border-radius: 5px;
         }
+
         .banner .shop-now-btn:hover {
             background-color: #e4419d;
         }
+
         .banner .image-content {
             flex: 1;
             max-width: 100%;
             position: relative;
         }
+
         .banner .image-content img {
             max-height: 480px;
             /* Increased height */
             transition: all 1s ease;
         }
+
         .image-content {
             flex: 1;
             max-width: 50%;
             text-align: center;
         }
+
         /* Container styles for the 'You Might Like' section */
         .you-might-like {
             padding: 30px 20px;
@@ -98,6 +103,7 @@
             background-color: #FFF;
 
         }
+
         .you-might-like h2 {
             font-size: 35px;
             margin-bottom: 20px;
@@ -117,6 +123,7 @@
             gap: 45px;
             /* Adjusted gap between images */
             justify-content: center;
+
             /* Initially center the images */
             animation: scroll-right-to-left 15s linear infinite;
             /* Animation for moving right to left */
@@ -132,7 +139,6 @@
             justify-content: center;
             /* Initially center the images */
             text-align: center;
-
         }
 
         /* Styling for images inside the carousel items */
@@ -150,6 +156,7 @@
                 transform: translateX(20%);
                 /* Start from the right side (out of view) */
             }
+
             50% {
                 transform: translateX(0%);
                 /* Move to the center (visible) */
@@ -170,17 +177,15 @@
             align-items: center;
             background-color: #F8F8F8;
             border-radius: 10px;
-            /* flex-wrap: nowrap;  /* Prevent wrapping of elements */
             /* overflow-x: hidden;  Allows horizontal scrolling if needed */
-            */
         }
+
         .hot-deals .sale-banner {
             background-color: #e42121;
             text-align: center;
             padding: 20px 10px;
             border-radius: 100%;
             width: 350px;
-            /* Adjust size of the banner */
             height: 280px;
             /* Adjust size of the banner */
             display: flex;
@@ -192,6 +197,7 @@
             margin-right: 40px;
             /* Space between sale banner and product images */
         }
+
         .hot-deals .sale-banner h2 {
             font-size: 30px;
             font-weight: bold;
@@ -202,6 +208,7 @@
             font-size: 18px;
             font-weight: bold;
         }
+
         /* Product image container */
         .deals-images {
             display: flex;
@@ -224,18 +231,22 @@
         .product-items:hover {
             transform: translateY(-5px);
         }
+
         .product-items img {
-    width: 100%;
-    height: 200px; /* Set a fixed height for consistency */
-    object-fit: cover; /* Ensures the image covers the area without stretching */
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-}
+            width: 100%;
+            height: 200px;
+            /* Set a fixed height for consistency */
+            object-fit: cover;
+            /* Ensures the image covers the area without stretching */
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
 
 
         .product-items img:hover {
             transform: scale(1.05);
         }
+
         .product-items h3 {
             font-size: 16px;
             font-weight: bold;
@@ -243,6 +254,7 @@
             text-align: left;
             margin-top: 10px;
         }
+
         /* Regular and sale price styling */
         .product-info {
             display: flex;
@@ -250,6 +262,7 @@
             align-items: center;
             width: 100%;
         }
+
         /* Price Section */
         .price-section {
             display: flex;
@@ -258,14 +271,16 @@
             gap: 10px;
             /* Add space between sale price and regular price */
         }
+
         /* Sale Price */
         .sale-price {
             font-weight: bold;
-            color: #28a745;
+            color: #626362;
             font-size: 16px;
             margin-right: 45px;
             /* Space between sale price and regular price */
         }
+
         /* Regular Price */
         .regular-price {
             text-align: left;
@@ -274,19 +289,22 @@
             font-size: 14px;
             margin-bottom: 5px;
         }
+
         .cart-icon {
             background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    color: #333;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            color: #333;
         }
+
         .cart-icon:hover {
             color: #f312a4;
         }
+
         .product-items:hover .add-to-cart-btn {
             opacity: 1;
         }
@@ -298,6 +316,7 @@
                 /* 3 items per row */
             }
         }
+
         @media (max-width: 768px) {
             .product-items {
                 width: calc(50% - 10px);
@@ -316,24 +335,27 @@
                 height: 120px;
             }
         }
+
         /* Featured Products Section */
         .featured-products {
             padding: 30px 20px;
             background-color: #FFF;
             text-align: center;
         }
+
         .featured-products h2 {
             font-size: 22px;
             margin-bottom: 20px;
         }
+
         /* Ensure a row has exactly 5 products */
         .product-list {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            /* 5 products per row */
             gap: 20px;
             padding: 20px;
         }
+
         .product-item {
             text-align: center;
             border: 0.5px solid #ddd;
@@ -343,10 +365,10 @@
             overflow: hidden;
             transition: transform 0.3s ease-in-out;
         }
+
         /* Uniform Image Size */
         .product-item img {
             width: 100%;
-            /* Ensures full width */
             height: 220px;
             /* Fixed height for uniformity */
             object-fit: contain;
@@ -354,14 +376,17 @@
             margin-bottom: 10px;
             background: rgba(0, 0, 0, 0.3);
         }
+
         .product-item h4,
         .product-item p {
             margin: 5px 0;
         }
+
         /* Hover effect */
         .product-item:hover {
             transform: scale(1.05);
         }
+
         .add-to-cart-btn {
             display: none;
             position: absolute;
@@ -377,19 +402,18 @@
             width: 200px;
             transition: 0.3s;
         }
+
         .product-item:hover .add-to-cart-btn {
             display: block;
             background: #ede8e8;
             color: rgb(236, 151, 164);
         }
+
         /* Wishlist Button */
         .wishlist-btn {
             background: none;
-            /* Remove button background */
             border: none;
-            /* Remove border */
             padding: 0;
-            /* Remove padding */
             cursor: pointer;
             /* Make it clickable */
             position: absolute;
@@ -401,6 +425,7 @@
             cursor: pointer;
             font-size: 18px;
         }
+
         .load-more {
             margin-top: -25px;
             display: inline-block;
@@ -435,17 +460,14 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            /* Optional: ensures image doesn’t overflow */
-
         }
 
         .bag-image {
             position: absolute;
             width: 550px;
-            /* Adjust the size of bag image */
             height: 400px;
-            /* Adjust the size of bag image */
         }
+
         .logo-image {
             border-radius: 50%;
             /* Makes it circular */
@@ -457,38 +479,36 @@
             height: 120px;
             /* Adjust the size of the logo */
         }
+
         .chat-float-button {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background-color: #ff69b4;
-    color: white;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    text-decoration: none;
-    z-index: 999;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #ff69b4;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            z-index: 999;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
 
-.chat-float-button i {
-    margin: 0;
-}
+        .chat-float-button i {
+            margin: 0;
+        }
 
-.chat-float-button:hover {
-    background-color: #e0569a;
-    transform: scale(1.1);
-}
-
+        .chat-float-button:hover {
+            background-color: #e0569a;
+            transform: scale(1.1);
+        }
     </style>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-
 <body>
     <!-- Include Navigation -->
     @include('layouts.navigation')
@@ -496,10 +516,9 @@
     <section class="banner">
         <div class="text-content">
             @if(Auth::check())
-                <p>Welcome, {{ Auth::user()->full_name }}</p>
+                <p style="color:#F070BB; font-weight:bold;">Welcome, {{ Auth::user()->full_name }}</p>
             @endif
-            {{-- <p>Welcome {{ Auth::user()->full_name }}</p> --}}
-            <h2>New Arrivals</h2>
+            <h2>Grace in Every Stitch</h2>
             <h1>Hanag's Garments</h1>
             <p>Explore our latest collection of premium clothing for every occasion.</p>
             <a href="{{route('user.shop')}}" class="shop-now-btn">Shop Now</a>
@@ -642,12 +661,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const carousel = document.querySelector('.carousel-items');
-
             // Adjust the animation speed based on the number of items
             const totalItems = carousel.children.length;
             const totalWidth = totalItems * 120; // Adjusted width to account for the gap
             const animationDuration = (totalWidth / 50) + 's'; // Adjust the speed as needed
-
             // Apply dynamic animation duration
             carousel.style.animationDuration = animationDuration;
         });
@@ -707,7 +724,6 @@
         function addToCart(productId) {
             // Example: Send an AJAX request or simply display a message for now
             alert('Product added to cart: ' + productId);
-            // You can implement cart functionality here
         }
     </script>
 </body>
