@@ -90,17 +90,22 @@
         }
 
         .footer {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-            color: #999;
-            flex-wrap: wrap;
-        }
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-top: 1px solid #eee;
+    padding-top: 1px;
+    color: #999;
+    flex-wrap: nowrap; /* prevent wrapping */
+}
 
-        .footer p {
-            margin: 2px 0;
-        }
+.footer > div {
+    flex: 1;
+}
+
+.footer .notes {
+    text-align: right;
+}
 
         @media(max-width: 600px) {
             .top-section {
@@ -173,13 +178,6 @@
         <p><strong>Shipping:</strong> Rs.150.00</p>
         <p><strong>Grand Total:</strong> Rs.{{ number_format($order->total_amount, 2) }}</p>
     </div>
-
-    <div class="bank-details">
-        <h4>BANK DETAILS</h4>
-        <p>Account Title: Hanag Garments</p>
-        <p>Contact: +977-9800000000</p>
-    </div>
-
     <div class="footer">
         <div>
             <p><i class="fa fa-phone"></i> +977-9800000000</p>
