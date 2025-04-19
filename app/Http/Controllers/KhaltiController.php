@@ -50,7 +50,6 @@ class KhaltiController extends Controller
             return redirect()->route('user.cart')->with('error', 'Khalti payment initiation failed: ' . json_encode($response));
         }
     }
-
     public function handleCallback(Request $request, $order_id)
     {
         $token = $request->token;
@@ -59,6 +58,8 @@ class KhaltiController extends Controller
             'token' => $token,
             'amount' => $amount,
         ];
+
+        // Call to Khalti payment verification API
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'https://a.khalti.com/api/v2/payment/verify/');
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -71,56 +72,74 @@ class KhaltiController extends Controller
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
+
         if ($err) {
-            // Payment verification failed
+            // If payment verification fails, cancel the order and show error
             $order = Order::findOrFail($order_id);
             $order->update(['status' => 'cancelled']);
-            return redirect()->route('user.cart', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
+            return redirect()->route('user.cart', ['orderId' => $order_id])
+                ->with('error', 'Khalti payment verification failed.');
         }
+
         $response = json_decode($response, true);
         if (isset($response['status']) && $response['status'] === 'Completed') {
             // Payment successful
-            return DB::transaction(function () use ($request, $order_id, $response) {
-                $order = Order::findOrFail($order_id);
-                $order->update(['status' => 'completed']);
-                UserCart::where('user_id', Auth::id())->delete();
-                return redirect()->route('user.orderBill', ['orderId' => $order_id])
-                    ->with('popup_message', 'Payment successful! Your order is being processed.');
-            });
+            $order = Order::findOrFail($order_id);
+            $order->update(['status' => 'completed']);
+
+            // Only clear the cart after payment is successful
+            UserCart::where('user_id', Auth::id())->delete();
+
+            // Update payment record directly, no transaction required
+            $payment = Payment::where('order_id', $order_id)->first();
+            if ($payment) {
+                $payment->update(['status' => 'completed']);
+            }
+
+            return redirect()->route('user.orderBill', ['orderId' => $order_id])
+                ->with('popup_message', 'Payment successful! Your order is being processed.');
         } else {
-            // Payment verification failed
+            // Payment verification failed, revert order status
             $order = Order::findOrFail($order_id);
             $order->update(['status' => 'pending']);
-            return redirect()->route('user.cart', ['orderId' => $order_id])->with('error', 'Khalti payment verification failed.');
+
+            // If payment verification fails, update payment status
+            $payment = Payment::where('order_id', $order_id)->first();
+            if ($payment) {
+                $payment->update(['status' => 'failed']);
+            }
+
+            return redirect()->route('user.cart', ['orderId' => $order_id])
+                ->with('error', 'Khalti payment verification failed.');
         }
     }
-    public function placeOrder(Request $request)
-    {
-        $request->validate([
-            'payment_method' => 'required|in:khalti,esewa,cod',
-        ]);
-        $cartItems = UserCart::where('user_id', Auth::id())->with('product')->get();
-        if ($cartItems->isEmpty()) {
-            return redirect()->route('user.cart')->with('error', 'Your cart is empty.');
-        }
-        $totalAmount = $cartItems->sum(function ($item) {
-            return $item->quantity * $item->product->sale_price;
-        });
-        $deliveryCharge = 150;
-        $grandTotal = $totalAmount + $deliveryCharge;
-        return DB::transaction(function () use ($request, $cartItems, $deliveryCharge, $grandTotal) {
-            // Create the order
+
+
+        public function placeOrder(Request $request)
+        {
+            $request->validate([
+                'payment_method' => 'required|in:khalti,esewa,cod',
+            ]);
+            $cartItems = UserCart::where('user_id', Auth::id())->with('product')->get();
+            if ($cartItems->isEmpty()) {
+                return redirect()->route('user.cart')->with('error', 'Your cart is empty.');
+            }
+            $totalAmount = $cartItems->sum(function ($item) {
+                return $item->quantity * $item->product->sale_price;
+            });
+            $deliveryCharge = 150;
+            $grandTotal = $totalAmount + $deliveryCharge;
+            // Create the order and other related records without DB transactions
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'order_date' => now(),
                 'total_amount' => $grandTotal,
                 'sub_total' => $grandTotal - $deliveryCharge,
                 'delivery_address' => Auth::user()->address,
-                'status' => 'pending',
+                'status' => ($request->payment_method === 'cod') ? 'pending' : 'completed',
                 'payment_method' => $request->payment_method,
                 'description' => 'Order placed by ' . Auth::user()->full_name,
             ]);
-            // Create order items
             foreach ($cartItems as $cartItem) {
                 order_items::create([
                     'order_id' => $order->id,
@@ -130,7 +149,6 @@ class KhaltiController extends Controller
                     'subtotal' => $cartItem->quantity * $cartItem->product->sale_price,
                 ]);
             }
-            // Create payment record
             Payment::create([
                 'order_id' => $order->id,
                 'payment_method' => $request->payment_method,
@@ -138,7 +156,6 @@ class KhaltiController extends Controller
                 'status' => ($request->payment_method === 'cod') ? 'pending' : 'processing',
                 'payment_date' => now(),
             ]);
-            // Handle redirection based on payment method
             if ($request->payment_method === 'khalti') {
                 UserCart::where('user_id', Auth::id())->delete();
                 return response()->json(['order_id' => $order->id, 'amount' => $grandTotal]);
@@ -147,6 +164,5 @@ class KhaltiController extends Controller
                 return response()->json(['redirect_url' => route('user.orderBill', ['orderId' => $order->id]), 'message' => 'Order placed successfully for COD.']);
             }
             return redirect()->route('user.cart')->with('error', 'Invalid payment method.');
-        });
+        }
     }
-}

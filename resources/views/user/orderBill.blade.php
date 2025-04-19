@@ -1,146 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment - Hanag Garments</title>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Invoice - Hanag Garments</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #fff;
             margin: 0;
             padding: 0;
-            background-color: #f8f8f8;
         }
 
-        .payment-container {
-            max-width: 450px;
-            margin: 40px auto;
-            height: 470px;
-            padding: 15px;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            border: 1px solid #ddd;
-        }
-
-        .header {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: rgb(59, 58, 58);
-            margin-bottom: 15px;
-        }
-
-        .logo-image {
-            display: block;
-            margin: 0 auto 20px; /* Center the logo image */
-            width: 120px; /* Adjust width as needed */
-        }
-
-        .transaction-details {
-            background-color: #fafafa;
+        .invoice-box {
+            max-width: 500px;
+            margin: 20px auto;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            color: #555;
+            font-size: 14px;
         }
 
-        .transaction-details h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color:#504d4d;
-        }
-
-        .transaction-details p {
+        .top-section {
             display: flex;
             justify-content: space-between;
-            font-size: 16px;
-            margin: 10px 0;
+            align-items: center;
+            background-color: #F070BB;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
         }
 
-        .transaction-details p span {
-            font-weight: bold;
-            color: #4a4848;
+        .top-section h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .top-section img {
+            height: 50px;
+        }
+
+        .info p {
+            margin: 2px 0;
         }
 
         .address-section {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+        }
+
+        .address-block h4 {
+            margin: 0 0 4px;
+        }
+
+        .item-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .item-table th {
+            background-color: #F070BB;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .item-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .totals {
+            margin-top: 15px;
+            text-align: right;
+        }
+
+        .totals p {
+            margin: 4px 0;
+        }
+
+        .bank-details, .notes, .footer {
             margin-top: 20px;
-            padding: 20px;
-            background-color: #f3f3f3;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 13px;
         }
 
-        .address-section h4 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #333;
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            color: #999;
+            flex-wrap: wrap;
         }
-        /* Responsive Design for smaller screens */
-        @media (max-width: 600px) {
-            .payment-container {
-                width: 90%;
-                padding: 15px;
-            }
 
-            .header {
-                font-size: 18px;
-            }
+        .footer p {
+            margin: 2px 0;
+        }
 
-            .transaction-details p {
-                font-size: 14px;
+        @media(max-width: 600px) {
+            .top-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .top-section img {
+                margin-top: 10px;
+            }
+            .address-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .footer {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
-
 <body>
     @include('layouts.navigation')
 
-    <div class="payment-container">
-        <form action="{{ route('order.confirm') }}" method="POST" id="orderForm">
-            @csrf
-
-            <!-- Centered logo image -->
-            <img id="bannerr-image" class="logo-image" src="{{ asset('build/assets/images/logo1.png') }}" alt="Hot Deal">
-
-            <div class="header">Hanag Garments - Invoice</div>
-            <h3 style="text-align: center;">Order ID: {{ $order->id }}</h3>
-            <h3 style="text-align: center;">{{ $user->full_name }}</h3> <!-- Assuming 'name' is a field on the User model -->
-            <h3>Shipping Address: {{ $user->address }}</h3> <!-- Assuming 'name' is a field on the User model -->
-
-            <p>Order Type: {{ $order->order_type }}</p>
-            <p>Subtotal: Rs.{{ number_format($order->sub_total, 2) }}</p>
-            <p>Total Amount: Rs.{{ number_format($order->total_amount, 2) }}</p>
-            <p>Status: {{ $order->status }}</p>
-            <p>Description:{{ $order->description }}</p>
-
-            <!-- Submit button -->
-        </form>
+<div class="invoice-box">
+    <div class="top-section">
+        <div>
+            <h1>INVOICE</h1>
+            <div class="info">
+                <p>Invoice No: {{ $order->id }}</p>
+                <p>Date: {{ $order->created_at->format('d M Y') }}</p>
+            </div>
+        </div>
+        <img  style="background-color:#eee; border-radius: 50%;"src="{{ asset('build/assets/images/logo1.png') }}"  alt="Hanag Logo">
     </div>
 
-    @include('layouts.footer')
+    <div class="address-section">
+        <div class="address-block">
+            <h4>PAYABLE TO</h4>
+            <p>Hanag Garments<br>Pokhara, Nepal</p>
+        </div>
+        <div class="address-block">
+            <h4>BILL FROM</h4>
+            <p>{{ $user->full_name }}<br>{{ $user->address }}</p>
+        </div>
+    </div>
 
-    <script>
-        // Handling the confirmation order submission and triggering SweetAlert
-        document.getElementById('orderForm').addEventListener('submit', function(event) {
-            event.preventDefault();  // Prevent the form from submitting immediately
+    <table class="item-table">
+        <thead>
+        <tr>
+            <th>PRODUCT</th>
+            <th>QTY</th>
+            <th>PRICE</th>
+            <th>TOTAL</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($order->order_items as $item)
+            <tr>
+                <td>{{ $item->product->product_name ?? 'N/A' }}</td>
+                <td>{{ $item->quantity }}</td>
+                <td>Rs.{{ number_format($item->price, 2) }}</td>
+                <td>Rs.{{ number_format($item->price * $item->quantity, 2) }}</td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
 
-            // Here, you can make an Ajax request if needed to confirm the order and then trigger the popup.
-            Swal.fire({
-                title: 'Order Confirmed!',
-                text: 'Your order has been confirmed successfully.',
-                icon: 'success',
-                confirmButtonText: 'Close',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // After clicking 'Close', submit the form
-                    this.submit();  // Submit the form after the popup closes
-                }
-            });
-        });
-    </script>
+    <div class="totals">
+        <p><strong>Sub Total:</strong> Rs.{{ number_format($order->sub_total, 2) }}</p>
+        <p><strong>Shipping:</strong> Rs.150.00</p>
+        <p><strong>Grand Total:</strong> Rs.{{ number_format($order->total_amount, 2) }}</p>
+    </div>
+
+    <div class="bank-details">
+        <h4>BANK DETAILS</h4>
+        <p>Account Title: Hanag Garments</p>
+        <p>Contact: +977-9800000000</p>
+    </div>
+
+    <div class="footer">
+        <div>
+            <p><i class="fa fa-phone"></i> +977-9800000000</p>
+            <p><i class="fa fa-envelope"></i> hanag@domain.com</p>
+                <p><i class="fa fa-globe"></i> www.hanag.com</p>
+            </div>
+        <div class="notes">
+            <h4>NOTES</h4>
+            <p>Thank you for your purchase!</p>
+        </div>
+    </div>
+</div>
 </body>
-
 </html>
