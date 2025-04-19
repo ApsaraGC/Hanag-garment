@@ -257,7 +257,6 @@
         }
     </style>
 </head>
-
 <body>
     <!-- Include Navigation -->
     @include('layouts.navigation')
