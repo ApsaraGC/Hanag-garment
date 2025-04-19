@@ -15,6 +15,7 @@
             overflow-x: hidden;
             padding: 0;
         }
+
         .wishlist-btn {
             background: none;
             border: none;
@@ -26,11 +27,13 @@
             color: rgb(229, 20, 20);
             font-size: 18px;
         }
+
         .container {
             display: flex;
             max-width: 100%;
             background: #fff;
         }
+
         .sorting-container {
             display: flex;
             width: 800px;
@@ -42,36 +45,74 @@
             border-radius: 8px;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .explore-text {
             font-size: 20px;
             font-weight: bold;
-            color: #333;
-
-            margin: 0;
+            color: #494949;
+            margin-top: 13px;
+            /* Optional: adjust for spacing between elements */
             margin-left: 4px;
         }
+
         .sorting {
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-top: 0px;
+            /* Optional: adjust for spacing between elements */
+
+
         }
 
-        label {
-            font-size: 14px;
-            color: #555;
-        }
-
+        /* Styling the select dropdown */
         select {
-            padding: 5px 10px;
+            padding: 10px 15px;
             font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            color: #555;
             cursor: pointer;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
         }
 
+        /* On hover, the border color changes and background becomes lighter */
         select:hover {
-            border-color: #888;
+            border-color: #ff1493;
+            background-color: #fff;
         }
+
+        /* Focus state - when the user selects the option box */
+        select:focus {
+            border-color: #ff1493;
+            outline: none;
+            background-color: #fff;
+        }
+
+        /* Option styling inside the dropdown */
+        select option {
+            padding: 10px;
+            background-color: #fff;
+            color: #555;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Option hover state inside the dropdown */
+        select option:hover {
+            background-color: #f0f0f0;
+            color: #ff1493;
+        }
+
+        /* Styling for the label of the select box */
+        label {
+            font-size: 16px;
+            color: #444;
+            margin-right: 10px;
+            font-weight: 600;
+        }
+
         .sidebar {
             width: 20%;
             background: #fff;
@@ -104,6 +145,7 @@
         .filter-box li:hover {
             color: #000;
         }
+
         .product-section {
             display: flex;
             width: 75%;
@@ -111,12 +153,14 @@
             padding: 20px;
             background: #fff;
         }
+
         .product-list {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 18px;
             padding: 30px;
         }
+
         .product-item {
             text-align: center;
             border: 0.5px solid #ddd;
@@ -126,6 +170,7 @@
             position: relative;
             transition: transform 0.3s;
         }
+
         .product-item img {
             width: 100%;
             height: 210px;
@@ -134,9 +179,11 @@
             margin-bottom: 10px;
             transition: 0.5s ease;
         }
+
         .product-item:hover {
             transform: scale(1.05);
         }
+
         .product-item p {
             justify-content: center;
             gap: 5px;
@@ -144,6 +191,7 @@
             margin: 2px;
             padding: 0;
         }
+
         .product-item h4 {
             justify-content: center;
             color: #464444;
@@ -154,6 +202,7 @@
             padding-top: 15px;
             /* Reduce padding */
         }
+
         .add-to-cart-btn {
             display: none;
             position: absolute;
@@ -169,15 +218,18 @@
             width: 185px;
             transition: 0.3s;
         }
+
         .product-item:hover .add-to-cart-btn {
             display: block;
             background: #ede8e8;
             color: rgb(236, 151, 164);
         }
+
         .pagination {
             text-align: center;
             margin-top: 20px;
         }
+
         .pagination a {
             padding: 8px 15px;
             margin: 5px;
@@ -188,6 +240,7 @@
             font-size: 14px;
             transition: 0.3s;
         }
+
         .pagination a:hover,
         .pagination .active a {
             background: #ff1493;
@@ -199,19 +252,23 @@
             color: #ccc;
             cursor: not-allowed;
         }
+
         .pagination .prev:disabled,
         .pagination .next:disabled {
             background: #e0e0e0;
             color: #ccc;
             cursor: not-allowed;
         }
+
         .pagination .page-item {
             display: inline-block;
         }
+
         .pagination .page-item .page-link {
             display: inline-block;
             padding: 8px 16px;
         }
+
         .out-of-stock-label {
             position: absolute;
             top: 18px;
@@ -226,12 +283,14 @@
             text-transform: uppercase;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
+
         .add-to-cart-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
             border: 2px solid rgb(236, 151, 164);
             color: #666;
         }
+
         /* Not Found Section */
         .not-found-container {
             text-align: center;
@@ -244,19 +303,23 @@
             height: 220px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
+
         .not-found-container h1 {
             font-size: 32px;
             color: #d9534f;
             margin-bottom: 20px;
         }
+
         .not-found-container p {
             font-size: 18px;
             color: #333;
             margin-bottom: 30px;
         }
+
         .not-found-container a {
             text-decoration: none;
         }
+
         .not-found-container button {
             background-color: #F070BB;
             color: #fff;
@@ -267,6 +330,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         .not-found-container button:hover {
             background-color: #cc5a9d;
         }
@@ -347,8 +411,7 @@
                                     <input type="hidden" name="name" value="{{ $product->product_name }}">
                                     <input type="hidden" name="price"
                                         value="{{ $product->sale_price ?: $product->regular_price }}">
-                                    <button class="add-to-cart-btn" {{ $product->stock_status === 'outofstock' ? 'disabled' : '' }}>
-                                        Add to Cart
+                                    <button class="add-to-cart-btn" {{ $product->stock_status === 'outofstock' ? 'disabled' : '' }}>Add to Cart
                                     </button>
                                 </form>
                                 {{-- Wishlist Form --}}

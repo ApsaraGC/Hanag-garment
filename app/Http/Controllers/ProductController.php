@@ -38,13 +38,6 @@ class ProductController extends Controller
         return view('admin.products', compact('products', 'search'));
     }
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -117,27 +110,29 @@ class ProductController extends Controller
         $brands = Brand::all();
         $categories = Category::all(); // Fetch all categories
         $sort = $request->query('sort', 'default');
-        $priceSort = ($sort == 'price-asc') ? 'asc' : 'desc';
+        // $priceSort = ($sort == 'price-asc') ? 'asc' : 'desc';
         // Start the query builder
         $products = Product::query();
 
-        if ($sort) {
-            $products = $products->orderBy('sale_price', $priceSort);
-        }
+        // if ($sort) {
+        //     $products = $products->orderBy('sale_price', $priceSort);
+        // }
         // Handle search
         $search = $request->input('search');
 
         if ($search) {
-            $products = $products->where('product_name', 'like', '%' . $search . '%')
-                ->orWhere('color', 'like', '%' . $search . '%')
-                ->orWhere('regular_price', 'like', '%' . $search . '%')
-                ->orWhere('sale_price', 'like', '%' . $search . '%')
-                ->orWhereHas('category', function ($query) use ($search) {
-                    $query->where('category_name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('brand', function ($query) use ($search) {
-                    $query->where('brand_name', 'like', '%' . $search . '%');
-                });
+            $products = $products->where(function ($query) use ($search) {
+                $query->where('product_name', 'like', '%' . $search . '%')
+                    ->orWhere('color', 'like', '%' . $search . '%')
+                    ->orWhere('regular_price', 'like', '%' . $search . '%')
+                    ->orWhere('sale_price', 'like', '%' . $search . '%')
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('category_name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('brand', function ($q) use ($search) {
+                        $q->where('brand_name', 'like', '%' . $search . '%');
+                    });
+            });
         }
         // Apply sorting if needed
         if ($sort == 'price-asc') {
