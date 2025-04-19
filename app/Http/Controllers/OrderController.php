@@ -51,6 +51,18 @@ class OrderController extends Controller
     $order->delete();
     return redirect()->route('admin.order')->with('popup_message', 'Order deleted successfully');
 }
+// public function viewOrderBill($id)
+// {
+//     $order = Order::with('user', 'products')->findOrFail($id);
+//     $user = $order->user;
+
+//     return view('user.orderBill', compact('order', 'user'));
+// }
+// public function allOrders()
+// {
+//     $orders = Order::all(); // or paginate if needed
+//     return view('admin.vieworder', compact('orders'));
+// }
 
 
 

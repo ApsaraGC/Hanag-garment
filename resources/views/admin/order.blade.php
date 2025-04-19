@@ -173,6 +173,44 @@ tbody tr:nth-child(even) {
     align-items: center;
     margin-bottom: 20px;
 }
+
+        /* Dropdown Button */
+        .dropdown-toggle {
+            padding: 10px 20px;
+            background: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .dropdown-toggle:hover {
+            background: #cc117a;
+        }
+
+        .order-list {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background: #ffe6f2;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-list.active {
+            display: block;
+        }
+
+        .order-list td {
+            padding: 8px;
+            border: 1px solid #ffc0cb;
+        }
+
     </style>
 
     <!-- FontAwesome for Icons -->
@@ -190,6 +228,7 @@ tbody tr:nth-child(even) {
                 <h3>All Orders</h3>
                 {{-- <a href="{{ route('admin.createOrder') }}" class="btn">Create Order</a> --}}
             </div>
+
 
             @if(session('popup_message'))
             <script>
@@ -276,6 +315,11 @@ tbody tr:nth-child(even) {
         </div>
     </div>
 </body>
-
-
+<script>
+    // Toggle Dropdown
+    function toggleDropdown() {
+        const orderList = document.getElementById('orderList');
+        orderList.classList.toggle('active');
+    }
+</script>
 </html>
