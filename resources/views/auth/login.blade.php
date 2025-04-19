@@ -125,7 +125,7 @@
 
 <div class="container">
     <div class="form-container">
-        <h2>Log in to Your Account</h2>
+        <h2>Log Into Your Account</h2>
 
         <form action="{{route('login')}}" method="POST">
             @csrf

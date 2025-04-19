@@ -46,7 +46,7 @@
             color: #ff69b4;
         }
 
-        form {
+        .profile-form {
             display: flex;
             flex-direction: column;
         }
@@ -56,7 +56,7 @@
             font-weight: bold;
         }
 
-        input {
+        .profile-form input {
             margin-bottom: 15px;
             padding: 10px;
             border: 1px solid #ff69b4;
@@ -107,7 +107,6 @@
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin-top: 20px;
         }
 
         /* Media Queries */
@@ -120,7 +119,6 @@
             .right-section {
                 width: 100%;
             }
-
             .btn-cancel, button {
                 width: 100%;
             }
@@ -155,7 +153,7 @@
             {{-- <img id="profile-image" src="{{ asset(Auth::user()->image) }}" alt="Profile Image"> --}}
 
             <!-- Image Upload Form -->
-            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+            <form  class="profile-form" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 

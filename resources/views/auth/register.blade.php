@@ -26,11 +26,10 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         .form-container h2 {
             text-align: center;
             margin-bottom: 20px;
-            color: #333;
+            color: #5b5454;
         }
 
         .form-group {
@@ -157,10 +156,8 @@
     </style>
 </head>
 <body>
-
 <!-- Include Navigation -->
 @include('layouts.navigation')
-
 <div class="container">
     <div class="form-container">
         <h2>Register Your Account</h2>
@@ -179,7 +176,6 @@
                         @enderror
                     </div>
                 </div>
-
                 <div class="form-column">
                     <div class="form-group">
                         <label for="email">Email Address</label>
@@ -191,7 +187,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Second Row of Fields -->
             <div class="form-row">
                 <div class="form-column">
@@ -204,7 +199,6 @@
                         @enderror
                     </div>
                 </div>
-
                 <div class="form-column">
                     <div class="form-group">
                         <label for="address">Address</label>
@@ -216,7 +210,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Third Row of Fields -->
             <div class="form-row">
                 <div class="form-column">
@@ -229,23 +222,21 @@
                         @enderror
                     </div>
                 </div>
-
                 <div class="form-column">
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
                         <input type="password" id="confirm_password" name="password_confirmation" placeholder="Confirm Password">
-                        <i class="fa fa-eye" id="togglePassword"></i> <!-- Eye icon for toggling visibility -->
+                        <i class="fa fa-lock" id="togglePassword"></i> <!-- Eye icon for toggling visibility -->
                     </div>
                 </div>
             </div>
-
             <button type="submit" class="btn">SIGN UP</button>
         </form>
 
-        <!-- Google Login Button -->
+        {{-- <!-- Google Login Button -->
         <a href="{{ url('login/google') }}" class="google-btn">
             <i class="fab fa-google"></i> Login with Google
-        </a>
+        </a> --}}
 
         <p>
             Have an account? <a href="{{ route('login') }}">Login to your account</a>
@@ -258,4 +249,5 @@
 @include('layouts.Footer')
 
 </body>
+
 </html>

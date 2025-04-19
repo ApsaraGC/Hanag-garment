@@ -408,7 +408,7 @@
                         </label><br>
                         <label>
                             <input type="checkbox" name="payment_method" value="cod" id="cod">
-                            COD<span style="font-size: 12px; color:#666; margin-bottom: 5px;"> (Inside Pokhara value
+                            COD<span style="font-size: 12px; color:#666; margin-bottom: 5px;"> (Inside Pokhara valley
                                 only)</span>
                         </label>
                     </div>
