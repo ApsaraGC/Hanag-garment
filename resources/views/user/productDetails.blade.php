@@ -7,7 +7,7 @@
     <title>Product Page</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Font Awesome CDN -->
     <style>
@@ -187,9 +187,25 @@
         }
 
         .related-products h2 {
-            font-size: 20px;
+            font-size: 24px;
             text-align: center;
             margin-bottom: 20px;
+            position: relative;
+            color: #676567;
+
+        }
+
+        .related-products h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            /* space below text */
+            width: 16%;
+            margin-left: 480px;
+            height: 2px;
+            background-color: #ff1493;
+            /* or any color you want */
         }
 
         .products-grid {
@@ -205,13 +221,13 @@
         .product-card img {
             width: 100%;
             border-radius: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
 
         }
 
         .product-name {
             font-size: 16px;
-            margin: 10px 0;
+            margin: 8px 0;
         }
 
         .product-price {
@@ -232,17 +248,13 @@
             cursor: pointer;
             width: 220px;
             opacity: 0;
-            transition: opacity 0.3s ease-in-out, background-color 0.3s ease;
+            transition: opacity 0s ease-in-out, background-color 0.3s ease;
 
         }
 
         /* Show button only on hover */
         .product-item:hover .related-product-add-to-cart {
             opacity: 1;
-        }
-
-        /* Subtle hover effect for the button */
-        .related-product-add-to-cart:hover {
             background-color: #ede8e8;
             color: rgb(236, 151, 164);
             border: 2px solid #eea5a5;
@@ -297,7 +309,6 @@
             background: none;
             /* Remove button background */
             border: none;
-            /* Remove border */
             padding: 0;
             /* Remove padding */
             cursor: pointer;
@@ -314,7 +325,8 @@
 
         /* Full star (yellow) */
         .fa-star.checked {
-            color:   #ffb400; /* Filled stars */
+            color: #ffb400;
+            /* Filled stars */
             ;
         }
 
@@ -330,8 +342,9 @@
 
         /* Half star effect using background gradient */
         .fa-star-half {
-            background: linear-gradient(to right,   #ffb400; /* Filled stars */
-            50%, #ccc 50%);
+            background: linear-gradient(to right, #ffb400;
+                    /* Filled stars */
+                    50%, #ccc 50%);
             -webkit-background-clip: text;
             color: transparent;
         }
@@ -351,144 +364,179 @@
             color: #333;
 
         }
+
         .write-review-btn {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    background-color: #f693d5;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background-color: #f693d5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-.submit-review {
-    margin-top: 10px;
-    padding: 8px 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        .submit-review {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-#review-form {
-    transition: all 0.3s ease-in-out;}
-/* Reviews Section */
-.reviews-section {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-.reviews-section h3 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #333;
-}
-/* Review container for side-by-side layout */
-.reviews-section .review-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Space between each review box */
-}
-.review {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    flex: 1;
-    min-width: 100px; /* Minimum width for the review box */
-    max-width: 200px; /* Maximum width for the review box */
-    display: flex;
-    flex-direction: column;
-}
+        #review-form {
+            transition: all 0.3s ease-in-out;
+        }
 
-/* User name */
-.review .d-block {
-    display: block;
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 5px;
-}
+        /* Reviews Section */
+        .reviews-section {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-/* Stars and Rating Box side by side */
-.review .stars {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-    color: #ffb400; /* Star color */
-}
-/* Stars styling */
-.review .stars .fa-star {
-    font-size: 1rem;
-    color: #d3d3d3; /* Empty stars */
-}
+        .reviews-section h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
 
-.review .stars .fa-star.checked {
-    color: #ffb400; /* Filled stars */
-}
+        /* Review container for side-by-side layout */
+        .reviews-section .review-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            /* Space between each review box */
+        }
 
-/* Rating Box styling */
-.review .rating-box {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    color: #333;
-    margin-left: 12px; /* Adds space between the stars and the rating box */
-    height: 20px;
-    text-align: center;
-    font-weight: bold;
-}
+        .review {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 100px;
+            /* Minimum width for the review box */
+            max-width: 200px;
+            /* Maximum width for the review box */
+            display: flex;
+            flex-direction: column;
+        }
 
-/* Review Text */
-.review p {
-    font-size: 1rem;
-    color: #444;
-    margin-bottom: 10px;
-}
+        /* User name */
+        .review .d-block {
+            display: block;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
 
-.review small {
-    color: #777;
-    font-size: 0.9rem;
-}
+        /* Stars and Rating Box side by side */
+        .review .stars {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            color: #ffb400;
+            /* Star color */
+        }
 
-.review .mb-1 {
-    margin-bottom: 10px;
-}
+        /* Stars styling */
+        .review .stars .fa-star {
+            font-size: 1rem;
+            color: #d3d3d3;
+            /* Empty stars */
+        }
 
-/* Empty Reviews Message */
-.reviews-section p {
-    text-align:left;
-    font-size: 1.2rem;
-    color: #888;
-}
-.review .border {
-    border-color: #e0e0e0;
-}
-.review .p-3 {
-    padding: 16px;
-}
-.review .rounded {
-    border-radius: 8px;
-}
-.review .shadow-sm {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-.review p strong {
-    color: #333;
+        .review .stars .fa-star.checked {
+            color: #ffb400;
+            /* Filled stars */
+        }
 
-}
+        /* Rating Box styling */
+        .review .rating-box {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            color: #333;
+            margin-left: 12px;
+            /* Adds space between the stars and the rating box */
+            height: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
 
+        /* Review Text */
+        .review p {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 10px;
+        }
 
+        .review small {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .review .mb-1 {
+            margin-bottom: 10px;
+        }
+
+        /* Empty Reviews Message */
+        .reviews-section p {
+            text-align: left;
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        .review .border {
+            border-color: #e0e0e0;
+        }
+
+        .review .p-3 {
+            padding: 16px;
+        }
+
+        .review .rounded {
+            border-radius: 8px;
+        }
+
+        .review .shadow-sm {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .review p strong {
+            color: #333;
+
+        }
+        .reviews-section.no-reviews {
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .no-reviews-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .no-reviews-box p {
+            margin: 0;
+            font-size: 1rem;
+            color: #999;
+        }
     </style>
-    <!-- Add icon library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -536,15 +584,15 @@
                             </span>
                         @endfor
                         <span id="review-count">{{ $product->reviews->count() }} reviews</span>
-                      <!-- Write Review Button -->
-                      <button type="button" class="write-review-btn" onclick="toggleReviewForm()">Write a Review</button>
-
-                      <div id="review-form" style="display: none;">
-                          <textarea name="message" rows="4" cols="50" placeholder="Write your review here..."></textarea>
-                          <br>
-                          <button type="submit" class="submit-review ">Submit Review</button>
-
-                      </div>
+                        <!-- Write Review Button -->
+                        <button type="button" class="write-review-btn" onclick="toggleReviewForm()">Write a
+                            Review</button>
+                        <div id="review-form" style="display: none;">
+                            <textarea name="message" rows="4" cols="50"
+                                placeholder="Write your review here..."></textarea>
+                            <br>
+                            <button type="submit" class="submit-review ">Submit Review</button>
+                        </div>
                     </form>
                 </div>
                 <p class="price">Rs. <span
@@ -574,9 +622,7 @@
                                 <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>
                         </form>
-
                     @endif
-
                 </div>
                 <!-- Wishlist Button -->
                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
@@ -585,11 +631,9 @@
                         <i class="fa fa-heart-o"></i> Add To Wishlist
                     </button>
                 </form>
-
-
             </div>
         </div>
-        <div class="reviews-section">
+        <div class="reviews-section {{ $product->reviews->isEmpty() ? 'no-reviews' : '' }}">
             <h3>User Reviews ({{ $product->reviews->count() }})</h3>
             <div class="review-container">
                 @forelse($product->reviews as $review)
@@ -608,16 +652,16 @@
                         <small class="text-muted">Reviewed on {{ $review->created_at->format('M d, Y') }}</small>
                     </div>
                 @empty
-                    <p>No reviews yet.</p>
+                    <div class="no-reviews-box">
+                        <p>No reviews yet.</p>
+                    </div>
                 @endforelse
             </div>
         </div>
 
-
-
         <!-- Related Products -->
         <div class="related-products">
-            <h2>Related Products</h2>
+            <h2>More You'll Love</h2>
             <!-- Product Grid -->
             <div class="product-list">
                 @foreach ($relatedProducts as $relatedProduct)
@@ -635,9 +679,9 @@
                                 <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>
                         </form>
+                        <p class="product-name" style="font-weight: bold;">{{ $relatedProduct->product_name }}</p>
                         <p class="product-name">{{$relatedProduct->brand->brand_name}}</p>
-                        <p class="product-name">{{ $relatedProduct->product_name }}</p>
-                        <p class="">Rs. {{ $relatedProduct->sale_price }}</p>
+                        <p>Rs. {{ number_format($relatedProduct->sale_price, 0) }}</p>
                         <!-- Wishlist Button -->
                         <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                             @csrf
@@ -693,9 +737,8 @@
                 starHalf.style.display = 'inline';
             }
         }
-
         // Submit the form
-       // document.getElementById('rating-form').submit();
+        // document.getElementById('rating-form').submit();
     }
 </script>
 <script>
