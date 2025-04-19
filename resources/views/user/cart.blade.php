@@ -9,8 +9,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://khalti.com/static/khalti-checkout.js"></script>
     <script src="https://cdn.khalti.com/payment/gateway.js"></script>
-
-
     <!-- Include SweetAlert2 from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -337,8 +335,6 @@
                                         <!-- Display current quantity -->
                                         <input type="text" value="{{ $item->quantity }}" readonly
                                             style="border: none; width: 40px; text-align: center;">
-                                        <!-- Display Available Stock -->
-                                        <!-- Form for increasing the quantity -->
                                         <!-- Increase Button -->
                                         <form method="POST"
                                             action="{{ route('cart.qty.increase', ['productId' => $item->product->id]) }}">

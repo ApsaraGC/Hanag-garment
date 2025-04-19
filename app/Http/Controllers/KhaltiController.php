@@ -88,7 +88,7 @@ class KhaltiController extends Controller
             $order->update(['status' => 'completed']);
 
             // Only clear the cart after payment is successful
-            UserCart::where('user_id', Auth::id())->delete();
+            session()->put('clear_cart_after_bill', true);
 
             // Update payment record directly, no transaction required
             $payment = Payment::where('order_id', $order_id)->first();

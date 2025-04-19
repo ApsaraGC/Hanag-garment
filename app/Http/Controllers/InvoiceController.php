@@ -118,6 +118,11 @@ public function orderBill($orderId)
 {
     $order = Order::with('order_items.product')->findOrFail($orderId);
     $user = Auth::user();
+     // Now clear cart if session flag is set
+     if (session()->has('clear_cart_after_bill')) {
+        UserCart::where('user_id', Auth::id())->delete();
+        session()->forget('clear_cart_after_bill');
+    }
     return view('user.orderBill', compact('order', 'user'));
 }
 
