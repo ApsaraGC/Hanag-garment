@@ -6,149 +6,132 @@
     <title>Payment - Hanag Garments</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-
-        .payment-container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 10px;
-            background-color: #fff; /* Box background */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-            border-radius: 8px; /* Rounded corners */
-            border: 1px solid #ddd; /* Light border around the box */
-        }
-
-        .header {
-            text-align: center;
-            padding: 10px 0;
-            color: black;
-            border-radius: 5px 5px 0 0;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .payment-details {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            gap:30px;
-        }
-
-        .transaction-details, .login-section {
-            flex: 1;
-            padding: 20px;
-        }
-
-        .transaction-details h3 {
-            margin-bottom: 25px;
-        }
-
-        .transaction-details p {
-            margin: 5px 0;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .transaction-details p span {
-            font-weight: bold;
-        }
-
-        .login-section {
-            text-align: center;
-        }
-
-        .login-section h3 {
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #F070BB;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .button-group {
-            margin-top: 20px;
-        }
-
-        .button-group button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 1px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .button-group .login-btn {
-            background-color: #F070BB;
-            color: #fff;
-            margin-right: 50px;
-        }
-
-        .button-group .cancel-btn {
-            background-color: #ff3333;
-            color: #fff;
-        }
-    </style>
+   
 </head>
 <body>
     <!-- Include Navigation -->
     @include('layouts.navigation')
 
-    {{-- <div class="payment-container">
-        <div class="payment-details">
-            <!-- Transaction Details Section -->
-            <div class="transaction-details">
-                <h3>Transaction Details</h3>
-                <p><span>Hanag Garment</span> <span>NPR</span></p>
-                <hr>
-                <p><span>Product Amount</span> <span>1450.00</span></p>
-                <hr>
-                <p><span>Tax Amount</span> <span>0.00</span></p>
-                <hr>
-                <p><span>Delivery Charge</span> <span>0.00</span></p>
-                <hr>
-                <p><span>Total Amount</span> <span>1450.00</span></p>
-            </div>
+     <form id="checkout-form" method="POST" action="{{ route('user.placeOrder') }}">
+                    @csrf
+                    <div class="payment-method">
 
-            <!-- Login Section -->
-            <div class="login-section">
-                <h3>Login</h3>
-                <div class="form-group">
-                    <label for="esewa-id">eSewa ID</label>
-                    <input type="text" id="esewa-id" placeholder="Enter your eSewa ID">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password">
-                </div>
-                <div class="button-group">
-                    <button class="login-btn">Login</button>
-                    <button class="cancel-btn">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- Include Footer -->
+                        <label name="payment_method" value="" id="esewa">
+                             < type="" name="payment_method" value="" id="esewa">
+                         </label><br>
+                        <label>
+                            <input type="checkbox" name="payment_method" value="cod" id="cod">
+                            COD<span style="font-size: 12px; color:#666; margin-bottom: 5px;"> (Inside Pokhara valley
+                                only)</span>
+                        </label>
+                    </div>
+                </form>
+                <form id="checkout-form" method="POST" action="{{ route('khalti.callback') }}">
+                <label>
+                    <input type="checkbox" name="payment_method" value="khalti" id="khalti"> Khalti
+                </label>
+
+                </form>
+
     @include('layouts.footer')
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkoutLink = document.getElementById('checkout-link');
+        const checkoutForm = document.getElementById('checkout-form');
+        const khaltiCheckbox = document.getElementById('khalti');
+        const esewaCheckbox = document.getElementById('esewa');
+        const codCheckbox = document.getElementById('cod');
+        const esewaForm = document.getElementById('esewa-payment-form');
+        const esewaAmtInput = document.getElementById('esewa-amt');
+        const esewaTAmtInput = document.getElementById('esewa-tAmt');
+        const esewaPidInput = document.getElementById('esewa-pid');
+
+        checkoutLink.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default link behavior
+
+            let selectedPayment = null;
+            let isChecked = false;
+
+            if (khaltiCheckbox.checked) {
+                selectedPayment = 'khalti';
+                isChecked = true;
+            } else if (esewaCheckbox.checked) {
+                selectedPayment = 'esewa';
+                isChecked = true;
+            } else if (codCheckbox.checked) {
+                selectedPayment = 'cod';
+                isChecked = true;
+            }
+
+            if (isChecked) {
+                // Create a hidden input for the payment method
+                const paymentMethodInput = document.createElement('input');
+                paymentMethodInput.setAttribute('type', 'hidden');
+                paymentMethodInput.setAttribute('name', 'payment_method');
+                paymentMethodInput.setAttribute('value', selectedPayment);
+                checkoutForm.appendChild(paymentMethodInput);
+
+                // Submit the form to the placeOrder route
+                fetch(checkoutForm.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: new URLSearchParams(new FormData(checkoutForm)).toString()
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (selectedPayment === 'khalti' && data.order_id && data.amount) {
+                        // const amountInPaisa = Math.round(parseFloat(document.getElementById('total-amount').innerText) * 100); // Get total and convert to paisa
+                        const amountInPaisa = Math.trunc(data.amount);                      // Ensure this is echoed correctly
+                        // Redirect to Khalti initiation route with amount in paisa
+                        window.location.href = `/khalti/initiate?order_id=${data.order_id}&amount=${amountInPaisa}`;
+                    } else if (selectedPayment === 'esewa' && data.redirect_url) {
+                        fetch(`/esewa/payment-details/${data.order_id}`)
+                            .then(response => response.json())
+                            .then(esewaData => {
+                                if (esewaData.amount && esewaData.orderId) {
+                                    esewaAmtInput.value = esewaData.amount;
+                                    esewaTAmtInput.value = esewaData.amount;
+                                    esewaPidInput.value = esewaData.orderId;
+                                    esewaForm.submit();
+                                } else {
+                                    alert('Error preparing eSewa payment.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching eSewa details:', error);
+                                alert('Failed to process eSewa payment.');
+                            });
+                    } else if (data.redirect_url) { // Handles COD and other potential redirects
+                        window.location.href = data.redirect_url;
+                    } else {
+                        alert('Failed to process order.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error placing order:', error);
+                    alert('An error occurred while placing your order.');
+                });
+            } else {
+                alert('Please select a payment method.');
+            }
+        });
+
+        // Ensure only one payment method is checked at a time
+        const paymentCheckboxes = document.querySelectorAll('input[name="payment_method"]');
+        paymentCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                paymentCheckboxes.forEach(otherCheckbox => {
+                    if (otherCheckbox !== this) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+            });
+        });
+    });
+    </script>
+
 </html>

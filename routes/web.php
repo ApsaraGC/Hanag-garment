@@ -63,7 +63,6 @@ Route::get('/welcome', [HomeController::class, 'welcome']);
 Route::get('user/aboutus', [HomeController::class, 'index'])->name('user.aboutus');
 Route::get('user/shop', [HomeController::class, 'shop'])->name('user.shop');
 // Route::get('user/cart', [HomeController::class, 'cart'])->name('user.cart');
-Route::get('user/payment', [HomeController::class, 'payment'])->name('user.payment');
 Route::get('user/productDetails/{id}', [ProductController::class, 'show'])->name('user.productDetails.show');
 Route::get('user/shop', [ProductController::class, 'showShop'])->name('user.shop');
 Route::get('/shop/load-more', [ProductController::class, 'loadMoreProducts']);
@@ -211,6 +210,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'store'])->name('contacts.store');
 
+Route::get('user/payment', [HomeController::class, 'payment'])->name('user.payment');
 
 // web.php
 Route::get('/user/customerservice', [HomeController::class, 'customerService'])->name('user.customerservice');
