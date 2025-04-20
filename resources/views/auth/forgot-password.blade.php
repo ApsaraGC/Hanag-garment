@@ -106,20 +106,32 @@
         }
 
     </style>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
 
     <div class="container">
         <div class="form-container">
         <h2>Reset your password</h2>
-
         <!-- Display success message after password reset -->
-        @if(session('status'))
-            <div class="success-message">
-                {{ session('status') }}
-            </div>
-        @endif
 
+        @if(session('status'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('status') }}',
+                timer: 3000,
+                showConfirmButton: false,
+                width: '350px',  // Adjust width as needed
+                padding: '5px', // Optional: Adjust padding
+                customClass: {
+                    popup: 'swal-popup-small'
+                }
+            });
+        </script>
+    @endif
         <form method="POST" action="{{ route('password.reset.submit') }}">
             @csrf
             <div class="form-group">
@@ -129,13 +141,13 @@
 
         </div>
         <div class="form-group">            <label for="password">New Password</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password">
             <i class="fa fa-lock"></i>
             <br>
         </div>
         <div class="form-group">
             <label for="password_confirmation">Confirm Password</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" required>
+            <input type="password" id="password_confirmation" name="password_confirmation" >
             <i class="fa fa-eye" id="togglePassword"></i> <!-- Eye icon for toggling visibility -->
 
             <br>

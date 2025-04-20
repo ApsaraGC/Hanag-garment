@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>Reset Password</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 50px; }
@@ -13,28 +15,41 @@
     </style>
 </head>
 <body>
+    @if(session('status'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('status') }}',
+            timer: 3000,
+            showConfirmButton: false,
+            width: '350px',
+            padding: '5px',
+            customClass: {
+                popup: 'swal-popup-small'
+            }
+        });
+    </script>
+    @endif
+    <div class="container">
+        <h2>Reset Password</h2>
+        <form method="POST" action="{{ route('password.store') }}">
+            @csrf
+            <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
-<div class="container">
-    <h2>Reset Password</h2>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
-        <input type="hidden" name="token" value="{{ request()->route('token') }}">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ old('email', request()->email) }}">
+            <p class="error">@error('email') {{ $message }} @enderror</p>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" value="{{ old('email', request()->email) }}" required>
-        <p class="error">@error('email') {{ $message }} @enderror</p>
+            <label for="password">New Password</label>
+            <input type="password" id="password" name="password" >
+            <p class="error">@error('password') {{ $message }} @enderror</p>
 
-        <label for="password">New Password</label>
-        <input type="password" id="password" name="password" required>
-        <p class="error">@error('password') {{ $message }} @enderror</p>
-
-        <label for="password_confirmation">Confirm Password</label>
-        <input type="password" id="password_confirmation" name="password_confirmation" required>
-        <p class="error">@error('password_confirmation') {{ $message }} @enderror</p>
-
-        <button type="submit" class="btn">Reset Password</button>
-    </form>
-</div>
-
+            <label for="password_confirmation">Confirm Password</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" >
+            <p class="error">@error('password_confirmation') {{ $message }} @enderror</p>
+            <button type="submit" class="btn">Reset Password</button>
+        </form>
+    </div>
 </body>
 </html>
