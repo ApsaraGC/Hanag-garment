@@ -20,6 +20,8 @@
         .admin-panel {
             display: flex;
             width: 100%;
+            height: 100vh;
+
         }
          /* Sidebar */
         .sidebar {
@@ -27,7 +29,6 @@
             background-color: #ff69b4;
             padding: 20px;
             display: flex;
-
             color: #fff;
             display: flex;
             flex-direction: column;
