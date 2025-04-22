@@ -131,6 +131,11 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('users', [UserAdminController::class, 'showUsers'])->name('admin.users');
     Route::get('search-users', [UserAdminController::class, 'searchUsers'])->name('admin.search.users');
+    Route::get('/user/create', [UserAdminController::class, 'createUser'])->name('add-user');
+    Route::post('/user', [UserAdminController::class, 'storeUser'])->name('store-user');
+    Route::get('/user/{id}/edit', [UserAdminController::class, 'editUser'])->name('editUser');
+    Route::put('/user/{id}', [UserAdminController::class, 'updateUser'])->name('update-user');
+    Route::delete('/user/{id}', [UserAdminController::class, 'deleteUser'])->name('deleteUser');
 });
 Route::get('/user/policy', [HomeController::class, 'policy'])->name('user.policy');
 Route::get('/user/privilege', [HomeController::class, 'privilege'])->name('user.privilege');
