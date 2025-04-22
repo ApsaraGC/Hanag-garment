@@ -169,26 +169,39 @@ public function updateCategory(Request $request, $id)
 
 public function showRatings()
 {
-    // Get the products along with their reviews
-$products = Product::with(['reviews', 'brand'])->get();
+    // Get the products along with their reviews and user data
+    $products = Product::with(['reviews.user', 'brand'])->get();
 
-// Group products by brand_id, then calculate average rating from the reviews
-$brandRatings = $products->groupBy('brand_id')->map(function ($group) {
-    // Get the brand name (assuming 'brand' relationship is set up correctly in the Product model)
-    $brandName = $group->first()->brand->brand_name;
+    // Group products by brand_id, then calculate average rating from the reviews
+    $brandRatings = $products->groupBy('brand_id')->map(function ($group) {
+        $brandName = $group->first()->brand->brand_name;
 
-    // Get all the reviews for the products in this brand group, and calculate the average rating
-    $averageRating = $group->flatMap(function ($product) {
-        return $product->reviews->pluck('rating');
-    })->avg();
+        // Calculate the average rating
+        $averageRating = $group->flatMap(function ($product) {
+            return $product->reviews->pluck('rating');
+        })->avg();
 
-    return [
-        'brand_name' => $brandName,
-        'average_rating' => $averageRating
-    ];
-});
-    // Pass to the view
-    return view('admin.rating', compact('brandRatings'));
+        return [
+            'brand_name' => $brandName,
+            'average_rating' => $averageRating
+        ];
+    });
+
+    // Collect all product reviews with users
+    $productReviews = $products->flatMap(function ($product) {
+        return $product->reviews->map(function ($review) use ($product) {
+            return [
+                'product_name' => $product->product_name,
+                'full_name' => $review->user->full_name,
+                'rating' => $review->rating,
+                'message' => $review->message,
+            ];
+        });
+    });
+
+    // Pass the data to the view
+    return view('admin.rating', compact('brandRatings', 'productReviews'));
 }
+
 
 }
