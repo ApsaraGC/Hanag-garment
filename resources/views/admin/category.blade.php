@@ -187,6 +187,22 @@ tbody tr:nth-child(even) {
 </head>
 
 <body>
+    @if(session('popup_message'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('popup_message') }}',
+            timer: 3000,
+            showConfirmButton: false,
+            width: '350px',  // Adjust width as needed
+            padding: '5px', // Optional: Adjust padding
+            customClass: {
+                popup: 'swal-popup-small'
+            }
+        });
+    </script>
+@endif
     <div class="admin-panels">
         <!-- Sidebar -->
         @include('admin.navbar')

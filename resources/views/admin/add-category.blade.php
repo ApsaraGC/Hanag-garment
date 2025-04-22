@@ -43,7 +43,7 @@
 
         input[type="text"],
         input[type="file"] {
-            width: 100%;
+            width: 96%;
             padding: 10px;
             border: 1px solid #ff66b2;
             border-radius: 5px;
@@ -105,7 +105,22 @@
 </head>
 
 <body>
-
+    @if(session('popup_message'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('popup_message') }}',
+            timer: 3000,
+            showConfirmButton: false,
+            width: '350px',  // Adjust width as needed
+            padding: '5px', // Optional: Adjust padding
+            customClass: {
+                popup: 'swal-popup-small'
+            }
+        });
+    </script>
+@endif
     <div class="container">
         <h3>Add New Category</h3>
 

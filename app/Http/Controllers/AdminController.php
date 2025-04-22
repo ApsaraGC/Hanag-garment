@@ -133,7 +133,7 @@ public function saveCategory(Request $request){
         'description' => $request->description,
     ]);
 
-    return redirect()->route('admin.categorys')->with('status', 'Category Added Successfully');
+    return redirect()->route('admin.categorys')->with('popup_message', 'Category Added Successfully');
 }
 
 public function editCategory($id){
@@ -154,7 +154,7 @@ public function updateCategory(Request $request, $id)
         'description' => $request->description,
     ]);
 
-    return redirect()->route('admin.categorys')->with('status', 'Category Updated Successfully');
+    return redirect()->route('admin.categorys')->with('popup_message', 'Category Updated Successfully');
 }
 
 // Delete the Category
@@ -163,7 +163,7 @@ public function updateCategory(Request $request, $id)
      $category = Category::findOrFail($id);
      $category->delete();
 
-     return redirect()->route('admin.categorys')->with('status', 'Category Deleted Successfully');
+     return redirect()->route('admin.categorys')->with('popup_message', 'Category Deleted Successfully');
     }
 // AdminController.php
 
