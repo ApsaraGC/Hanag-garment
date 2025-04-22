@@ -19,7 +19,6 @@ class ProfileController extends Controller
         }
 
         $user = User::find(auth()->id());
-
         if (!$user) {
             // Handle the case where the user is not found (optional)
             return redirect()->route('login'); // Redirect to login if the user doesn't exist
@@ -52,9 +51,7 @@ class ProfileController extends Controller
 
     }
 
-    /**
-     * Update the user's profile information.
-     */
+
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         // Ensure that the user is authenticated
@@ -63,7 +60,6 @@ class ProfileController extends Controller
         if (!$user) {
             return redirect()->route('login')->with('error', 'Please log in first.');
         }
-
         // Validate input data, including profile image
         $validatedData = $request->validate([
             'full_name' => 'required|string|max:255',
@@ -71,15 +67,9 @@ class ProfileController extends Controller
             'phone_number' => 'nullable|string|max:20',
             // 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Added validation for profile picture
         ]);
-
-        // // Handle the profile picture upload if it exists
-        // if ($request->hasFile('profile_picture')) {
-        //     $imagePath = $request->file('profile_picture')->store('profile_images', 'public');
-        //     $validatedData['profile_picture'] = $imagePath; // Save image path to DB
-        // }
-
         // Update user profile with the validated data
         $user->update($validatedData);
+
 
         // Redirect back with success message
         return redirect()->route('profile')->with('popup_message', 'Profile updated successfully.');

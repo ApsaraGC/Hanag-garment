@@ -49,7 +49,7 @@
         .address-section {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
+            padding: 10px 0;
         }
 
         .address-block h4 {
@@ -76,7 +76,7 @@
         }
 
         .totals {
-            margin-top: 15px;
+            margin-top: 1px;
             text-align: right;
         }
 
@@ -172,11 +172,11 @@
         @endforeach
         </tbody>
     </table>
-
     <div class="totals">
         <p><strong>Sub Total:</strong> Rs.{{ number_format($order->sub_total, 2) }}</p>
         <p><strong>Shipping:</strong> Rs.150.00</p>
-        <p><strong>Grand Total:</strong> Rs.{{ number_format($order->total_amount, 2) }}</p>
+        <p><strong>Total:</strong> Rs.{{ number_format($order->total_amount, 2) }}</p>
+        <p><strong>Type:</strong>{{$order->order_type}}</p>
     </div>
     <div class="footer">
         <div>

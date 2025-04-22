@@ -180,6 +180,7 @@
         width: 120px;
       }
     }
+
   </style>
 </head>
 <body>
@@ -209,7 +210,7 @@
               <i class="fas fa-user"></i>
               <div class="user-info">
                 <p>{{ Auth::user()->name }}</p>
-                <a href="{{ route('user.profile') }}">Profile</a>
+                <a href="{{ route('user.profile') }}"> Edit Profile</a>
                 <a href="{{ route('user.settings') }}">Settings</a>
                 <form method="POST" action="{{ route('logout') }}" id="logout-form">
                   @csrf

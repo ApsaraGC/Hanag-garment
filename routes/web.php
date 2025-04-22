@@ -26,6 +26,7 @@ use App\Http\Controllers\UserAdminController;
 use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+use Intervention\Image\Colors\Profile;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -41,7 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // User profile route
-    Route::get('user/profile', [ProfileController::class, 'profile'])->name('user.profile');
+    // Route::get('user/profile', [ProfileController::class, 'profile'])->name('user.profile');
+    Route::put('/settings/update-profile', [SettingController::class, 'updateProfile'])->name('settings.updateProfile');
 
     // User settings route
     Route::get('user/settings', [ProfileController::class, 'settings'])->name('user.settings');

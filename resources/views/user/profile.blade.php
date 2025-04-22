@@ -153,7 +153,7 @@
             {{-- <img id="profile-image" src="{{ asset(Auth::user()->image) }}" alt="Profile Image"> --}}
 
             <!-- Image Upload Form -->
-            <form  class="profile-form" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+            <form  class="profile-form" action="{{route('settings.updateProfile') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -177,12 +177,12 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         function previewImage(event) {
             const image = document.getElementById('profile-image');
             image.src = URL.createObjectURL(event.target.files[0]);
         }
-    </script>
+    </script> --}}
 
     <!-- Include Footer -->
     @include('layouts.footer')
