@@ -67,7 +67,7 @@ class AdminController extends Controller
             $brand->image = $fileName;  // Correct column name from migration
         }
         $brand->save(); // Ensure data is saved in the database
-        return redirect()->route('admin.brands')->with('status', 'Brand Added Successfully');
+        return redirect()->route('admin.brands')->with('popup_message', 'Brand Added Successfully');
     }
 
 public function editBrand($id)
@@ -98,7 +98,7 @@ public function updateBrand(Request $request, $id)
         $brand->image = $fileName;  // Correct column name from migration
     }
     $brand->save();
-    return redirect()->route('admin.brands')->with('success', 'Brand updated successfully!');
+    return redirect()->route('admin.brands')->with('popup_message', 'Brand updated successfully!');
 }
 public function deleteBrand($id)
 {
@@ -110,7 +110,7 @@ public function deleteBrand($id)
     // Delete the brand record from the database
     $brand->delete();
 
-    return redirect()->route('admin.brands')->with('success', 'Brand deleted successfully!');
+    return redirect()->route('admin.brands')->with('popup_message', 'Brand deleted successfully!');
 }
 
 

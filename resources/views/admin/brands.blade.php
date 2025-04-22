@@ -117,11 +117,11 @@ tbody tr:nth-child(even) {
             color: #cc117a;
         }
 
-        .pagination {
+          /* Pagination */
+          .pagination {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20px;
         }
-
         .pagination a {
             padding: 8px 15px;
             margin: 5px;
@@ -132,11 +132,37 @@ tbody tr:nth-child(even) {
             font-size: 14px;
             transition: 0.3s;
         }
-
-        .pagination a:hover,
+        .pagination a:hover {
+            background: #ff1493;
+            color: white;
+        }
+        /* Active Page */
         .pagination .active a {
             background: #ff1493;
             color: white;
+            font-weight: bold;
+        }
+
+        .pagination .disabled a,
+        .pagination .disabled .page-link {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .pagination .prev:disabled,
+        .pagination .next:disabled {
+            background: #e0e0e0;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        /* Adjust the pagination numbers */
+        .pagination .page-item {
+            display: inline-block;
+        }
+        /* Center pagination numbers properly */
+        .pagination .page-item .page-link {
+            display: inline-block;
+            padding: 8px 16px;
         }
 
         .no-results-message {
@@ -149,6 +175,22 @@ tbody tr:nth-child(even) {
 </head>
 
 <body>
+    @if(session('popup_message'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('popup_message') }}',
+            timer: 3000,
+            showConfirmButton: false,
+            width: '350px',  // Adjust width as needed
+            padding: '5px', // Optional: Adjust padding
+            customClass: {
+                popup: 'swal-popup-small'
+            }
+        });
+    </script>
+@endif
     <div class="admin-panels">
         @include('admin.navbar')
     </div>
