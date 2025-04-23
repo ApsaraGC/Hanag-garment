@@ -106,7 +106,7 @@
         <div class="form-container">
             <h2>Contact</h2>
 
-            <form action="{{ route('contacts.store') }}" method="POST">
+            <form action="{{ route('contact.submit') }}" method="POST">
                 @csrf
                 <!-- CSRF Token -->
                 <div class="form-group">
@@ -115,16 +115,18 @@
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                    <input type="email" id="email" name="email" placeholder="Email Address">
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="text" id="phone" name="phone" placeholder="Phone Number" required>
+                    <input type="text" id="phone" name="phone" placeholder="Phone Number">
+                    @error('phone')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                    <textarea id="message" name="message" placeholder="Your Message"></textarea>
                 </div>
                 <button type="submit" class="btn">Submit</button>
             </form>

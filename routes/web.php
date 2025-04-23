@@ -128,15 +128,22 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::get('/admin/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.update-order');
     Route::put('/admin/orders/{order}', [OrderController::class, 'update'])->name('admin.updateOrder');
     Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.destroyOrder');
+
+    // Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])->name('deleteUser');
+
 });
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('users', [UserAdminController::class, 'showUsers'])->name('admin.users');
     Route::get('search-users', [UserAdminController::class, 'searchUsers'])->name('admin.search.users');
     Route::get('/user/create', [UserAdminController::class, 'createUser'])->name('add-user');
-    Route::post('/user', [UserAdminController::class, 'storeUser'])->name('store-user');
-    Route::get('/user/{id}/edit', [UserAdminController::class, 'editUser'])->name('editUser');
-    Route::put('/user/{id}', [UserAdminController::class, 'updateUser'])->name('update-user');
-    Route::delete('/user/{id}', [UserAdminController::class, 'deleteUser'])->name('deleteUser');
+   // In routes/web.php
+Route::get('/admin/users', [UserAdminController::class, 'showUsers'])->name('admin.users');
+Route::get('/admin/user/{id}/edit', [UserAdminController::class, 'editUser'])->name('editUser');
+Route::put('/admin/user/{id}', [UserAdminController::class, 'updateUser'])->name('updateUser');
+Route::delete('/admin/users/{id}', [UserAdminController::class, 'destroy'])->name('deleteUser');
+
+// Route::delete('/admin/user/{user}', [UserAdminController::class, 'deleteUser'])->name('deleteUser');
+
 });
 Route::resource('reviews', ReviewController::class)->only(['edit', 'update']);
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
@@ -220,7 +227,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
-Route::post('/contact', [ContactController::class, 'store'])->name('contacts.store');
+Route::post('/contacts/submit', [MessageController::class, 'Contactstore'])->name('contact.submit');
 
 Route::get('user/payment', [HomeController::class, 'payment'])->name('user.payment');
 

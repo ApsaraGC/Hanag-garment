@@ -42,7 +42,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
         $order->update($request->all());
-        return redirect()->route('admin.order')->with('success', 'Order updated successfully');
+        return redirect()->route('admin.order')->with('popup_message', 'Order updated successfully');
     }
 
     public function destroy($id)

@@ -39,7 +39,7 @@ class ContactController extends Controller
         ]);
 
         // Flash success message to session
-        Session::flash('popup_message', 'Your message has been sent successfully!');
+        // Session::flash('popup_message', 'Your message has been sent successfully!');
 
         // Redirect back to the contact form
         return redirect()->route('contact.form');

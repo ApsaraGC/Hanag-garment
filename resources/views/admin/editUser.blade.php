@@ -94,7 +94,7 @@
 
     <div class="admin-panel">
         <h1>Edit User</h1>
-        <form method="POST" action="{{ route('update-user', $user->id) }}">
+        <form method="POST" action="{{ route('updateUser', $user->id) }}">
             @csrf
             @method('PUT')
 

@@ -172,9 +172,9 @@
         <!-- Main Content -->
         <div class="main-content">
             <h1>User Management</h1>
-            <div class="btn-container">
+            {{-- <div class="btn-container">
                 <a href="{{ route('add-user') }}" class="btn">Add User</a>
-            </div>
+            </div> --}}
             <!-- Total Users -->
             <p>Total Users: {{ $totalUsers ?? count($users) }}</p>
             {{-- <!-- Search Form -->
@@ -204,9 +204,16 @@
                             <td>
                                 <a href="{{ route('editUser', $user->id) }}" title="Edit"><i class="fas fa-edit"
                                         style="color:rgb(255, 0, 200);"></i></a>
-                                <a href="{{ route('deleteUser', $user->id) }}" title="Delete"
-                                    onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                        class="fas fa-trash" style="color:red;"></i></a>
+
+                                <form action="{{ route('deleteUser', $user->id) }}" method="POST" style="display:inline;">
+    @csrf
+    @method('DELETE')
+    <button type="submit" style="border: none; background: none;" title="Delete"
+        onclick="return confirm('Are you sure you want to delete this user?')">
+        <i class="fas fa-trash" style="color:red;"></i>
+    </button>
+</form>
+
                             </td>
                         </tr>
                     @endforeach

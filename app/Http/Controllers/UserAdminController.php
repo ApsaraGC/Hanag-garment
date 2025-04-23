@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserAdminController extends Controller
 {
@@ -45,13 +46,17 @@ class UserAdminController extends Controller
             'email' => 'required|email|unique:users,email',
             'phone_number' => 'required|digits:10',
             'password' => 'required|min:8|confirmed',
+            'address'=>['required','string']
+
         ]);
 
         User::create([
             'full_name' => $request->full_name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
+            'address'=>$request->address,
+
         ]);
 
         return redirect()->route('admin.users')->with('popup_message', 'User added successfully');
@@ -84,12 +89,13 @@ class UserAdminController extends Controller
       }
 
       // Delete a user
-      public function deleteUser($id)
+      public function destroy($id)
       {
           $user = User::findOrFail($id);
           $user->delete();
 
-          return redirect()->route('admin.users')->with('popup_message', 'User deleted successfully');
+          return redirect()->back()->with('popup_message', 'User deleted successfully.');
       }
+
 }
 

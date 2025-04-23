@@ -117,6 +117,10 @@
                 <label for="phone_number">Phone Number</label>
                 <input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" required>
             </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" name="address" id="address" value="{{ old('address') }}" required>
+            </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
