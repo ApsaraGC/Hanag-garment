@@ -431,7 +431,7 @@
             display: inline-block;
             background-color: #F070BB;
             color: white;
-            margin-left: 550px;
+            margin-left: 650px;
             text-align: center;
             padding: 10px 20px;
             border-radius: 5px;
