@@ -43,7 +43,7 @@
 
         input[type="text"],
         input[type="file"] {
-            width: 100%;
+            width: 96%;
             padding: 10px;
             border: 1px solid #ff66b2;
             border-radius: 5px;
