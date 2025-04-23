@@ -21,6 +21,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Middleware\AuthAdmin;
@@ -137,6 +138,10 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::put('/user/{id}', [UserAdminController::class, 'updateUser'])->name('update-user');
     Route::delete('/user/{id}', [UserAdminController::class, 'deleteUser'])->name('deleteUser');
 });
+Route::resource('reviews', ReviewController::class)->only(['edit', 'update']);
+Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+
 Route::get('/user/policy', [HomeController::class, 'policy'])->name('user.policy');
 Route::get('/user/privilege', [HomeController::class, 'privilege'])->name('user.privilege');
 Route::get('/search', [HomeController::class, 'searchResults'])->name('usershop');

@@ -47,7 +47,7 @@
 
         table {
             width: 100%;
-            margin-top: 20px;
+            margin-top: 10px;
             border-collapse: collapse;
         }
 
@@ -115,6 +115,7 @@
                         <th>User Name</th>
                         <th>Rating</th>
                         <th>Message</th>
+                        {{-- <th>Actions</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -124,7 +125,14 @@
                             <td>{{ $review['full_name'] }}</td>
                             <td>{{ $review['rating'] }} / 5</td>
                             <td>{{ $review['message'] }}</td>
-                        </tr>
+                            {{-- <td>
+                                <a href="#" class="delete-review-button" data-id="{{ $review->id }}" title="Delete">
+                                    <i class="fas fa-trash-alt" style="color: #e74c3c;"></i>
+                                </a>
+                            </td> --}}
+
+
+                                                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -133,4 +141,47 @@
         </div>
     </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-review-button');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const reviewId = this.dataset.id;  // Get the ID from the data attribute
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This review will be permanently deleted!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#e74c3c',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/reviews/${reviewId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                Swal.fire('Deleted!', 'The review has been removed.', 'success').then(() => {
+                                    location.reload();  // Reload the page to remove the deleted review
+                                });
+                            } else {
+                                Swal.fire('Error!', 'Something went wrong.', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+
 </html>
