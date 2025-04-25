@@ -6,8 +6,11 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\UserCart;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -144,8 +147,10 @@ class ProductController extends Controller
         }
         // Apply pagination
         $products = $products->paginate(8)->appends(request()->query()); // This will work
+        $items = Wishlist::where('user_id', Auth::id())->pluck('product_id'); // Get list of product IDs
+        $cartItems = UserCart::where('user_id', Auth::id())->where('status', 'pending')->pluck('product_id')->toArray();
 
-        return view('user.shop', compact('brands', 'categories', 'products', 'sort', 'search'));
+        return view('user.shop', compact('brands', 'categories', 'products', 'sort', 'search','items','cartItems'));
     }
 
 

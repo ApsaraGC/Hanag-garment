@@ -301,9 +301,9 @@
                     <thead>
                         <tr>
                             <th>Product</th>
-                            <th>Price</th>
+                            <th>UnitPrice</th>
                             <th>Quantity</th>
-                            <th>Subtotal</th>
+                            <th>Total</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -343,7 +343,7 @@
                                     </div>
                                 </td>
                                 <td id="subtotal-{{ $item->product->id }}" class="product-subtotal">
-                                    Rs. {{ $item->product->sale_price * $item->quantity }}
+                                    Rs. {{ number_format($item->product->sale_price * $item->quantity, 2) }}
                                 </td>
                                 <td>
                                     <form action="{{ route('cart.remove', ['productId' => $item->product->id]) }}"

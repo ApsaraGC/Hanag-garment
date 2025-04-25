@@ -281,7 +281,8 @@
                                 </div>
                             </div>
                         </td>
-                        <td>Rs. {{ $item->product->sale_price }}</td>
+                        <td>    Rs. {{ number_format($item->product->sale_price, 2) }}
+
                         <td>
                             <div class="product-actions" style="display: flex; align-items: center; gap: 10px;">
                                 <!-- Remove from Wishlist Form -->

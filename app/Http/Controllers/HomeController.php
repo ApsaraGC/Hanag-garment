@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\UserCart;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
@@ -15,18 +19,46 @@ class HomeController extends Controller
 public function dashboard(Request $request){
         // Show only the first 4 products initially
 
-        $products = Product::latest()->take(5)->get(); // Order by creation date (latest products first)
+    $products = Product::latest()->take(5)->get(); // Order by creation date (latest products first)
 
     //$products = Product::all(); // Fetch all products from the database
     $search = $request->input('search', ''); // Default to an empty string if no search term is provided
 
     $hotDeals = $this->hotDeals();
+    $items = Wishlist::where('user_id', Auth::id())->pluck('product_id'); // Get list of product IDs
 
-    return view('dashboard', compact('products', 'hotDeals','search'));
+// Handle Cart Logic (add product to session cart)
 
+$cartItems = UserCart::where('user_id', Auth::id())->where('status', 'pending')->pluck('product_id')->toArray();
+
+    return view('dashboard', compact('products', 'hotDeals','search','items','cartItems'));
 
 }
 
+/**
+ * Add a product to the user's wishlist
+ *
+ * @param int $product_id
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function addToWishlist($product_id)
+{
+    $product = Product::findOrFail($product_id);
+
+    // Check if the product is already in the user's wishlist
+    if (Wishlist::where('user_id', Auth::id())->where('product_id', $product->id)->exists()) {
+        return redirect()->route('user.wishlist')->with('popup_message', 'Product is already in your wishlist!');
+    }
+
+    // Add the product to the wishlist
+    Wishlist::create([
+        'user_id' => Auth::id(),
+        'product_id' => $product->id
+    ]);
+/*******  9304c684-9249-4fe9-ae3d-87ceb2269857  *******/
+
+    return redirect()->route('dashboard')->with('popup_message', 'Product added to your wishlist!');
+}
 public function hotDeals()
 {
     // Fetch the first 6 products for hot deals

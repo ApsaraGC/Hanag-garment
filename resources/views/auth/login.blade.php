@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
      <!-- FontAwesome CDN for icons -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -20,7 +19,7 @@
             background-color: #f4f4f4; /* Soft background color */
         }
 
-        .container {
+        .containers {
             max-width: 500px;
             margin: 50px auto;
             padding: 50px;
@@ -28,7 +27,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .form-container h2 {
+        .form-containers h2 {
             text-align: center;
             margin-bottom: 20px;
             color: #5b5454;
@@ -66,7 +65,6 @@
 
         .form-group i {
             position: absolute;
-
             right: 10px;
             top: 65%;
             transform: translateY(-50%);
@@ -94,17 +92,17 @@
             outline: none;
         }
 
-        p {
+        .password {
             text-align: center;
             margin-top: 10px;
         }
 
-        p a {
+        .password a {
             color: #F070BB;
             text-decoration: none;
         }
 
-        p a:hover {
+        .password a:hover {
             text-decoration: underline;
         }
         .form-group span {
@@ -115,7 +113,6 @@
     left: 0;
     font-weight: normal;
 }
-
     </style>
 </head>
 <body>
@@ -123,8 +120,8 @@
 <!-- Include Navigation -->
 @include('layouts.navigation')
 
-<div class="container">
-    <div class="form-container">
+<div class="containers">
+    <div class="form-containers">
         <h2>Log Into Your Account</h2>
 
         <form action="{{route('login')}}" method="POST">
@@ -149,11 +146,11 @@
             </div>
             <button type="submit" class="btn">LOGIN</button>
         </form>
-        <p>
+        <p class="password" >
             <a href="{{ route('password.request') }}">Forgot Password?</a>
         </p>
 
-        <p>
+        <p class="password">
             Don't have an account? <a href="{{route('register')}}">Create an account</a>
         </p>
     </div>

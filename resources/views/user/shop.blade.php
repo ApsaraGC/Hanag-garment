@@ -118,7 +118,7 @@
             background: #fff;
             padding: 15px;
             border-radius: 20px;
-            height: 100vh;
+            height: 120vh;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: 23px 10px 15px;
             border-right: 1px solid #ddd;
@@ -334,8 +334,38 @@
         .not-found-container button:hover {
             background-color: #cc5a9d;
         }
+
+        .go-to-cart-btn {
+            display: none;
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: transparent;
+            color: #fff;
+            border: 2px solid #eea5a5;
+            padding: 12px 18px;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 145px;
+            transition: 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        /* Show on hover */
+        .product-item:hover .go-to-cart-btn {
+            display: block;
+            background: #ede8e8;
+            color: rgb(236, 151, 164);
+        }
+
+        .go-to-cart-btn:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
+
 <body>
     {{-- Include Navigation --}}
     @include('layouts.navigation')
@@ -402,23 +432,29 @@
                                 </a>
                                 <h4>{{ $product->brand->brand_name }}</h4>
                                 <p>{{ $product->product_name }}</p>
-                                <p>Rs. {{ number_format($product->sale_price, 0) }}</p>
+                                <p>Rs. {{ number_format($product->sale_price, 2) }}</p>
                                 {{-- Add to Cart Form --}}
-                                <form name="addtocart-form" method="POST" action="{{ route('cart.add') }}">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $product->id }}">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <input type="hidden" name="name" value="{{ $product->product_name }}">
-                                    <input type="hidden" name="price"
-                                        value="{{ $product->sale_price ?: $product->regular_price }}">
-                                    <button class="add-to-cart-btn" {{ $product->stock_status === 'outofstock' ? 'disabled' : '' }}>Add to Cart
-                                    </button>
-                                </form>
+                                @if(in_array($product->id, $cartItems))
+                                    <!-- If the product is already in the cart, show "Go to Cart" button -->
+                                    <a href="{{ route('user.cart') }}" class="go-to-cart-btn">Go to Cart</a>
+                                @else
+                                    <form name="addtocart-form" method="POST" action="{{ route('cart.add') }}">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $product->id }}">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <input type="hidden" name="name" value="{{ $product->product_name }}">
+                                        <input type="hidden" name="price"
+                                            value="{{ $product->sale_price ?: $product->regular_price }}">
+                                        <button class="add-to-cart-btn" {{ $product->stock_status === 'outofstock' ? 'disabled' : '' }}>Add to Cart
+                                        </button>
+                                    </form>
+                                @endif
                                 {{-- Wishlist Form --}}
                                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="wishlist-btn">
-                                        <i class="fa fa-heart-o"></i>
+                                        <i
+                                            class="fa {{ in_array($product->id, $items->toArray()) ? 'fa-heart' : 'fa-heart-o' }}"></i>
                                     </button>
                                 </form>
                             </div>

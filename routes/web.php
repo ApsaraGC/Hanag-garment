@@ -160,6 +160,8 @@ use App\Models\Payment;
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('user.wishlist');
     Route::post('/wishlist/add/{product_id}', [WishlistController::class, 'add'])->name('wishlist.add');
+    Route::post('/wishlist/adds/{product_id}', [HomeController::class, 'addToWishlist'])->name('wishlists.add');
+
     Route::delete('/wishlist/remove/{product_id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
     Route::delete('/wishlist/clear', [WishlistController::class, 'clear'])->name('wishlist.clear');
 });

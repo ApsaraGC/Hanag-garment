@@ -185,16 +185,16 @@
             text-align: center;
             padding: 20px 10px;
             border-radius: 100%;
-            width: 350px;
-            height: 280px;
+            width: 300px;
+            height: 300px; /* Auto height for flexibility */
             /* Adjust size of the banner */
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             color: #fff;
-            margin-left: 30px;
-            margin-right: 40px;
+            margin-left: 20px;
+            margin-right: 30px;
             /* Space between sale banner and product images */
         }
 
@@ -232,7 +232,7 @@
             transform: translateY(-5px);
         }
 
-        .product-items img {
+        .product-items a img {
             width: 100%;
             height: 200px;
             /* Set a fixed height for consistency */
@@ -243,7 +243,7 @@
         }
 
 
-        .product-items img:hover {
+        .product-items a img:hover {
             transform: scale(1.05);
         }
 
@@ -261,6 +261,8 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            gap: 5px;
+
         }
 
         /* Price Section */
@@ -268,7 +270,7 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            gap: 10px;
+            gap: 2px;
             /* Add space between sale price and regular price */
         }
 
@@ -277,7 +279,7 @@
             font-weight: bold;
             color: #626362;
             font-size: 16px;
-            margin-right: 45px;
+            margin-right: 10px;
             /* Space between sale price and regular price */
         }
 
@@ -290,20 +292,24 @@
             margin-bottom: 5px;
         }
 
-        .cart-icon {
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s, color 0.3s;
-            color: #333;
-        }
+/* Add to Cart Button */
+.cart-icon {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    padding: 12px;
+    font-size: 22px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    color: #333;
+}
 
-        .cart-icon:hover {
-            color: #f312a4;
-        }
+/* Cart icon hover effect */
+.cart-icon:hover {
+    background-color: #f312a4;
+    color: #fff;
+}
+
 
         .product-items:hover .add-to-cart-btn {
             opacity: 1;
@@ -367,7 +373,7 @@
         }
 
         /* Uniform Image Size */
-        .product-item img {
+        .product-item  img {
             width: 100%;
             height: 220px;
             /* Fixed height for uniformity */
@@ -376,7 +382,6 @@
             margin-bottom: 10px;
             background: rgba(0, 0, 0, 0.3);
         }
-
         .product-item h4,
         .product-item p {
             margin: 5px 0;
@@ -390,7 +395,7 @@
         .add-to-cart-btn {
             display: none;
             position: absolute;
-            top: 65%;
+            top: 60%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: transparent;
@@ -507,6 +512,40 @@
             background-color: #e0569a;
             transform: scale(1.1);
         }
+        /* Optional: If you want to make the filled heart red */
+.wishlist-btn .fa-heart {
+    color: red;
+}
+
+.go-to-cart-btn {
+    display: none;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: transparent;
+    color: #fff;
+    border: 2px solid #eea5a5;
+    padding: 12px 18px;
+    font-size: 16px;           /* Slightly smaller text */
+    border-radius: 5px;
+    width: 200px;
+    transition: 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* Show on hover */
+.product-item:hover .go-to-cart-btn {
+    display: block;
+            background: #ede8e8;
+            color: rgb(236, 151, 164);
+}
+
+.go-to-cart-btn:hover {
+    background-color: #218838;
+}
+
     </style>
 </head>
 <body>
@@ -586,11 +625,12 @@
             <div class="deals-images">
                 @foreach($hotDeals as $product)
                     <div class="product-items">
-                        <!-- Product Image -->
-                        <img src="{{ asset($product->image) }}" alt="{{ $product->product_name }}">
-                        <!-- Product Info -->
+                        <a  href="{{ route('user.productDetails.show', ['id' => $product->id]) }}">
+                            <img src="{{ asset($product->image) }}" alt="Product Image">
+                        </a>
                         <div class="product-info">
                             <h3>{{ $product->product_name }}</h3>
+                            
                             <form name="addtocart-form" method="post" action="{{ route('cart.add') }}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $product->id }}" />
@@ -602,17 +642,17 @@
                                     <i class="cart-icon fa fa-shopping-cart"></i>
                                 </button>
                             </form>
-                            <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                            <form action="{{ route('wishlists.add', $product->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="wishlist-btn">
-                                    <i class="fa fa-heart-o"></i>
+                                    <i class="fa {{ in_array($product->id, $items->toArray()) ? 'fa-heart' : 'fa-heart-o' }}"></i>
                                 </button>
                             </form>
                         </div>
                         <!-- Price Section -->
                         <div class="price-section">
-                            <p><span class="sale-price">${{ number_format($product->discount_price, 0) }}</span></p>
-                            <p><span class="regular-price">${{ number_format($product->regular_price, 0) }}</span></p>
+                            <p><span class="sale-price">Rs.{{ number_format($product->discount_price, 0) }}</span></p>
+                            <p><span class="regular-price">Rs.{{ number_format($product->regular_price, 0) }}</span></p>
                         </div>
                     </div>
                 @endforeach
@@ -625,6 +665,13 @@
         <div class="product-list">
             @foreach($products as $product)
                 <div class="product-item">
+                    <a href="{{ route('user.productDetails.show', ['id' => $product->id]) }}">
+                        <img src="{{ asset($product->image) }}" alt="Product Image">
+                    </a>
+                    @if(in_array($product->id, $cartItems))
+                    <!-- If the product is already in the cart, show "Go to Cart" button -->
+                    <a href="{{ route('user.cart') }}" class="go-to-cart-btn">Go to Cart</a>
+                @else
                     <!-- Add to Cart button - will appear centered over image on hover -->
                     <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
                         @csrf
@@ -633,26 +680,27 @@
                         <input type="hidden" name="name" value="{{$product->product_name}}" />
                         <input type="hidden" name="price"
                             value="{{$product->sale_price == '' ? $product->regular_price : $product->sale_price}}" />
-                        <button class="add-to-cart-btn">Add to Cart</button>
-                    </form>
-                    <a href="{{ route('user.productDetails.show', ['id' => $product->id]) }}">
-                        <img src="{{ asset($product->image) }}" alt="Product Image">
-                    </a>
+                            <!-- Display "Add to Cart" button if the product is not in the cart -->
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                                    </form>
+                                    @endif
+
                     <h4>{{ $product->brand->brand_name }}</h4>
                     <p>{{ $product->product_name }}</p>
                     <p>Rs. {{ number_format($product->sale_price, 0) }}</p>
                     <!-- Wishlist Button -->
-                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                    <form action="{{ route('wishlists.add', $product->id) }}" method="POST">
                         @csrf
                         <button type="submit" class="wishlist-btn">
-                            <i class="fa fa-heart-o"></i>
+                            <i class="fa {{ in_array($product->id, $items->toArray()) ? 'fa-heart' : 'fa-heart-o' }}"></i>
                         </button>
                     </form>
                 </div>
             @endforeach
         </div>
     </section>
-    <a href="{{ route('user.shop') }}" class="load-more">Load More</a>
+
+    <a href="{{ route('user.shop') }}" class="load-more">Show All</a>
     <a href="{{route('chat.index')}}" class="chat-float-button" title="Chat with Users">
         <i class="fas fa-comment-dots"></i>
     </a>
