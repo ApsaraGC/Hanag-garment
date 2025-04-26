@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\UserCart;
 use App\Models\Wishlist;
@@ -20,6 +21,7 @@ public function dashboard(Request $request){
         // Show only the first 4 products initially
 
     $products = Product::latest()->take(5)->get(); // Order by creation date (latest products first)
+    $categories = Category::all(); // Or use any other query to fetch categories
 
     //$products = Product::all(); // Fetch all products from the database
     $search = $request->input('search', ''); // Default to an empty string if no search term is provided
@@ -31,7 +33,7 @@ public function dashboard(Request $request){
 
 $cartItems = UserCart::where('user_id', Auth::id())->where('status', 'pending')->pluck('product_id')->toArray();
 
-    return view('dashboard', compact('products', 'hotDeals','search','items','cartItems'));
+    return view('dashboard', compact('products', 'hotDeals','search','items','cartItems','categories'));
 
 }
 
@@ -55,7 +57,6 @@ public function addToWishlist($product_id)
         'user_id' => Auth::id(),
         'product_id' => $product->id
     ]);
-/*******  9304c684-9249-4fe9-ae3d-87ceb2269857  *******/
 
     return redirect()->route('dashboard')->with('popup_message', 'Product added to your wishlist!');
 }
@@ -63,18 +64,27 @@ public function hotDeals()
 {
     // Fetch the first 6 products for hot deals
     $hotDeals = Product::take(5)->get();
-   // Calculate discounts for the hot deals (10% off) if no sale price is set
-   foreach ($hotDeals as $product) {
-    if (empty($product->sale_price) || $product->sale_price >= $product->regular_price) {
+
+    // Calculate discounts for the hot deals (10% off) if no sale price is set
+    foreach ($hotDeals as $key => $product) {
+        // If sale price exists and is greater than the regular price, remove this product from the collection
+        if ($product->sale_price >= $product->regular_price) {
+            $hotDeals->forget($key); // Remove the product from the collection
+            continue; // Skip to the next product
+        }
+
         // If sale price is not set or sale price is greater than or equal to regular price, apply a 10% discount
-        $product->discount_price = $product->regular_price - ($product->regular_price * 0.10);
-    } else {
-        // If sale price exists and is less than regular price, use the sale price directly
-        $product->discount_price = $product->sale_price;
+        if (empty($product->sale_price)) {
+            $product->discount_price = $product->regular_price - ($product->regular_price * 0.10);
+        } else {
+            // If sale price exists and is less than regular price, use the sale price directly
+            $product->discount_price = $product->sale_price;
+        }
     }
-}
+
     return $hotDeals;
 }
+
 
 public function welcome(){
     $products = Product::all(); // Fetch all products from the database

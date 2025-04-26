@@ -149,7 +149,7 @@
         }
 
         .btn-light {
-            background-color: #F070BB;
+            background-color: #E63946;
             margin-left: 630px;
         }
 
@@ -317,6 +317,22 @@
                                             <p><strong>{{ $item->product->product_name }}</strong></p>
                                             <p>Color: {{ $item->product->color ?? 'N/A' }}</p>
                                             <p>Size: {{ $item->product->size ?? 'N/A' }}</p>
+ <!-- Size Drop-down for Cart -->
+ {{-- <form action="{{ route('cart.update.size', ['productId' => $item->product->id]) }}" method="POST">
+    @csrf
+    <label for="size">Size:</label>
+    <select name="size" onchange="this.form.submit()">
+        @php
+            $sizes = explode(',', $item->product->size);
+        @endphp
+        @foreach ($sizes as $size)
+            <option value="{{ trim($size) }}"
+                {{ $item->size == trim($size) ? 'selected' : '' }}>
+                {{ trim($size) }}
+            </option>
+        @endforeach
+    </select>
+</form> --}}
                                         </div>
                                     </div>
                                 </td>

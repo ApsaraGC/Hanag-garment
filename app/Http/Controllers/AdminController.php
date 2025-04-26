@@ -10,9 +10,11 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+
     public function navbar(){
         return view('admin.navbar');
     }
@@ -29,9 +31,12 @@ class AdminController extends Controller
         // Filter Revenue Based on Payment Type
         $pendingRevenue = Payment::where('payment_method', 'cod')->sum('amount');
         $onlineRevenue = Payment::where('payment_method', 'khalti')->sum('amount');
+          // ✅ Get recent 5 or 10 orders with related data
+    $recentOrders = Order::with(['user', 'products'])->latest()->take(5)->get();
+
     // Fetch brands with product count
     $brands = Brand::withCount('products')->get();
-        return view('admin.dashboard',compact('totalUsers', 'onlineRevenue','pendingRevenue','totalProducts', 'totalBrands', 'totalOrders', 'categories','brands','totalEarnings'));
+        return view('admin.dashboard',compact('totalUsers', 'onlineRevenue','pendingRevenue','totalProducts', 'totalBrands', 'totalOrders', 'categories','brands','totalEarnings','recentOrders'));
     }
 
     public function brands(Request $request)
@@ -49,6 +54,7 @@ class AdminController extends Controller
 
 
     public function addBrand(){
+
         return view('admin.add-brand');
     }
     public function saveBrand(Request $request){
@@ -119,20 +125,35 @@ public function categories(){
     return view('admin.category',compact('categories'));
 }
 public function addCategory(){
+
     return view('admin.add-category');
 }
 public function saveCategory(Request $request){
+
     $request->validate([
         'category_name' => 'required|string|max:255',
         'description' => 'nullable|string|max:255',
-
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Validate image
     ]);
 
-    Category::create([
-        'category_name' => $request->category_name,
-        'description' => $request->description,
-    ]);
+    $category = new Category();
+    $category->category_name = $request->category_name;
+    $category->description=$request->description;
 
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $fileName = Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('build/assets/images/brands'), $fileName);
+            $category->image = $fileName;  // Correct column name from migration
+        }
+        $category->save(); // Ensure data is saved in the database
+
+    // Create the category record with or without an image
+    // Category::create([
+    //     'category_name' => $request->category_name,
+    //     'description' => $request->description,
+    //     'image' => $imageUrl,  // Save image path in the database
+    // ]);
     return redirect()->route('admin.categorys')->with('popup_message', 'Category Added Successfully');
 }
 
@@ -146,16 +167,40 @@ public function updateCategory(Request $request, $id)
     $request->validate([
         'category_name' => 'nullable|string|max:255',
         'description' => 'nullable|string|max:255',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Validate image
     ]);
 
+    // Retrieve the existing category
     $category = Category::findOrFail($id);
-    $category->update([
-        'category_name' => $request->category_name,
-        'description' => $request->description,
-    ]);
+
+    // Handle image upload if present
+    $category->category_name = $request->category_name;
+    $category->description=$request->description;
+    // Update brand name if provided
+    if ($request->has('category_name') && $request->category_name !== null) {
+        $category->category_name = $request->category_name;
+    }
+    // Handle Image Upload
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $fileName = Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('build/assets/images/brands'), $fileName);
+        $category->image = $fileName;  // Correct column name from migration
+    }
+    $category->save();
+    // // Update the category record with the new or retained image
+    // $category->update([
+    //     'category_name' => $request->category_name,
+    //     'description' => $request->description,
+    //     'image' => $imageUrl,  // Save image path in the database
+    // ]);
+
+    // Debugging check: Make sure the category has been updated
+    // dd($category);
 
     return redirect()->route('admin.categorys')->with('popup_message', 'Category Updated Successfully');
 }
+
 
 // Delete the Category
  public function deleteCategory($id)

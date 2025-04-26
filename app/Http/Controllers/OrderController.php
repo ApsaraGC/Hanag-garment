@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;  // This imports the Auth facade
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -15,7 +16,10 @@ class OrderController extends Controller
     public function viewOrders(Request $request)
     {
         // Fetch all orders along with related data (like user and products in the order)
-        $orders = Order::with('user', 'products')->paginate(10);
+        // Fetch all orders along with related data (like user and products in the order)
+        $orders = Order::with('user', 'products','payment',)
+            ->orderBy('created_at', 'desc') // Sort by created_at in descending order
+            ->paginate(10);
         // Pass orders to the view
         return view('admin.order', compact('orders'));
     }
@@ -40,47 +44,53 @@ class OrderController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Find the order by ID or fail if not found
         $order = Order::findOrFail($id);
-        $order->update($request->all());
+
+        // Validate the incoming request for the status (optional, but recommended)
+        $request->validate([
+            'status' => 'required|in:pending,completed,cancelled', // Ensure only valid status
+        ]);
+
+        // Update only the status field or any other fields you want to update
+        $order->update([
+            'status' => $request->status, // Update the status field
+            // Add other fields here if needed
+        ]);
+
+        // Redirect with a success message
         return redirect()->route('admin.order')->with('popup_message', 'Order updated successfully');
     }
 
     public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+        return redirect()->route('admin.order')->with('popup_message', 'Order deleted successfully');
+    }
+
+    public function viewOrder($orderId)
 {
-    $order = Order::findOrFail($id);
-    $order->delete();
-    return redirect()->route('admin.order')->with('popup_message', 'Order deleted successfully');
+    // Fetch the order along with the related data (user, products, payment)
+    $order = Order::with(['user', 'products', 'payment',])
+                  ->findOrFail($orderId); // Fetch the order by ID
+
+    // Fetch the user's cart with selected size for the products in the order
+
+    // Pass the order and the sizes to the view
+    return view('admin.view-order', compact('order'));
 }
-// public function viewOrderBill($id)
-// {
-//     $order = Order::with('user', 'products')->findOrFail($id);
-//     $user = $order->user;
-
-//     return view('user.orderBill', compact('order', 'user'));
-// }
-// public function allOrders()
-// {
-//     $orders = Order::all(); // or paginate if needed
-//     return view('admin.vieworder', compact('orders'));
-// }
-
-
 
     public function downloadOrderBill($id)
-{
-    // Fetch the order and user details
-    $order = Order::findOrFail($id);
-    $user = auth()->user();
+    {
+        // Fetch the order and user details
+        $order = Order::findOrFail($id);
+        $user = auth()->user();
 
-    // Generate PDF from view
-    $pdf = PDF::loadView('user.BillPdf', compact('user', 'order'));
+        // Generate PDF from view
+        $pdf = PDF::loadView('user.BillPdf', compact('user', 'order'));
 
-    // Download the PDF
-    return $pdf->download('order_bill_' . $id . '.pdf');
-}
-
-
-
-
-
+        // Download the PDF
+        return $pdf->download('order_bill_' . $id . '.pdf');
+    }
 }

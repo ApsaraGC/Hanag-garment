@@ -125,7 +125,41 @@
     background-color: #e0569a;
     transform: scale(1.1);
 }
+  /* Table */
+  table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+        }
 
+        th,
+        td {
+            border: 1px solid #ffc0cb;
+            padding: 8px; /* Decrease the padding to reduce the space between columns */
+            text-align: left;
+            font-size: 16px;
+        }
+        th {
+            background: #ff66b2;
+            color: white;
+        }
+        tr {
+    /* Removing any extra padding from the row itself */
+    line-height: 1.4; /* Adjust the line height to make the rows tighter */
+}
+tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
+
+
+        tr:hover {
+            background: #ffe6f2;
+        }
 
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -169,6 +203,44 @@
                 <p>Rs.{{ number_format($onlineRevenue, 2) }}</p>
             </div>
         </div>
+        <div style="margin-top: 30px;">
+            <h2 style="margin-bottom: 15px; text-align: center;">Recent Orders</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 0px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <thead style="background-color: #ff69b4; color: white;">
+                        <tr>
+                            <th style="padding: 12px; text-align: center;">Order ID</th>
+                            <th style="padding: 12px; text-align: center;">Customer</th>
+                            <th style="padding: 12px; text-align: center;">Total (Rs)</th>
+                            <th style="padding: 12px; text-align: center;">Status</th>
+                            <th style="padding: 12px; text-align: center;">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($recentOrders as $order)
+                            <tr style="text-align: center; border-bottom: 1px solid #eee; background-color: #fafafa; transition: background-color 0.3s ease;">
+                                <td style="padding: 12px;">{{ $order->id }}</td>
+                                <td style="padding: 12px;">{{ $order->user->full_name ?? 'Guest' }}</td>
+                                <td style="padding: 12px;">{{ number_format($order->total_amount, 2) }}</td>
+                                <td style="padding: 12px;">
+                                    <span style="color: {{ $order->status == 'pending' ? '#e67e22' : ($order->status == 'completed' ? '#27ae60' : '#c0392b') }};">
+                                        {{ ucfirst($order->status) }}
+                                    </span>
+                                </td>
+                                <td style="padding: 12px;">{{ $order->created_at->format('d M Y') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" style="padding: 15px; text-align: center; background-color: #fff;">No recent orders found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
         <div class="chart-container">
             <div class="chart-box">
                 <h3>Products per Category</h3>

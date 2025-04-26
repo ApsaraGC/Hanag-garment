@@ -36,7 +36,7 @@ class ProductController extends Controller
                 ->paginate(8);
         } else {
             // No search term, show all products
-            $products = Product::paginate(8);
+            $products = Product::orderBy('created_at', 'desc')->paginate(8); // Sort by created_at in descending order
         }
         return view('admin.products', compact('products', 'search'));
     }
@@ -50,8 +50,8 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'short_description' => 'required|string',
             'description' => 'nullable|string',
-            'regular_price' => 'required|numeric',
-            'sale_price' => 'nullable|numeric',
+            'regular_price' => 'nullable|numeric',
+            'sale_price' => 'nullable|numeric|lte:regular_price', // Ensures sale price is less than or equal to regular price
             'stock_status' => 'required|in:instock,outofstock',
             'quantity' => 'required|integer|min:1',
             'color' => 'nullable|string',
@@ -74,7 +74,7 @@ class ProductController extends Controller
         $product->quantity = $request->quantity;
         $product->is_featured = ($request->is_featured == 'on') ? 1 : 0; // Ensure it's always set to false if not checked
         $product->color = $request->color;
-        $product->size = $request->size;
+        $product->size = $request->size; // e.g., "Small,Medium,Large"
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
         // Handle Single Image Upload
@@ -238,7 +238,7 @@ class ProductController extends Controller
             'short_description' => 'required|string',
             'description' => 'nullable|string',
             'regular_price' => 'required|numeric',
-            'sale_price' => 'nullable|numeric',
+            'sale_price' => 'required|numeric|lte:regular_price', // Ensures sale price is less than or equal to regular price
             'stock_status' => 'required|in:instock,outofstock',
             'quantity' => 'required|integer|min:1',
             'color' => 'nullable|string',

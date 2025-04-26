@@ -84,7 +84,7 @@
 
         .main-content h1 {
 
-            color: #ff1493;
+         color: #ff1493;
             margin: 0;
             text-align: center;
             font-size: 30px;
@@ -95,30 +95,35 @@
             width: 1000px;
             border-collapse: collapse;
             background: white;
-            border-radius: 10px;
+            border-radius: 0px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-
         th,
         td {
-            padding: 12px 15px;
+            border: 1px solid #ffc0cb;
+            padding: 8px; /* Decrease the padding to reduce the space between columns */
             text-align: left;
+            font-size: 16px;
         }
-
-        thead {
-            background-color: #ff69b4;
+        th {
+            background: #ff66b2;
             color: white;
         }
+        tr {
+    /* Removing any extra padding from the row itself */
+    line-height: 1.4; /* Adjust the line height to make the rows tighter */
+}
+tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
 
-        tbody tr:nth-child(odd) {
-            background-color: #fff0f5;
-            /* light pink */
-        }
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
 
-        tbody tr:nth-child(even) {
-            background-color: #ffe4ec;
-            /* slightly different pink */
+        tr:hover {
+            background: #ffe6f2;
         }
 
         /* Buttons */
@@ -210,7 +215,8 @@
     @method('DELETE')
     <button type="submit" style="border: none; background: none;" title="Delete"
         onclick="return confirm('Are you sure you want to delete this user?')">
-        <i class="fas fa-trash" style="color:red;"></i>
+        <i class="fas fa-trash-alt"
+        style="color:red;"></i>
     </button>
 </form>
 

@@ -436,7 +436,7 @@
             display: inline-block;
             background-color: #F070BB;
             color: white;
-            margin-left: 650px;
+            margin-left: 550px;
             text-align: center;
             padding: 10px 20px;
             border-radius: 5px;
@@ -578,39 +578,16 @@
     <section class="you-might-like">
         <h2>You Might Like</h2>
         <div class="carousel-items">
-            <div class="carousel-item">
-                <img src="{{ asset('images/brands/Satin_Green.png') }}" alt="Item">
-                <p>Floral Gown</p>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/brands/Midi_Grad_34.png') }}" alt="Item">
-                <p>Casual Summar</p>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/brands/light_pink1.png') }}" alt="Item">
-                <p>A-Line Skirts</p>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/brands/White_one.png') }}" alt="Item">
-                <p>One piece</p>
-            </div>
+            @foreach($categories as $category)
 
             <div class="carousel-item">
-                <img src="{{ asset('images/brands/White_long.png') }}" alt="Item">
-                <p>Party Gown</p>
+                @if ($category->image)
+                <img src="{{ asset('build/assets/images/brands/' . $category->image) }}" alt="{{ $category->category_name }}">
+            @else
+                <img src="{{ asset('images/default.png') }}" alt="No Image">
+            @endif                <p>{{ $category->category_name }}</p>
             </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/brands/Maroon_3.png') }}" alt="Item">
-                <p>Pleates Skirts</p>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/brands/Brown_white.png') }}" alt="Item">
-                <p>Formal Dress</p>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('images/brands/Midi_Grad.png') }}" alt="Item">
-                <p>Denim Skirts</p>
-            </div>
+            @endforeach
         </div>
     </section>
     <div>
@@ -630,7 +607,7 @@
                         </a>
                         <div class="product-info">
                             <h3>{{ $product->product_name }}</h3>
-                            
+
                             <form name="addtocart-form" method="post" action="{{ route('cart.add') }}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $product->id }}" />

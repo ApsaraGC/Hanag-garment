@@ -30,5 +30,13 @@ class Order extends Model
         return $this->hasMany(order_items::class); // Assuming the related model is OrderItem
     }
 
-
+// In Order.php (Order model)
+public function payment()
+{
+    return $this->hasOne(Payment::class); // or belongsTo depending on your schema
+}
+public function userCarts()
+{
+    return $this->hasMany(UserCart::class);
+}
 }

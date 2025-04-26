@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product - Hanag's Garment</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
         /* General Styles */
@@ -24,6 +25,34 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
+        /* body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+
+.admin-panels {
+    height: 70px; /* Set your navbar height} */
+
+/* .content-scroll {
+            width: 80%;
+            display: flex;
+            justify-content: center;
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        margin-bottom: 10px;
+        } */
+
+        /* .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #ffffff;
+            padding: 30px;
+            height: 920px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        } */
 
         h2 {
             color: #ff1493;
@@ -167,6 +196,11 @@
     </style>
 </head>
 <body>
+    {{-- <div class="admin-panels">
+        @include('admin.navbar')
+    </div> --}}
+    {{-- <div class="content-scroll"> --}}
+
     <div class="container">
         <h2>Update Product</h2>
         <form action="{{route('admin.updateProducts', $product->id)}}" method="POST" enctype="multipart/form-data">
@@ -206,13 +240,13 @@
          @enderror
 
                 <div class="form-group">
-                    <label for="regular_price">Regular Price ($)</label>
+                    <label for="regular_price">Regular Price (Rs.)</label>
                     <input type="number" id="regular_price" name="regular_price" value="{{ old('regular_price',$product->regular_price) }}">
                 </div>
                 @error('regular_price')<span style="color:red;">{{$message}}</span>
          @enderror
                 <div class="form-group">
-                    <label for="sale_price">Sale Price ($)</label>
+                    <label for="sale_price">Sale Price (Rs.)</label>
                     <input type="number" id="sale_price" name="sale_price" value="{{ old('sale_price',$product->sale_price) }}">
                 </div>
                 @error('sale_price')<span style="color:red;">{{$message}}</span>
@@ -293,8 +327,8 @@
             </div>
             <button type="submit" class="btn-submit">Update Product</button>
         </form>
+    {{-- </div> --}}
     </div>
-
     <script>
 // Main Image Preview
 function previewImage(event, previewId) {

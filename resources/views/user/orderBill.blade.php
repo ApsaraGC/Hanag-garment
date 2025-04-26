@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Invoice - Hanag Garments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/> --}}
 
     <style>
         body {
@@ -193,13 +194,13 @@
             <p><strong>Sub Total:</strong> Rs.{{ number_format($order->sub_total, 2) }}</p>
             <p><strong>Shipping:</strong> Rs.150.00</p>
             <p><strong>Total:</strong> Rs.{{ number_format($order->total_amount, 2) }}</p>
-            <p><strong>Type:</strong>{{$order->order_type}}</p>
+            {{-- <p><strong>Type:</strong>{{$order->order_type}}</p> --}}
         </div>
         <div class="footer">
             <div>
-                <p><i class="fa fa-phone"></i> +977-9800000000</p>
-                <p><i class="fa fa-envelope"></i> hanag@domain.com</p>
-                <p><i class="fa fa-globe"></i> www.hanag.com</p>
+                <p class="icon"><i class="fa fa-phone"></i> +977-9800000000</p>
+                <p class="icon"><i class="fa fa-envelope"></i> hanag@domain.com</p>
+                <p class="icon"><i class="fa fa-globe"></i> www.hanag.com</p>
             </div>
         </div>
         <hr>

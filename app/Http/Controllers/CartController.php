@@ -67,6 +67,7 @@ public function addToCart(Request $request)
             'product_id' => $product->id,
             'product_name' => $request->name,
             'price' => $product->sale_price,
+            'size'=>$request->selected_size,
             'quantity' => 1, // Set the default quantity to 1
             'status' => 'pending',  // Set status as pending
         ]);
@@ -75,6 +76,31 @@ public function addToCart(Request $request)
     // Redirect back to the cart page with success message
     return redirect()->route('user.cart')->with('success', 'Product added to cart successfully!');
 }
+// In CartController.php
+public function updateSize(Request $request, $productId)
+{
+    // Validate the input size
+    $validated = $request->validate([
+        'size' => 'required|string',
+    ]);
+
+    // Get the user's cart for the given product
+    $cart = UserCart::where('user_id', auth()->id())
+                   ->where('product_id', $productId)
+                   ->first();
+
+    if ($cart) {
+        // Update the size in the cart
+        $cart->size = $validated['size'];
+        $cart->updated_at = now();
+        $cart->save();
+
+        return back()->with('success', 'Cart size updated successfully!');
+    }
+
+    return back()->with('error', 'Cart not found!');
+}
+
     /**
      * Increase the quantity of a product in the cart.
      */

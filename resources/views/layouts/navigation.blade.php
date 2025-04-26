@@ -224,10 +224,10 @@
         </nav>
       @endif
 
-      @auth
+      {{-- @auth --}}
       <a href="{{ route('user.cart') }}"><i class="fas fa-shopping-cart"></i></a>
-      <a href="{{ route('user.wishlist') }}"><i class="fa fa-heart-o"></i></a>
-    @endauth
+      <a href="{{ route('user.wishlist') }}"><i class="fas fa-heart-o"  ></i></a>
+    {{-- @endauth --}}
 
     </div>
   </header>

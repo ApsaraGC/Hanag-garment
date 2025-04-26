@@ -88,14 +88,15 @@ h3 {
 /* Buttons */
 .btn {
     padding: 10px 15px;
-    background: #ff1493;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: 0.3s;
-    cursor: pointer;
-    margin-left: 10px;
+            background: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s;
+            cursor: pointer;
 }
 
 .btn:hover {
@@ -211,7 +212,11 @@ tbody tr:nth-child(even) {
         <div class="main-content-wrap">
             <div class="flex">
                 <h3>Category</h3>
+                @if(Auth::user() && Auth::user()->role == 'ADM')
                 <a href="{{route('admin.add-category')}}" class="btn"> Add Category</a>
+@endif
+
+                {{-- <a href="{{route('admin.add-category')}}" class="btn"> Add Category</a> --}}
 
             </div>
 
@@ -238,8 +243,10 @@ tbody tr:nth-child(even) {
                     <thead>
                         <tr>
                             <th>S.N</th>
+                            <th>Image</th>
                             <th>Name</th>
                             <th>Description</th>
+
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -248,6 +255,14 @@ tbody tr:nth-child(even) {
                         <tr>
                             <td>{{ $category->id }}</td>
                             <td>{{ $category->category_name }}</td>
+                            <td>
+                              
+                                    @if ($category->image)
+                                        <img src="{{ asset('build/assets/images/brands/' . $category->image) }}" width="50">
+                                    @else
+                                        <span style="color: #ccc;">No Image</span>
+                                    @endif
+                                                    </td>
                             <td>{{$category->description ?? 'N/A'}}
                             </td>
                             <td>

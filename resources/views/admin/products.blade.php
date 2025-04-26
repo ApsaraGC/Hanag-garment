@@ -35,7 +35,6 @@
         h3 {
             color: #ff1493;
             margin: 0;
-            text-align: center;
             font-size: 20px;
         }
         /* Breadcrumbs */
@@ -102,10 +101,10 @@
 
         th,
         td {
-            border: 1px solid #de7586;
+            border: 1px solid #ffc0cb;
             padding: 8px; /* Decrease the padding to reduce the space between columns */
             text-align: left;
-            font-size: 14px;
+            font-size: 16px;
         }
         th {
             background: #ff66b2;
@@ -313,7 +312,7 @@ tbody tr:nth-child(even) {
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>S.N</th>
                     <th>Image</th>
                     <th>Name</th>
                     <th>Category</th>
@@ -339,7 +338,7 @@ tbody tr:nth-child(even) {
                             <td>{{ $product->product_name }}</td>
                             <td>{{ $product->category->category_name }}</td>
                             <td>{{ $product->brand->brand_name ?? 'N/A' }}</td>
-                            <td>${{ $product->regular_price }}</td>
+                            <td>Rs. {{ $product->sale_price }}</td>
                             <td>{{ $product->stock_status }}</td>
                             <td>{{ $product->quantity }}</td>
                             <td>
@@ -349,7 +348,7 @@ tbody tr:nth-child(even) {
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" style="background:none; border:none; color:red;">
-                                        <i class="fas fa-trash"></i>
+                                        <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
                             </td>

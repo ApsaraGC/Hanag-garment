@@ -41,26 +41,46 @@
         }
 
         h1, h2 {
-            color: #333;
+            color:#ff66b2;
             margin-bottom: 20px;
         }
 
+        /* Table */
         table {
             width: 100%;
-            margin-top: 10px;
             border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
         }
 
-        table th, table td {
-            padding: 10px;
+        th,
+        td {
+            border: 1px solid #ffc0cb;
+            padding: 8px; /* Decrease the padding to reduce the space between columns */
             text-align: left;
-            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        th {
+            background: #ff66b2;
+            color: white;
+        }
+        tr {
+    /* Removing any extra padding from the row itself */
+    line-height: 1.4; /* Adjust the line height to make the rows tighter */
+}
+tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
+
+
+        tr:hover {
+            background: #ffe6f2;
         }
 
-        table th {
-            background-color: #f471b7;
-            color:white;
-        }
 
         /* Chart Styles */
         #ratingsPieChart {

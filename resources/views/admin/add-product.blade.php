@@ -252,12 +252,18 @@ input[type=number]#sale_price {
                 </div>
                 @error('color')<span style="color:red;">{{$message}}</span>
                 @enderror
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="size">Size</label>
                     <input type="number" id="size" name="size" value="{{ old('size') }}">
                 </div>
                 @error('size')<span style="color:red;">{{$message}}</span>
-                @enderror
+                @enderror --}}
+                <div class="form-group">
+                    <label for="size">Sizes</label>
+                    <input type="text" id="size" name="size" value="{{ old('size') }}">
+                </div>
+                @error('size')<span style="color:red;">{{$message}}</span>@enderror
+
                 <div class="form-group">
                     <label for="short_description">Short Description</label>
                     <input type="text" id="short_description" name="short_description"
@@ -273,13 +279,13 @@ input[type=number]#sale_price {
                 @enderror
 
                 <div class="form-group">
-                    <label for="regular_price">Regular Price ($)</label>
+                    <label for="regular_price">Regular Price (Rs.)</label>
                     <input type="number" id="regular_price" name="regular_price" value="{{ old('regular_price') }}">
                 </div>
                 @error('regular_price')<span style="color:red;">{{$message}}</span>
                 @enderror
                 <div class="form-group">
-                    <label for="sale_price">Sale Price ($)</label>
+                    <label for="sale_price">Sale Price (Rs.)</label>
                     <input type="number" id="sale_price" name="sale_price" value="{{ old('sale_price') }}">
                 </div>
                 @error('sale_price')<span style="color:red;">{{$message}}</span>

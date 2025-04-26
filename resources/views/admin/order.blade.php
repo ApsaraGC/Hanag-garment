@@ -28,6 +28,7 @@ body {
 /* Main Content Styles */
 .main-content-inner {
     flex: 1;
+    overflow-x: hidden;
     margin-left: 200px; /* Offset for the sidebar */
     padding: 20px;
     background-color: #fff;
@@ -210,6 +211,20 @@ tbody tr:nth-child(even) {
             padding: 8px;
             border: 1px solid #ffc0cb;
         }
+        .status-dropdown {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ff1493;
+    background-color: #ffe6f2;
+    color: #ff1493;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.status-dropdown:hover {
+    background-color: #ff1493;
+    color: white;
+}
 
     </style>
 
@@ -254,10 +269,9 @@ tbody tr:nth-child(even) {
                         <th>Order ID</th>
                         <th>User Name</th>
                         <th>User Address</th>
-                        <th>User Email</th>
-                        <th>Order Type</th>
+                        <th>User Phone</th>
+                        <th>Payment Type</th>
                         <th>Product Name</th>
-                        <th>Product Size</th>
                         <th>Total Amount</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -269,7 +283,7 @@ tbody tr:nth-child(even) {
                             <td>{{ $order->id }}</td>
                             <td>{{ $order->user->full_name ?? 'N/A' }}</td> <!-- User Name -->
                             <td>{{ $order->user->address ?? 'N/A' }}</td> <!-- User Address -->
-                            <td>{{ $order->user->email ?? 'N/A' }}</td> <!-- User Address -->
+                            <td>{{ $order->user->phone_number ?? 'N/A' }}</td> <!-- User Address -->
 
                             <td>{{ $order->order_type }}</td>
                             <td>
@@ -282,26 +296,35 @@ tbody tr:nth-child(even) {
                                         N/A
                                     @endif
                             </td>
+                            <td>{{ $order->total_amount }}</td>
                             <td>
-                                @foreach($order->products as $product)
-                                    {{ $product->size ?? 'N/A' }} <br> <!-- Product Size -->
-                                @endforeach
+                                <form action="{{ route('admin.updateOrder', ['order' => $order->id]) }}" method="POST" class="status-form">
+                                    @csrf
+                                    @method('PUT')
+                                    <select name="status" onchange="this.form.submit()" class="status-dropdown">
+                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    </select>
+                                </form>
                             </td>
 
-                            <td>{{ $order->total_amount }}</td>
-                            <td>{{ $order->status }}</td>
-                            <td class="action-icons">
-                                <a href="{{ route('admin.update-order', ['order' => $order->id]) }}">
+                            {{-- <td>{{ $order->status }}</td> --}}
+                            <td >
+                                {{-- <a href="{{ route('admin.update-order', ['order' => $order->id]) }}">
                                     <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('admin.destroyOrder', ['order' => $order->id]) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" style="background:none;border:none;color:#ff1414;cursor:pointer;" onclick="return confirm('Are you sure?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-
+                                </a> --}}
+                                    <!-- View Icon -->
+                                    <a href="{{ route('admin.view-order', ['order' => $order->id]) }}" style=" color: #ff1493; text-decoration: none; font-size: 18px;transition: 0.3s;">
+                                        <i class="fas fa-eye"></i> <!-- Eye icon for viewing order -->
+                                    </a>
+                                    {{-- <form action="{{ route('admin.destroyOrder', ['order' => $order->id]) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="background:none;border:none;color:#ff1414;cursor:pointer;" onclick="return confirm('Are you sure?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form> --}}
                             </td>
                         </tr>
                     @endforeach

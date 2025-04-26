@@ -92,7 +92,7 @@ Route::get('user/contact', [HomeController::class, 'contact'])->name('user.conta
 Route::get('user/profile', [HomeController::class, 'profile'])->name('user.profile');
 Route::post('/update-address', [ProfileController::class, 'updateAddress'])->name('update.address');
 
-Route::middleware(['auth', AuthAdmin::class])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('admin/navbar', [AdminController::class, 'navbar'])->name('admin.navbar');
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
@@ -114,8 +114,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::delete('admin/delete-category/{id}', [AdminController::class, 'deleteCategory'])->name('admin.deleteCategory');
 
     Route::get('admin/products', [ProductController::class, 'index'])->name('admin.products');
-    Route::get('admin/add-product', [ProductController::class, 'showAddProductForm'])->name('admin.add-product');
-    Route::post('admin/add-product', [ProductController::class, 'store'])->name('admin.storeProduct');
+    Route::get('admin/addproduct', [ProductController::class, 'showAddProductForm'])->name('admin.add-product');
+    Route::post('admin/add-products/create', [ProductController::class, 'store'])->name('admin.storeProduct');
     Route::get('/admin/products/{id}/edit', [ProductController::class, 'edit'])->name('admin.editProducts');
     Route::put('/admin/products/{id}/update', [ProductController::class, 'update'])->name('admin.updateProducts');
     // Route::delete('/admin/products/{id}', [ProductController::class, 'delete'])->name('admin.deleteProducts');
@@ -128,6 +128,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::get('/admin/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.update-order');
     Route::put('/admin/orders/{order}', [OrderController::class, 'update'])->name('admin.updateOrder');
     Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.destroyOrder');
+    Route::get('admin/orders/{order}', [OrderController::class, 'viewOrder'])->name('admin.view-order');
 
     // Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])->name('deleteUser');
 
@@ -173,6 +174,8 @@ Route::get('/admin/messages', [ContactController::class, 'index'])->name('admin.
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 // Route::get('/user/esewa/payment', [PaymentController::class, 'esewaPayment'])->name('user.esewa.payment');
 Route::get('/user/invoice', [InvoiceController::class, 'generateInvoice'])->name('user.invoice');
+// In web.php
+Route::post('/cart/update-size/{productId}', [CartController::class, 'updateSize'])->name('cart.update.size');
 
 
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');

@@ -93,7 +93,7 @@
 <body>
 
     <div class="admin-panel">
-        <h1>Edit User</h1>
+        <h1 style="color:#ff1493;">Edit User</h1>
         <form method="POST" action="{{ route('updateUser', $user->id) }}">
             @csrf
             @method('PUT')

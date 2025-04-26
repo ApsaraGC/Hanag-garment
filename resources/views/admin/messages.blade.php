@@ -52,7 +52,7 @@ table {
 th, td {
     padding: 12px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: 1px solid #ffc0cb;
 }
 
 th {
@@ -82,7 +82,7 @@ tbody tr:nth-child(even) {
     </div>
 
     <div class="container">
-        <h2>User Messages</h2>
+        <h2 style="color:#ff66b2;">User Messages</h2>
         <table border="1" width="100%">
             <thead>
                 <tr>

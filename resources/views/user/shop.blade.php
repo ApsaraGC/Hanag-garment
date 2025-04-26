@@ -118,7 +118,7 @@
             background: #fff;
             padding: 15px;
             border-radius: 20px;
-            height: 120vh;
+            height: 135vh;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: 23px 10px 15px;
             border-right: 1px solid #ddd;
@@ -228,6 +228,8 @@
         .pagination {
             text-align: center;
             margin-top: 20px;
+            margin-right: 30px;
+
         }
 
         .pagination a {
@@ -303,23 +305,19 @@
             height: 220px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
-
         .not-found-container h1 {
             font-size: 32px;
             color: #d9534f;
             margin-bottom: 20px;
         }
-
         .not-found-container p {
             font-size: 18px;
             color: #333;
             margin-bottom: 30px;
         }
-
         .not-found-container a {
             text-decoration: none;
         }
-
         .not-found-container button {
             background-color: #F070BB;
             color: #fff;
@@ -330,11 +328,9 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
         .not-found-container button:hover {
             background-color: #cc5a9d;
         }
-
         .go-to-cart-btn {
             display: none;
             position: absolute;
@@ -352,7 +348,6 @@
             text-align: center;
             text-decoration: none;
         }
-
         /* Show on hover */
         .product-item:hover .go-to-cart-btn {
             display: block;

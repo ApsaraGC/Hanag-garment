@@ -21,7 +21,6 @@
             display: flex;
             width: 100%;
             height: 100vh;
-
         }
          /* Sidebar */
         .sidebar {
@@ -131,19 +130,13 @@
                 <li><a href="{{route('admin.users')}}"><i class="fa fa-users"></i> Users</a></li>
                 <li><a href="{{route('admin.messages')}}"><i class="fa fa-envelope"></i> Messages</a></li>
                 <li><a href="{{route('admin.rating')}}"><i class="fa fa-star"></i> Rating</a></li>
-
                 <!-- Authentication (login/logout) -->
                 <li>
-                    @if (Route::has('login'))
-                        @auth
                             <form method="POST" action="{{route('logout')}}" id="logout-form">
                                 @csrf
                             <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fa fa-sign-out-alt"></i> Logout                            </a>
-                        @else
-                            <a href="{{ route('login') }}"><i class="fa fa-user"></i></a>
-                        @endauth
-                    @endif
+                                <i class="fa fa-sign-out-alt"></i> Logout </a>
+
                 </li>
             </ul>
         </div>

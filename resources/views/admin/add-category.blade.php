@@ -5,24 +5,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New category</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         /* General Styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffe6f2;
+
             margin: 0;
+            padding: 0;
+            overflow: hidden;
+            /* Prevent whole page scrolling */
+        }
+
+        .admin-panels {
+            height: 70px;
+            /* Set your navbar height */
+        }
+
+        .content-scroll {
+            display: flex;
+            justify-content: center;
+            flex-grow: 1;
             padding: 20px;
+            overflow-y: auto;
+            /* Enable vertical scrolling when content overflows */
+            margin-bottom: 10px;
         }
 
         .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+            max-width: 900px;
+            background-color: #ffffff;
+            padding: 30px;
+            height: 320px;
             border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         h3 {
@@ -95,7 +115,7 @@
         }
 
         .btn-secondary {
-            background: red;
+            background-color: #dc3545;
         }
 
         .btn-secondary:hover {
@@ -105,53 +125,61 @@
 </head>
 
 <body>
+    {{-- <div class="admin-panels">
+        @include('admin.navbar')
+    </div> --}}
     @if(session('popup_message'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: '{{ session('popup_message') }}',
-            timer: 3000,
-            showConfirmButton: false,
-            width: '350px',  // Adjust width as needed
-            padding: '5px', // Optional: Adjust padding
-            customClass: {
-                popup: 'swal-popup-small'
-            }
-        });
-    </script>
-@endif
-    <div class="container">
-        <h3>Add New Category</h3>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('popup_message') }}',
+                timer: 3000,
+                showConfirmButton: false,
+                width: '350px',  // Adjust width as needed
+                padding: '5px', // Optional: Adjust padding
+                customClass: {
+                    popup: 'swal-popup-small'
+                }
+            });
+        </script>
+    @endif
+    <div class="content-scroll">
 
-        <!-- Add category Form -->
-        <form action="{{ route('admin.saveCategory') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+        <div class="container">
+            <h3>Add New Category</h3>
 
-            <!-- category Name -->
-            <div class="form-group">
-                <label for="category_name">Category Name:</label>
-                <input type="text" id="category_name"value="{{old('category_name')}}" name="category_name" required placeholder="Enter category name">
-            </div>
-         @error('category_name')<span style="color:red;">{{$message}}</span>
-         @enderror
-         <div class="form-group">
-            <label for="description">Description:</label>
-            <input type="text" id="description"value="{{old('description')}}" name="description" required placeholder="Enter category name">
+            <!-- Add category Form -->
+            <form action="{{ route('admin.saveCategory') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <!-- category Name -->
+                <div class="form-group">
+                    <label for="category_name">Category Name:</label>
+                    <input type="text" id="category_name" value="{{old('category_name')}}" name="category_name">
+                </div>
+                @error('category_name')<span style="color:red;">{{$message}}</span>
+                @enderror
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" value="{{old('description')}}" name="description">
+                </div>
+                @error('description')<span style="color:red;">{{$message}}</span>
+                @enderror
+                <!-- Category Image -->
+                <div class="form-group">
+                    <label for="image">Category Image:</label>
+                    <input type="file" id="image" name="image">
+                </div>
+                @error('image')<span style="color:red;">{{ $message }}</span>@enderror
+
+                <!-- Buttons -->
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary">Save category</button>
+                    <a href="{{route('admin.categorys')}}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
         </div>
-     @error('description')<span style="color:red;">{{$message}}</span>
-     @enderror
-
-            <!-- Buttons -->
-            <div class="btn-container">
-                <button type="submit" class="btn btn-primary">Save category</button>
-                <a href="{{route('admin.categorys')}}" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
-
-
-
 </body>
 
 </html>

@@ -48,13 +48,14 @@ class Product extends Model
                     ->withPivot('quantity', 'price')
                     ->withTimestamps();
     }
+    
 
     public function reviews()
     {
         return $this->hasMany(Review::class);
     }
 
-   
+
 
  // Accessor for average rating
  public function getAverageRatingAttribute()

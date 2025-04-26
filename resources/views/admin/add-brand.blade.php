@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Brand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #ffe6f2;
@@ -91,11 +92,11 @@
         }
 
         .btn-primary:hover {
-            background: #cc117a;
+            background-color: #dc3545;
         }
 
         .btn-secondary {
-            background: red;
+            background-color: #dc3545;
         }
 
         .btn-secondary:hover {
@@ -105,72 +106,76 @@
 </head>
 
 <body>
-
+    {{-- <div class="admin-panels">
+        @include('admin.navbar')
+    </div> --}}
     @if(session('popup_message'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: '{{ session('popup_message') }}',
-            timer: 3000,
-            showConfirmButton: false,
-            width: '350px',  // Adjust width as needed
-            padding: '5px', // Optional: Adjust padding
-            customClass: {
-                popup: 'swal-popup-small'
-            }
-        });
-    </script>
-@endif
-    <div class="container">
-        <h3>Add New Brand</h3>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('popup_message') }}',
+                timer: 3000,
+                showConfirmButton: false,
+                width: '350px',  // Adjust width as needed
+                padding: '5px', // Optional: Adjust padding
+                customClass: {
+                    popup: 'swal-popup-small'
+                }
+            });
+        </script>
+    @endif
+    {{-- <div class="content-scroll"> --}}
 
-        <!-- Add Brand Form -->
-        <form action="{{ route('admin.saveBrand') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+        <div class="container">
+            <h3>Add New Brand</h3>
 
-            <!-- Brand Name -->
-            <div class="form-group">
-                <label for="brand_name">Brand Name:</label>
-                <input type="text" id="brand_name"value="{{old('brand_name')}}" name="brand_name" required placeholder="Enter brand name">
-            </div>
-         @error('brand_name')<span style="color:red;">{{$message}}</span>
-         @enderror
-            <!-- Brand Image Upload -->
-            <div class="form-group">
-                <label for="brand_image">Upload Brand Image:</label>
-                <input type="file" id="image" name="image" accept="image/*" required onchange="previewImage(event)">
-                <div class="image-preview" id="imagePreview">
-                    <p>No image selected</p>
+            <!-- Add Brand Form -->
+            <form action="{{ route('admin.saveBrand') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <!-- Brand Name -->
+                <div class="form-group">
+                    <label for="brand_name">Brand Name:</label>
+                    <input type="text" id="brand_name" value="{{old('brand_name')}}" name="brand_name" required
+                        placeholder="Enter brand name">
                 </div>
-            </div>
-            @error('image')<span style="color:red;">{{$message}}</span>
-            @enderror
-            <!-- Buttons -->
-            <div class="btn-container">
-                <button type="submit" class="btn btn-primary">Save Brand</button>
-                <a href="{{route('admin.brands')}}" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
+                @error('brand_name')<span style="color:red;">{{$message}}</span>
+                @enderror
+                <!-- Brand Image Upload -->
+                <div class="form-group">
+                    <label for="brand_image">Upload Brand Image:</label>
+                    <input type="file" id="image" name="image" accept="image/*" required onchange="previewImage(event)">
+                    <div class="image-preview" id="imagePreview">
+                        <p>No image selected</p>
+                    </div>
+                </div>
+                @error('image')<span style="color:red;">{{$message}}</span>
+                @enderror
+                <!-- Buttons -->
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary">Save Brand</button>
+                    <a href="{{route('admin.brands')}}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
 
-    <script>
-        // Function to Preview Image Before Uploading
-        function previewImage(event) {
-            var preview = document.getElementById("imagePreview");
-            var file = event.target.files[0];
-            var reader = new FileReader();
+        <script>
+            // Function to Preview Image Before Uploading
+            function previewImage(event) {
+                var preview = document.getElementById("imagePreview");
+                var file = event.target.files[0];
+                var reader = new FileReader();
 
-            reader.onload = function() {
-                preview.innerHTML = '<img src="' + reader.result + '">';
+                reader.onload = function () {
+                    preview.innerHTML = '<img src="' + reader.result + '">';
+                }
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
             }
-
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        }
-    </script>
-
+        </script>
 </body>
 
 </html>

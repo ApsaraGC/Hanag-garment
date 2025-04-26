@@ -17,7 +17,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 500px;
             margin: auto;
             background: white;
             padding: 20px;
@@ -43,7 +43,7 @@
 
         input[type="text"],
         input[type="file"] {
-            width: 100%;
+            width: 96%;
             padding: 10px;
             border: 1px solid #ff66b2;
             border-radius: 5px;
@@ -95,7 +95,7 @@
         }
 
         .btn-secondary {
-            background: #888;
+            background-color: #dc3545;
         }
 
         .btn-secondary:hover {

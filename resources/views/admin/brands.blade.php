@@ -28,13 +28,7 @@
             padding: 30px;
             min-height: 100vh;
         }
-        tbody tr:nth-child(odd) {
-    background-color: #fff0f5; /* light pink */
-}
 
-tbody tr:nth-child(even) {
-    background-color: #ffe4ec; /* slightly different pink */
-}
 
         h3 {
             color: #ff1493;
@@ -50,15 +44,16 @@ tbody tr:nth-child(even) {
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 10px 15px;
             background: #ff1493;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
             transition: background 0.3s;
             cursor: pointer;
-            font-size: 14px;
         }
 
         .btn:hover {
@@ -74,28 +69,40 @@ tbody tr:nth-child(even) {
             margin-bottom: 20px;
         }
 
-        table {
+         /* Table */
+         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
+            margin-top: 15px;
+            background: white;
         }
 
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #f0f0f0;
+        th,
+        td {
+            border: 1px solid #ffc0cb;
+            padding: 8px; /* Decrease the padding to reduce the space between columns */
             text-align: left;
+            font-size: 16px;
         }
-
         th {
-            background-color: #ff66b2;
+            background: #ff66b2;
             color: white;
-            font-weight: 600;
         }
+        tr {
+    /* Removing any extra padding from the row itself */
+    line-height: 1.4; /* Adjust the line height to make the rows tighter */
+}
+tbody tr:nth-child(odd) {
+    background-color: #fff0f5; /* light pink */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffe4ec; /* slightly different pink */
+}
+
 
         tr:hover {
-            background-color: #fff0f5;
+            background: #ffe6f2;
         }
 
         img {
@@ -234,7 +241,8 @@ tbody tr:nth-child(even) {
                                     <a href="{{ route('admin.editBrand', $brand->id) }}" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="#" class="delete-button" data-id="{{ $brand->id }}" title="Delete">
+
+                                    <a href="#" style="background:none; border:none; color:red;" class="delete-button" data-id="{{ $brand->id }}" title="Delete">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </div>
