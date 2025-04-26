@@ -50,6 +50,11 @@
         .contact-info p {
             font-size: 16px;
         }
+        .contact-info a {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 17px;
+}
 
         .contact-form input,
         .contact-form textarea {
@@ -68,10 +73,36 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .contact-info strong {
+    display: inline-block;
+    width: 130px;
+    color: #333;
+}
 
         .contact-form button:hover {
             background-color: #ff3385;
         }
+        .contact-info a[href^="mailto:"] {
+    color: #000; /* black color */
+    text-decoration: none; /* no underline */
+    font-weight: normal; /* optional: if you don't want bold */
+}
+
+.contact-info a[href^="mailto:"]:hover {
+    text-decoration: none; /* still no underline on hover */
+    color: #333; /* slightly darker black on hover */
+}
+.contact-info a[href^="tel:"] {
+    color: #000; /* black color */
+    text-decoration: none; /* no underline */
+    font-weight: normal; /* optional: if you don't want bold */
+}
+
+.contact-info a[href^="tel:"]:hover {
+    text-decoration: none; /* still no underline on hover */
+    color: #333; /* slightly darker black on hover */
+}
+
     </style>
 </head>
 <body>
@@ -87,20 +118,18 @@
         <div class="contact-info">
             <h2>Get in Touch</h2>
             <p>If you have any questions or concerns, feel free to reach out to our customer service team. We are here to help!</p>
-            <p><strong>Email:</strong> <a href="mailto:support@hanagsgarment.com" class="highlight">support@hanagsgarment.com</a></p>
-            <p><strong>Phone:</strong> <a href="tel:+1234567890" class="highlight">+977 98000087</a></p>
+            <p><strong><i class="fas fa-envelope"></i> Email:</strong>
+                <a href="mailto:support@hanagsgarment.com">support@hanagsgarment.com</a></p>
+
+             <p><strong><i class="fas fa-phone"></i> Phone:</strong>
+                <a href="tel:+97798000087">+977 98000087</a></p>
+
             <p><strong>Business Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM</p>
         </div>
 
         <!-- Contact Form -->
         <div class="contact-form">
-            {{-- <h2>Contact Us</h2>
-            <form action="/submit_contact" method="POST">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
-                <button type="submit">Send Message</button>
-            </form> --}}
+
         </div>
 
     </div>
