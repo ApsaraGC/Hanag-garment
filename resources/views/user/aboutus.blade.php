@@ -10,7 +10,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
             color: #333;
             background: #f4f4f4;
         }
