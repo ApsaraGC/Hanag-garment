@@ -9,8 +9,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+
             background-color: #f4f4f9;
         }
 
@@ -24,7 +23,6 @@
             margin-top: 20px; /* Adjust the margin to move the cart up */
 
         }
-
         .cart-items, .cart-totals {
             background: #fff;
             border: 1px solid #ddd;
