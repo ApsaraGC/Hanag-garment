@@ -395,7 +395,7 @@
         .add-to-cart-btn {
             display: none;
             position: absolute;
-            top: 60%;
+            top: 64%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: transparent;
@@ -405,6 +405,7 @@
             font-size: 16px;
             border-radius: 5px;
             width: 200px;
+            cursor: pointer;
             transition: 0.3s;
         }
 
@@ -520,16 +521,17 @@
 .go-to-cart-btn {
     display: none;
     position: absolute;
-    top: 60%;
+    top: 65%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: transparent;
     color: #fff;
     border: 2px solid #eea5a5;
-    padding: 12px 18px;
+    padding: 12px 16px;
     font-size: 16px;           /* Slightly smaller text */
     border-radius: 5px;
     width: 200px;
+    cursor: pointer;
     transition: 0.3s;
     text-align: center;
     text-decoration: none;
@@ -581,11 +583,15 @@
             @foreach($categories as $category)
 
             <div class="carousel-item">
+                <a href="{{ route('user.shop', ['category' => $category->id]) }}">
+
                 @if ($category->image)
                 <img src="{{ asset('build/assets/images/brands/' . $category->image) }}" alt="{{ $category->category_name }}">
             @else
                 <img src="{{ asset('images/default.png') }}" alt="No Image">
             @endif                <p>{{ $category->category_name }}</p>
+        </a>
+
             </div>
             @endforeach
         </div>
@@ -647,7 +653,7 @@
                     </a>
                     @if(in_array($product->id, $cartItems))
                     <!-- If the product is already in the cart, show "Go to Cart" button -->
-                    <a href="{{ route('user.cart') }}" class="go-to-cart-btn">Go to Cart</a>
+                    <a href="{{ route('user.cart') }}" class="go-to-cart-btn"><i class="fas fa-shopping-cart"></i> Go to Cart</a>
                 @else
                     <!-- Add to Cart button - will appear centered over image on hover -->
                     <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
@@ -658,7 +664,7 @@
                         <input type="hidden" name="price"
                             value="{{$product->sale_price == '' ? $product->regular_price : $product->sale_price}}" />
                             <!-- Display "Add to Cart" button if the product is not in the cart -->
-                            <button class="add-to-cart-btn">Add to Cart</button>
+                            <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
                                     </form>
                                     @endif
 

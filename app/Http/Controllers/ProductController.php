@@ -114,7 +114,7 @@ class ProductController extends Controller
         $categories = Category::all(); // Fetch all categories
         $sort = $request->query('sort', 'default');
         // $priceSort = ($sort == 'price-asc') ? 'asc' : 'desc';
-        // Start the query builder
+        $categoryId = $request->query('category');
         $products = Product::query();
 
         // if ($sort) {
@@ -137,6 +137,10 @@ class ProductController extends Controller
                     });
             });
         }
+         // Apply category filter
+    if ($categoryId) {
+        $products = $products->where('category_id', $categoryId);
+    }
         // Apply sorting if needed
         if ($sort == 'price-asc') {
             $products = $products->orderBy('sale_price', 'asc');

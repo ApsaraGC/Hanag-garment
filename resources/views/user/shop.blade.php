@@ -112,11 +112,11 @@
         }
 
         .sidebar {
-            width: 20%;
+            width: 18%;
             background: #fff;
             padding: 15px;
             border-radius: 20px;
-            height: 135vh;
+            height: auto;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: 23px 10px 15px;
             border-right: 1px solid #ddd;
@@ -143,7 +143,24 @@
         .filter-box li:hover {
             color: #000;
         }
+        .filter-box li a {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #7a7a7a;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
+        .filter-box li a:hover {
+            color: #000;
+        }
+/* Active category underline */
+.filter-box li a.active-category {
+    text-decoration: underline;
+    font-weight: 500; /* optional: makes it bold */
+
+    color: #ff1493; /* optional: also make active category black */
+}
         .product-section {
             display: flex;
             width: 75%;
@@ -213,7 +230,7 @@
             padding: 12px 18px;
             font-size: 16px;
             border-radius: 5px;
-            width: 185px;
+            width: 189px;
             transition: 0.3s;
         }
 
@@ -376,6 +393,22 @@
             <div class="container">
                 {{-- Sidebar --}}
                 <aside class="sidebar">
+                      {{-- Categories --}}
+                      <div class="filter-box">
+                        <h3>Available Categories</h3>
+                        <ul>
+                            @foreach($categories as $category)
+                                <li>
+                                    <a href="{{ route('user.shop', ['category' => $category->id]) }}"
+                                        class="{{ request('category') == $category->id ? 'active-category' : '' }}">
+                                         {{ $category->category_name }}
+                                     </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <hr>
+
                     {{-- Brands --}}
                     <div class="filter-box">
                         <h3>Available Brands</h3>
@@ -386,16 +419,7 @@
                         </ul>
                     </div>
                     <br>
-                    <hr>
-                    {{-- Categories --}}
-                    <div class="filter-box">
-                        <h3>Categories</h3>
-                        <ul>
-                            @foreach($categories as $category)
-                                <li>{{ $category->category_name }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+
                 </aside>
                 {{-- Product Section --}}
                 <section class="product-section">
@@ -429,7 +453,7 @@
                                 {{-- Add to Cart Form --}}
                                 @if(in_array($product->id, $cartItems))
                                     <!-- If the product is already in the cart, show "Go to Cart" button -->
-                                    <a href="{{ route('user.cart') }}" class="go-to-cart-btn">Go to Cart</a>
+                                    <a href="{{ route('user.cart') }}" class="go-to-cart-btn"> <i class="fas fa-shopping-cart"></i> Go to Cart</a>
                                 @else
                                     <form name="addtocart-form" method="POST" action="{{ route('cart.add') }}">
                                         @csrf
@@ -438,7 +462,8 @@
                                         <input type="hidden" name="name" value="{{ $product->product_name }}">
                                         <input type="hidden" name="price"
                                             value="{{ $product->sale_price ?: $product->regular_price }}">
-                                        <button class="add-to-cart-btn" {{ $product->stock_status === 'outofstock' ? 'disabled' : '' }}>Add to Cart
+                                        <button class="add-to-cart-btn" {{ $product->stock_status === 'outofstock' ? 'disabled' : '' }}>
+                                            <i class="fas fa-shopping-cart"></i> Add to Cart
                                         </button>
                                     </form>
                                 @endif
