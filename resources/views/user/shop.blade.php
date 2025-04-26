@@ -61,8 +61,6 @@
             gap: 8px;
             margin-top: 0px;
             /* Optional: adjust for spacing between elements */
-
-
         }
 
         /* Styling the select dropdown */

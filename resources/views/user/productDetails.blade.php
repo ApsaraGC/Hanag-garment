@@ -7,7 +7,6 @@
     <title>Product Page</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Font Awesome CDN -->
     <style>
@@ -105,8 +104,7 @@
             margin: 20px 0;
         }
 
-        .add-to-cart {
-            background: #F070BB;
+        /* .add-to-cart {
             color: #fff;
             padding: 15px 35px;
             border: none;
@@ -118,11 +116,9 @@
             transition: background-color 0.3s ease;
             width: 100%;
             margin-top: 20px;
-        }
+        } */
 
-        .add-to-cart:hover {
-            background: #D55B9D;
-        }
+        .add-to-cart:hover {}
 
         .add-to-cart i {
             margin-right: 10px;
@@ -130,7 +126,10 @@
         }
 
         .add-to-cart-btn {
-            background: #F070BB;
+            transform: translate(-50%, -50%);
+            background: transparent;
+            color: #fff;
+            border: 2px solid #eea5a5;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -142,9 +141,7 @@
             transition: background-color 0.3s ease;
         }
 
-        .add-to-cart-btn:hover {
-            background: #D55B9D;
-        }
+        .add-to-cart-btn:hover {}
 
         .quantity input {
             width: 50px;
@@ -516,6 +513,7 @@
             color: #333;
 
         }
+
         .reviews-section.no-reviews {
             max-width: 300px;
             margin: 0 auto;
@@ -619,7 +617,7 @@
                             <input type="hidden" name="name" value="{{ $product->product_name }}">
                             <input type="hidden" name="price" value="{{ $product->sale_price ?: $product->regular_price }}">
                             <button type="submit" class="add-to-cart">
-                                <i class="fas fa-cart-plus"></i> Add to Cart
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
                             </button>
                         </form>
                     @endif
@@ -676,7 +674,7 @@
                             <input type="hidden" name="price"
                                 value="{{ $relatedProduct->sale_price ?: $relatedProduct->regular_price }}">
                             <button type="submit" class="related-product-add-to-cart">
-                                <i class="fas fa-cart-plus"></i> Add to Cart
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
                             </button>
                         </form>
                         <p class="product-name" style="font-weight: bold;">{{ $relatedProduct->product_name }}</p>
@@ -768,4 +766,5 @@
         thumbnail.src = currentMainImageSrc;
     }
 </script>
+
 </html>
