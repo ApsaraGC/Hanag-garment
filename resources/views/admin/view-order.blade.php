@@ -230,7 +230,7 @@
                                 @endif
                             </td>
                             <td>{{ $product->product_name }}</td>
-                            <td>{{ $product->size }}</td>
+                            <td>{{ $product->pivot->size }}</td>  <!-- Correctly accessing the size from pivot -->
                             <td>{{ $product->pivot->quantity }}</td>
                             <td>Rs. {{ number_format($product->pivot->price, 2) }}</td>
                             <td>Rs. {{ number_format($product->pivot->quantity * $product->pivot->price, 2) }}</td>

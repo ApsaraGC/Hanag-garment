@@ -43,6 +43,8 @@ public function addToCart(Request $request)
         'name' => 'required|string',
         'price' => 'required|numeric|min:0',
     ]);
+    $selectedSize = $request->input('selected_size'); // Selected Size from form
+
 
     // Check if the user is logged in
     if (!Auth::check()) {
@@ -67,9 +69,10 @@ public function addToCart(Request $request)
             'product_id' => $product->id,
             'product_name' => $request->name,
             'price' => $product->sale_price,
-            'size'=>$request->selected_size,
+            // 'size'=>$request->size,
             'quantity' => 1, // Set the default quantity to 1
             'status' => 'pending',  // Set status as pending
+            'size' => $selectedSize, // 🛒 Important
         ]);
     }
 
@@ -85,7 +88,7 @@ public function updateSize(Request $request, $productId)
     ]);
 
     // Get the user's cart for the given product
-    $cart = UserCart::where('user_id', auth()->id())
+    $cart = UserCart::where('user_id', Auth::id())
                    ->where('product_id', $productId)
                    ->first();
 

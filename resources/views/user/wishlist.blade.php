@@ -132,17 +132,14 @@
             margin-top: -10px; /* Adjust this value to move the icon higher */
 
         }
-
         /* Cart icon hover effect */
         .cart-icon:hover {
             background-color: #f312a4;
             color: #fff;
         }
-
         .out-of-stock {
-            background-color: #ff3333;
+            background-color: #E63946;
             color: #fff;
-            font-weight: bold;
             font-size: 14px;
             width: 100px;
             border-radius: 5px;
@@ -150,7 +147,6 @@
             text-align: center;
             padding: 8px;
         }
-
         .wishlist-header {
             text-align: center;
             color: #F070BB;
@@ -158,7 +154,6 @@
             margin-bottom: 15px;
             font-weight: bold;
         }
-
         .clear-all-btn {
             background-color: #E63946;
             border: none;
@@ -170,11 +165,9 @@
             border-radius: 5px;
             transition: background-color 0.3s;
         }
-
         .clear-all-btn:hover {
             background: #da2424;
         }
-
         .empty-cart {
             display: flex;
             flex-direction: column;
@@ -185,25 +178,21 @@
             margin-left: 100px;
             padding: 5px;
         }
-
         .empty-cart img {
             max-width: 900px;
             opacity: 0.9;
         }
-
         .empty-cart h1 {
             font-size: 32px;
             font-weight: bold;
             color: #333;
             margin-bottom: 5px;
         }
-
         .empty-cart p {
             font-size: 20px;
             color: #666;
             margin-bottom: 20px;
         }
-
         .empty-cart .btn {
             display: inline-block;
             padding: 10px 10px;
@@ -215,9 +204,35 @@
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
-
         .empty-cart .btn:hover {
             background-color: #e62fa0;
+        }
+        .sizes-box {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .sizes-box label {
+            margin-right: 10px;
+        }
+
+        .sizes-box .sizes {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sizes-box .size {
+            padding: 1px 5px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .sizes-box .size:hover {
+            background-color: #ddd;
         }
     </style>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -273,8 +288,14 @@
                                 <div class="product-details">
                                     <p><strong>{{ $item->product->product_name }}</strong></p>
                                     <p>Color: {{ $item->product->color ?? 'N/A' }}</p>
-                                    <p>Size: {{ $item->product->size ?? 'N/A' }}</p>
-                                </div>
+                                    <div class="sizes-box">
+                                        <label>Available Sizes:</label>
+                                        <div class="sizes">
+                                            @foreach(explode(',', $item->product->size) as $size)
+                                                <span class="size">{{ trim($size) }}</span>
+                                            @endforeach
+                                        </div>
+                                    </div>                                </div>
                             </div>
                         </td>
                         <td>    Rs. {{ number_format($item->product->sale_price, 2) }}

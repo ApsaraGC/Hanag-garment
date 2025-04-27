@@ -243,15 +243,17 @@ input[type=number]#sale_price {
                 <div class="form-group">
                     <label for="product_name">Product Name</label>
                     <input type="text" id="product_name" name="product_name" value="{{ old('product_name') }}">
+                    @error('product_name')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('product_name')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 <div class="form-group">
                     <label for="color">Color</label>
                     <input type="text" id="color" name="color" value="{{ old('color') }}">
+                    @error('color')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('color')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 {{-- <div class="form-group">
                     <label for="size">Size</label>
                     <input type="number" id="size" name="size" value="{{ old('size') }}">
@@ -261,16 +263,16 @@ input[type=number]#sale_price {
                 <div class="form-group">
                     <label for="size">Sizes</label>
                     <input type="text" id="size" name="size" value="{{ old('size') }}">
+                    @error('size')<span style="color:red;">{{$message}}</span>@enderror
                 </div>
-                @error('size')<span style="color:red;">{{$message}}</span>@enderror
-
                 <div class="form-group">
                     <label for="short_description">Short Description</label>
                     <input type="text" id="short_description" name="short_description"
                         value="{{ old('short_description') }}">
+                        @error('short_description')<span style="color:red;">{{$message}}</span>
+                        @enderror
                 </div>
-                @error('short_description')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 <div class="form-group full-width">
                     <label for="description">Long Description</label>
                     <textarea id="description" name="description">{{ old('description') }}</textarea>
@@ -281,15 +283,17 @@ input[type=number]#sale_price {
                 <div class="form-group">
                     <label for="regular_price">Regular Price (Rs.)</label>
                     <input type="number" id="regular_price" name="regular_price" value="{{ old('regular_price') }}">
+                    @error('regular_price')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('regular_price')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 <div class="form-group">
                     <label for="sale_price">Sale Price (Rs.)</label>
                     <input type="number" id="sale_price" name="sale_price" value="{{ old('sale_price') }}">
+                    @error('sale_price')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('sale_price')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 <div class="col-md-6 form-group">
                     <label>Stock Status</label>
                     <select name="stock_status" required>
@@ -297,16 +301,16 @@ input[type=number]#sale_price {
                         <option value="outofstock" {{ old('stock_status') == 'outofstock' ? 'selected' : '' }}>Out of
                             Stock</option>
                     </select>
+                    @error('stock_status')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('stock_status')<span style="color:red;">{{$message}}</span>
-                @enderror
-
                 <div class="col-md-6 form-group">
                     <label>Quantity</label>
                     <input type="number" name="quantity" value="{{ old('quantity') }}" min="1">
+                    @error('quantity')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('quantity')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 <div class="col-md-6 form-group">
                     <label>Category</label>
                     <select name="category_id">
@@ -314,9 +318,10 @@ input[type=number]#sale_price {
                             <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                         @endforeach
                     </select>
+                    @error('category_id')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('category_id')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 <div class="col-md-6 form-group">
                     <label>Brand</label>
                     <select name="brand_id">
@@ -324,28 +329,24 @@ input[type=number]#sale_price {
                             <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
                         @endforeach
                     </select>
+                    @error('brand_id')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('brand_id')<span style="color:red;">{{$message}}</span>
-                @enderror
-
-                @error('image')<span style="color:red;">{{$message}}</span>
-                @enderror
                 <div class="form-group full-width file-upload">
                     <label for="image">Main Image</label>
                     <input type="file" id="image" name="image" onchange="previewImage(event, 'mainPreview')">
                     <div class="image-preview" id="mainPreview"></div>
+                    @error('image')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-
-                <!-- Additional Images -->
-                @error('images')
-                    <span style="color:red;">{{$message}}</span>
-                @enderror
-
-
                 <div class="form-group">
                     <label for="images">Product Images</label>
                     <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
                     {{-- <div class="image-preview" id="additionalImagePreview"></div> --}}
+                      <!-- Additional Images -->
+                @error('images')
+                <span style="color:red;">{{$message}}</span>
+            @enderror
                 </div>
                 <br>
                 <div class="form-group custom-checkbox">
@@ -354,10 +355,9 @@ input[type=number]#sale_price {
                         <span class="checkbox-box"></span>
                         Is Featured
                     </label>
+                    @error('is_featured')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('is_featured')<span style="color:red;">{{$message}}</span>
-                @enderror
-
             </div>
             <div class="button-container">
                 <button type="submit" class="btn-submit">Add Product</button>

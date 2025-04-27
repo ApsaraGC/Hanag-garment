@@ -132,8 +132,8 @@ public function saveCategory(Request $request){
 
     $request->validate([
         'category_name' => 'required|string|max:255',
-        'description' => 'nullable|string|max:255',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Validate image
+        'description' => 'required|string|max:255',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Validate image
     ]);
 
     $category = new Category();
@@ -147,13 +147,6 @@ public function saveCategory(Request $request){
             $category->image = $fileName;  // Correct column name from migration
         }
         $category->save(); // Ensure data is saved in the database
-
-    // Create the category record with or without an image
-    // Category::create([
-    //     'category_name' => $request->category_name,
-    //     'description' => $request->description,
-    //     'image' => $imageUrl,  // Save image path in the database
-    // ]);
     return redirect()->route('admin.categorys')->with('popup_message', 'Category Added Successfully');
 }
 

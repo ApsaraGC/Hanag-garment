@@ -78,6 +78,8 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('user/cart', [CartController::class, 'index'])->name('user.cart');
 Route::post('user/cart/add', [CartController::class, 'addTocart'])->name('cart.add');
+Route::post('user/cart/addes', [HomeController::class, 'addcart'])->name('cart.added');
+
 // In your routes/web.php
 Route::post('/cart/{productId}/increase', [CartController::class, 'increase_cart_quantity'])->name('cart.qty.increase');
 Route::post('/cart/{productId}/decrease', [CartController::class, 'decrease_cart_quantity'])->name('cart.qty.decrease');
@@ -137,14 +139,12 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('users', [UserAdminController::class, 'showUsers'])->name('admin.users');
     Route::get('search-users', [UserAdminController::class, 'searchUsers'])->name('admin.search.users');
     Route::get('/user/create', [UserAdminController::class, 'createUser'])->name('add-user');
-   // In routes/web.php
-Route::get('/admin/users', [UserAdminController::class, 'showUsers'])->name('admin.users');
-Route::get('/admin/user/{id}/edit', [UserAdminController::class, 'editUser'])->name('editUser');
-Route::put('/admin/user/{id}', [UserAdminController::class, 'updateUser'])->name('updateUser');
-Route::delete('/admin/users/{id}', [UserAdminController::class, 'destroy'])->name('deleteUser');
-
-// Route::delete('/admin/user/{user}', [UserAdminController::class, 'deleteUser'])->name('deleteUser');
-
+    // In routes/web.php
+    Route::get('/admin/users', [UserAdminController::class, 'showUsers'])->name('admin.users');
+    Route::get('/admin/user/{id}/edit', [UserAdminController::class, 'editUser'])->name('editUser');
+    Route::put('/admin/user/{id}', [UserAdminController::class, 'updateUser'])->name('updateUser');
+    Route::delete('/admin/users/{id}', [UserAdminController::class, 'destroy'])->name('deleteUser');
+    // Route::delete('/admin/user/{user}', [UserAdminController::class, 'deleteUser'])->name('deleteUser');
 });
 Route::resource('reviews', ReviewController::class)->only(['edit', 'update']);
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
@@ -223,7 +223,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::get('/chat/fetch/{receiverId}', [ChatController::class, 'fetchUserMessages'])->name('chat.fetch'); // User's fetch route
     Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
-
     // Admin chat interface
     Route::get('/admin/chat/{userId}', [ChatController::class, 'adminChat'])->name('admin.chat');
     Route::get('/admin/chat/fetch/{receiverId}', [ChatController::class, 'fetchMessages'])->name('admin.fetch.messages'); // Admin's fetch route

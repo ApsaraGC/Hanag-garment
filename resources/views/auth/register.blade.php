@@ -192,8 +192,10 @@
                 <div class="form-column">
                     <div class="form-group">
                         <label for="phone_number">Phone Number</label>
-                        <input type="text" id="phone_number" name="phone_number" placeholder="Phone Number" value="{{ old('phone_number') }}">
-                        <i class="fa fa-phone"></i> <!-- Phone icon -->
+                        <input type="text" id="phone_number" name="phone_number"
+                        placeholder="Phone Number" value="{{ old('phone_number') }}"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                         <i class="fa fa-phone"></i> <!-- Phone icon -->
                         @error('phone_number')
                             <span class="error">{{ $message }}</span>
                         @enderror

@@ -455,7 +455,7 @@
                                     <!-- If the product is already in the cart, show "Go to Cart" button -->
                                     <a href="{{ route('user.cart') }}" class="go-to-cart-btn"> <i class="fas fa-shopping-cart"></i> Go to Cart</a>
                                 @else
-                                    <form name="addtocart-form" method="POST" action="{{ route('cart.add') }}">
+                                    <form name="addtocart-form" method="POST" action="{{ route('cart.added') }}">
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $product->id }}">
                                         <input type="hidden" name="quantity" value="1">

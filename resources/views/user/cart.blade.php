@@ -255,6 +255,33 @@
         .address-section .form-group button.save-btn:hover {
             background-color: #45a049;
         }
+        .size{
+            font-size: 12px;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        background-color: #f8f8f8;
+        cursor: pointer;
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+        margin-bottom: 10px;
+        }
+        .size:focus {
+        outline: none;
+        border-color: #f693d5;
+        background-color: #eaf2ff;
+    }
+
+    .size option {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .size {
+            max-width: 100%;
+        }
+    }
     </style>
 </head>
 <body>
@@ -316,12 +343,12 @@
                                         <div class="product-details">
                                             <p><strong>{{ $item->product->product_name }}</strong></p>
                                             <p>Color: {{ $item->product->color ?? 'N/A' }}</p>
-                                            <p>Size: {{ $item->product->size ?? 'N/A' }}</p>
+                                            {{-- <p>Size: {{ $item->product->size ?? 'N/A' }}</p> --}}
  <!-- Size Drop-down for Cart -->
- {{-- <form action="{{ route('cart.update.size', ['productId' => $item->product->id]) }}" method="POST">
+ <form action="{{ route('cart.update.size', ['productId' => $item->product->id]) }}" method="POST">
     @csrf
-    <label for="size">Size:</label>
-    <select name="size" onchange="this.form.submit()">
+    <label for="size">Size: </label>
+    <select name="size" onchange="this.form.submit()" class="size">
         @php
             $sizes = explode(',', $item->product->size);
         @endphp
@@ -332,7 +359,7 @@
             </option>
         @endforeach
     </select>
-</form> --}}
+</form>
                                         </div>
                                     </div>
                                 </td>
@@ -401,9 +428,19 @@
                 </div>
                 <hr>
                 <div class="totals-row">
-                    <span>Delivery Charge</span>
+                    <span>
+                        Delivery Charge<br>
+
+                        <small style="color: gray; font-size: 12px;">
+                            (Max Rs.150) - Varies by location, <br>extra will be refunded if nearby.
+                        </small>
+
+                    </span>
                     <span>Rs. {{ number_format($deliveryCharge, 2) }}</span>
+
                 </div>
+
+
 
                 <hr>
                 <div class="totals-row">

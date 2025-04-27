@@ -20,8 +20,10 @@ class Order extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'order_items')
-                    ->withPivot('quantity', 'price') // Include additional pivot fields
-                    ->withTimestamps();
+                    ->withPivot('quantity', 'price','size') // Include additional pivot fields
+                    ->withTimestamps()
+                    ->withTrashed(); // <-- Add this
+
     }
 
     // Add the relationship method

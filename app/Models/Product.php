@@ -5,11 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Product extends Model
 {
     //
     use HasFactory;
+    use SoftDeletes;
+
     protected $fillable = [
         'product_name',
         'description',
@@ -48,7 +52,7 @@ class Product extends Model
                     ->withPivot('quantity', 'price')
                     ->withTimestamps();
     }
-    
+
 
     public function reviews()
     {

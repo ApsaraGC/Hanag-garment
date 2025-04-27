@@ -85,6 +85,48 @@ public function hotDeals()
     return $hotDeals;
 }
 
+public function addCart(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:products,id', // Validate product ID exists
+        'quantity' => 'required|integer|min:1', // Validate quantity, though we'll default it to 1
+        'name' => 'required|string',
+        'price' => 'required|numeric|min:0',
+    ]);
+
+
+    // Check if the user is logged in
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'You must be logged in to add items to the cart.');
+    }
+    // Find the product
+    $product = Product::findOrFail($request->id);
+
+    // Check if the product already exists in the cart
+    $existingCartItem = UserCart::where('user_id', Auth::id())
+        ->where('product_id', $product->id)
+        ->first();
+
+    // If product already exists in the cart, just update the quantity
+    if ($existingCartItem) {
+        $existingCartItem->quantity += 1; // Increase quantity by 1
+        $existingCartItem->save();
+    } else {
+        // Add the product to the cart with quantity set to 1 by default
+        $cartItem = UserCart::create([
+            'user_id' => Auth::id(),
+            'product_id' => $product->id,
+            'product_name' => $request->name,
+            'price' => $product->sale_price,
+            'size'=>$request->selected_size,
+            'quantity' => 1, // Set the default quantity to 1
+            'status' => 'pending',  // Set status as pending
+        ]);
+    }
+
+    // Redirect back to the cart page with success message
+    return redirect()->route('user.cart')->with('success', 'Product added to cart successfully!');
+}
 
 public function welcome(){
     $products = Product::all(); // Fetch all products from the database

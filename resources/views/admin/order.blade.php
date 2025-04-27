@@ -1,179 +1,186 @@
 <!-- resources/views/admin/orders.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Orders</title>
     <style>
         /* General Styles */
-      /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
 
-/* Sidebar (Navbar) Styles */
-.admin-panels {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: fixed;
-    height: 100%;
-}
+        /* Sidebar (Navbar) Styles */
+        .admin-panels {
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: fixed;
+            height: 100%;
+        }
 
-/* Main Content Styles */
-.main-content-inner {
-    flex: 1;
-    overflow-x: hidden;
-    margin-left: 200px; /* Offset for the sidebar */
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    height: 100vh; /* To prevent long size issues */
+        /* Main Content Styles */
+        .main-content-inner {
+            flex: 1;
+            overflow-x: hidden;
+            margin-left: 200px;
+            /* Offset for the sidebar */
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            height: 100vh;
+            /* To prevent long size issues */
 
-}
+        }
 
-/* Header */
-h3 {
-    color: #ff1493;
-    margin: 0;
-}
+        /* Header */
+        h3 {
+            color: #ff1493;
+            margin: 0;
+        }
 
-/* Breadcrumbs */
-.breadcrumbs {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 10px;
-}
+        /* Breadcrumbs */
+        .breadcrumbs {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+        }
 
-.breadcrumbs a {
-    text-decoration: none;
-    color: #ff66b2;
-}
+        .breadcrumbs a {
+            text-decoration: none;
+            color: #ff66b2;
+        }
 
-.breadcrumbs a:hover {
-    text-decoration: underline;
-}
-
-
-
-.no-results-message {
-    text-align: center;
-    color: #888;
-    font-size: 16px;
-    margin-top: 20px;
-}
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
 
 
 
-/* Buttons */
-.btn {
-    padding: 10px 15px;
-    background: #ff1493;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: 0.3s;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-.btn:hover {
-    background: #cc117a;
-}
-
-/* Table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: white;
-}
-
-th, td {
-    border: 1px solid #ffc0cb;
-    padding: 12px;
-    text-align: left;
-}
-
-th {
-    background:  #ff66b2;
-    color: white;
-}
-
-tr:hover {
-    background: #ffe6f2;
-}
-
-/* Action Icons */
-.action-icons {
-    display: flex;
-    gap: 10px;
-}
-
-.action-icons a {
-    color: #ff1493;
-    text-decoration: none;
-    font-size: 18px;
-    transition: 0.3s;
-}
-
-.action-icons a:hover {
-    color: #cc117a;
-}
-
-/* Pagination */
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-}
-
-/* Pagination */
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.pagination a {
-    padding: 8px 15px;
-    border: 1px solid #ff1493;
-    color: #ff1493;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    transition: 0.3s;
-    font-weight: bold;
-}
-
-.pagination .page-item {
-    display: inline-block;
-    margin: 0 5px;
-    margin-bottom: 5px;
-}
-tbody tr:nth-child(odd) {
-    background-color: #fff0f5; /* light pink */
-}
-
-tbody tr:nth-child(even) {
-    background-color: #ffe4ec; /* slightly different pink */
-}
+        .no-results-message {
+            text-align: center;
+            color: #888;
+            font-size: 16px;
+            margin-top: 20px;
+        }
 
 
 
-/* Flexbox Utility */
-.flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
+        /* Buttons */
+        .btn {
+            padding: 10px 15px;
+            background: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .btn:hover {
+            background: #cc117a;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #ffc0cb;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #ff66b2;
+            color: white;
+        }
+
+        tr:hover {
+            background: #ffe6f2;
+        }
+
+        /* Action Icons */
+        .action-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-icons a {
+            color: #ff1493;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .action-icons a:hover {
+            color: #cc117a;
+        }
+
+        /* Pagination */
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Pagination */
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            padding: 8px 15px;
+            border: 1px solid #ff1493;
+            color: #ff1493;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .pagination .page-item {
+            display: inline-block;
+            margin: 0 5px;
+            margin-bottom: 5px;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #fff0f5;
+            /* light pink */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #ffe4ec;
+            /* slightly different pink */
+        }
+
+
+
+        /* Flexbox Utility */
+        .flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
         /* Dropdown Button */
         .dropdown-toggle {
@@ -211,21 +218,21 @@ tbody tr:nth-child(even) {
             padding: 8px;
             border: 1px solid #ffc0cb;
         }
+
         .status-dropdown {
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid #ff1493;
-    background-color: #ffe6f2;
-    color: #ff1493;
-    font-size: 14px;
-    cursor: pointer;
-}
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ff1493;
+            background-color: #ffe6f2;
+            color: #ff1493;
+            font-size: 14px;
+            cursor: pointer;
+        }
 
-.status-dropdown:hover {
-    background-color: #ff1493;
-    color: white;
-}
-
+        .status-dropdown:hover {
+            background-color: #ff1493;
+            color: white;
+        }
     </style>
 
     <!-- FontAwesome for Icons -->
@@ -246,21 +253,21 @@ tbody tr:nth-child(even) {
 
 
             @if(session('popup_message'))
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: '{{ session('popup_message') }}',
-                    timer: 3000,
-                    showConfirmButton: false,
-                    width: '350px',  // Adjust width as needed
-                    padding: '5px', // Optional: Adjust padding
-                    customClass: {
-                        popup: 'swal-popup-small'
-                    }
-                });
-            </script>
-        @endif
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: '{{ session('popup_message') }}',
+                        timer: 3000,
+                        showConfirmButton: false,
+                        width: '350px',  // Adjust width as needed
+                        padding: '5px', // Optional: Adjust padding
+                        customClass: {
+                            popup: 'swal-popup-small'
+                        }
+                    });
+                </script>
+            @endif
 
             <!-- Orders Table -->
             <table border="1">
@@ -287,44 +294,52 @@ tbody tr:nth-child(even) {
 
                             <td>{{ $order->order_type }}</td>
                             <td>
-                                    @if ($order->products->isNotEmpty())
-                                        @foreach($order->products as $product)
-                                             {{ $product->product_name }}
-                                             <br>
-                                        @endforeach
-                                    @else
-                                        N/A
-                                    @endif
+                                @if ($order->products->isNotEmpty())
+                                    @foreach($order->products as $product)
+                                        {{ $product->product_name ?? 'N/A' }}
+                                        <br>
+                                    @endforeach
+                                @else
+                                    No Products Found.
+                                @endif
+
                             </td>
                             <td>{{ $order->total_amount }}</td>
                             <td>
-                                <form action="{{ route('admin.updateOrder', ['order' => $order->id]) }}" method="POST" class="status-form">
+                                <form action="{{ route('admin.updateOrder', ['order' => $order->id]) }}" method="POST"
+                                    class="status-form">
                                     @csrf
                                     @method('PUT')
                                     <select name="status" onchange="this.form.submit()" class="status-dropdown">
-                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                        <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
-                                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending
+                                        </option>
+                                        <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>
+                                            Completed</option>
+                                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>
+                                            Cancelled</option>
                                     </select>
                                 </form>
                             </td>
 
                             {{-- <td>{{ $order->status }}</td> --}}
-                            <td >
+                            <td>
                                 {{-- <a href="{{ route('admin.update-order', ['order' => $order->id]) }}">
                                     <i class="fas fa-edit"></i>
                                 </a> --}}
-                                    <!-- View Icon -->
-                                    <a href="{{ route('admin.view-order', ['order' => $order->id]) }}" style=" color: #ff1493; text-decoration: none; font-size: 18px;transition: 0.3s;">
-                                        <i class="fas fa-eye"></i> <!-- Eye icon for viewing order -->
-                                    </a>
-                                    {{-- <form action="{{ route('admin.destroyOrder', ['order' => $order->id]) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" style="background:none;border:none;color:#ff1414;cursor:pointer;" onclick="return confirm('Are you sure?')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form> --}}
+                                <!-- View Icon -->
+                                <a href="{{ route('admin.view-order', ['order' => $order->id]) }}"
+                                    style=" color: #ff1493; text-decoration: none; font-size: 18px;transition: 0.3s;">
+                                    <i class="fas fa-eye"></i> <!-- Eye icon for viewing order -->
+                                </a>
+                                {{-- <form action="{{ route('admin.destroyOrder', ['order' => $order->id]) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="background:none;border:none;color:#ff1414;cursor:pointer;"
+                                        onclick="return confirm('Are you sure?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -345,4 +360,5 @@ tbody tr:nth-child(even) {
         orderList.classList.toggle('active');
     }
 </script>
+
 </html>

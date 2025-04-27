@@ -27,8 +27,7 @@ class AuthAdmin
                 return $next($request);
             }
             else{
-
-                Session::flush();
+              Session::flush();
                 return redirect()->route('login');
             }
         }

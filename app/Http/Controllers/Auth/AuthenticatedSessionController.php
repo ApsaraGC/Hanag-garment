@@ -37,12 +37,10 @@ class AuthenticatedSessionController extends Controller
 
             // Check if authentication succeeded
             // dd(Auth::user()); // Inspect the authenticated user
-
             // Redirect based on user role
             if ($request->user()->role === 'ADM') {
                 return redirect()->route('admin.dashboard'); // Redirect to admin dashboard (adjust the route if needed)
             }
-
             // Default redirection to the dashboard for other users
             return redirect()->intended(route('dashboard', absolute: false));
         } else {
@@ -52,7 +50,6 @@ class AuthenticatedSessionController extends Controller
             ])->onlyInput('email');
         }
     }
-
     /**
      * Destroy an authenticated session.
      */

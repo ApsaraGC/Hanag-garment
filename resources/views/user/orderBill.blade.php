@@ -181,7 +181,12 @@
                 @foreach($order->order_items as $item)
                     <tr>
                         <td>
+                            {{-- <img src="{{ asset($item->product->image) }}" alt="Product"> --}}
+                            @if($item->product && $item->product->image)
                             <img src="{{ asset($item->product->image) }}" alt="Product">
+                        @else
+                            <img src="{{ asset('images/placeholder.png') }}" alt="Product Unavailable">
+                        @endif
                         </td>
                         <td>{{ $item->product->product_name ?? 'N/A' }}</td>
                         <td>Rs.{{ number_format($item->price, 2) }}</td>

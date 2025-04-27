@@ -83,16 +83,16 @@ class KhaltiController extends Controller
         if ($err || empty($response)) {
             return redirect()->route('user.cart')->with('error', 'Payment verification failed.');
         }
-        $response = json_decode($response, true); // ✅ decode it
+        $response = json_decode($response, true); // decode it
 
         if (isset($response['status']) && $response['status'] === 'Completed') {
-            $order = Order::find($orderId); // ✅ Correct way to fetch the order
+            $order = Order::find($orderId); //  Correct way to fetch the order
 
             if (!$order) {
                 return redirect()->route('user.cart')->with('error', 'Order not found.');
             }
 
-            // ✅ Avoid duplicate payment entry
+            //  Avoid duplicate payment entry
             $existing = Payment::where('order_id', $order->id)->first();
             if (!$existing) {
                 Payment::create([
@@ -104,8 +104,6 @@ class KhaltiController extends Controller
                 ]);
             }
             // dd($Payment);
-
-            // ✅ Clear user's cart
             // UserCart::where('user_id', $order->user_id)->delete();
 
             return redirect()->route('user.orderBill', ['orderId' => $order->id])
@@ -150,6 +148,8 @@ class KhaltiController extends Controller
                 'quantity' => $cartItem->quantity,
                 'price' => $cartItem->product->sale_price,
                 'subtotal' => $cartItem->quantity * $cartItem->product->sale_price,
+                'size' => $cartItem->size, // Save size too!
+
             ]);
         }
         if ($request->payment_method === 'cod') {

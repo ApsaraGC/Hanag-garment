@@ -101,7 +101,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         /* .add-to-cart {
@@ -158,6 +158,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            margin-top:-30px;
             transition: background-color 0.3s ease;
         }
 
@@ -177,8 +178,9 @@
             border-radius: 5px;
             cursor: pointer;
             display: inline-block;
-        }
+            margin-bottom: 14px;
 
+        }
         .related-products {
             margin-top: 20px;
         }
@@ -388,7 +390,7 @@
 
         /* Reviews Section */
         .reviews-section {
-            margin-top: 10px;
+            margin-top: 20px;
             padding: 10px;
             background-color: #f9f9f9;
             border-radius: 8px;
@@ -534,6 +536,34 @@
             font-size: 1rem;
             color: #999;
         }
+
+        .sizes-box {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .sizes-box label {
+            margin-right: 10px;
+        }
+
+        .sizes-box .sizes {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sizes-box .size {
+            padding: 1px 5px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .sizes-box .size:hover {
+            background-color: #ddd;
+        }
     </style>
 </head>
 
@@ -594,7 +624,7 @@
                     </form>
                 </div>
                 <p class="price">Rs. <span
-                        style="text-decoration: line-through; color: #5e5c5c; font-size: 20px;">{{ number_format($product->regular_price, 0) }}</span>
+                        style="text-decoration: line-through; color: #5e5c5c; font-size: 20px;">{{ number_format($product->regular_price, 2) }}</span>
                 </p>
 
                 <p class="price">Rs. {{ $product->sale_price }}</p>
@@ -603,6 +633,15 @@
                 </p>
                 <p class="categories">Category:{{ $product->category->category_name }}</p>
                 <p class="tags">Brand:{{$product->brand->brand_name}}</p>
+                <!-- Displaying Available Sizes -->
+                <div class="sizes-box">
+                    <label>Available Sizes:</label>
+                    <div class="sizes">
+                        @foreach(explode(',', $product->size) as $size)
+                            <span class="size">{{ trim($size) }}</span>
+                        @endforeach
+                    </div>
+                </div>
                 <!-- Quantity Selector -->
                 <div class="quantity">
                     <!-- Add to Cart Form -->
@@ -616,12 +655,22 @@
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="name" value="{{ $product->product_name }}">
                             <input type="hidden" name="price" value="{{ $product->sale_price ?: $product->regular_price }}">
+                            {{-- <label for="size">Select Size:</label> --}}
+                            {{-- <select name="selected_size" id="size" required class="size">
+                                @foreach(explode(',', $product->size) as $size)
+                                <option value="{{ trim($size) }}">{{ trim($size) }}</option>
+                                @endforeach
+                            </select> --}}
+                            <br>
+
                             <button type="submit" class="add-to-cart">
                                 <i class="fas fa-shopping-cart"></i> Add to Cart
                             </button>
                         </form>
                     @endif
                 </div>
+
+
                 <!-- Wishlist Button -->
                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                     @csrf

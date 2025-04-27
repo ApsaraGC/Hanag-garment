@@ -14,8 +14,6 @@
     <title>Hanag's Garments</title>
     <style>
         /* General Reset */
-      
-
         body {
             font-family: Arial, sans-serif;
             overflow-x: hidden;
@@ -121,13 +119,14 @@
             gap: 45px;
             /* Adjusted gap between images */
             justify-content: center;
-
             /* Initially center the images */
             animation: scroll-right-to-left 15s linear infinite;
             /* Animation for moving right to left */
-
+            animation-play-state: running; /* Important to control play/pause */
         }
-
+        .carousel-items:hover {
+    animation-play-state: paused; /* Pause when hovered */
+}
         .carousel-items::-webkit-scrollbar {
             display: none;
         }
@@ -183,8 +182,8 @@
             text-align: center;
             padding: 20px 10px;
             border-radius: 100%;
-            width: 300px;
-            height: 300px; /* Auto height for flexibility */
+            width: 260px;
+            height: 230px; /* Auto height for flexibility */
             /* Adjust size of the banner */
             display: flex;
             align-items: center;
@@ -485,32 +484,33 @@
         }
 
         .chat-float-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background-color: #ff69b4;
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            text-decoration: none;
-            z-index: 999;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366; /* WhatsApp green */
+    color: white;
+    font-size: 28px; /* slightly bigger for WhatsApp icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    z-index: 999;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-        .chat-float-button i {
-            margin: 0;
-        }
+.chat-float-button i {
+    margin: 0;
+}
 
-        .chat-float-button:hover {
-            background-color: #e0569a;
-            transform: scale(1.1);
-        }
+.chat-float-button:hover {
+    background-color: #1ebe5b; /* slightly darker green on hover */
+    transform: scale(1.1);
+}
+
         /* Optional: If you want to make the filled heart red */
 .wishlist-btn .fa-heart {
     color: red;
@@ -528,7 +528,7 @@
     padding: 12px 16px;
     font-size: 16px;           /* Slightly smaller text */
     border-radius: 5px;
-    width: 200px;
+    width: 170px;
     cursor: pointer;
     transition: 0.3s;
     text-align: center;
@@ -612,7 +612,7 @@
                         <div class="product-info">
                             <h3>{{ $product->product_name }}</h3>
 
-                            <form name="addtocart-form" method="post" action="{{ route('cart.add') }}">
+                            <form name="addtocart-form" method="post" action="{{ route('cart.added') }}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $product->id }}" />
                                 <input type="hidden" name="quantity" value="1" />
@@ -654,7 +654,7 @@
                     <a href="{{ route('user.cart') }}" class="go-to-cart-btn"><i class="fas fa-shopping-cart"></i> Go to Cart</a>
                 @else
                     <!-- Add to Cart button - will appear centered over image on hover -->
-                    <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
+                    <form name="addtocart-form" method="post" action="{{route('cart.added')}}">
                         @csrf
                         <input type="hidden" name="id" value="{{$product->id}}" />
                         <input type="hidden" name="quantity" value="1" />
@@ -682,11 +682,26 @@
     </section>
 
     <a href="{{ route('user.shop') }}" class="load-more">Show All</a>
-    <a href="{{route('chat.index')}}" class="chat-float-button" title="Chat with Users">
-        <i class="fas fa-comment-dots"></i>
+    <a href="https://wa.me/9779803508674" class="chat-float-button" id="whatsapp-button" title="Chat with us on WhatsApp" target="_blank">
+        <i class="fab fa-whatsapp"></i>
     </a>
+
+
     <!-- Footer -->
     @include('layouts.footer')
+    <script>
+        document.getElementById('whatsapp-button').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            @auth
+                // If logged in, go to WhatsApp
+                window.open('https://wa.me/9779803508674', '_blank');
+            @else
+                // If not logged in, redirect to login page
+                window.location.href = "{{ route('login') }}";
+            @endauth
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const carousel = document.querySelector('.carousel-items');

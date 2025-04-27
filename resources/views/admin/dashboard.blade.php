@@ -251,9 +251,9 @@ tbody tr:nth-child(even) {
                 <canvas id="brandChart"></canvas>
             </div>
         </div>
-        <a href="{{ route('admin.chat', ['userId' => Auth::id()]) }}" class="chat-float-button" title="Chat with Users">
+        {{-- <a href="{{ route('admin.chat', ['userId' => Auth::id()]) }}" class="chat-float-button" title="Chat with Users">
             <i class="fas fa-comment-dots"></i>
-        </a>
+        </a> --}}
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var categoryCtx = document.getElementById('categoryChart').getContext('2d');

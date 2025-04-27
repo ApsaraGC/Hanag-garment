@@ -137,21 +137,23 @@
                 <!-- Brand Name -->
                 <div class="form-group">
                     <label for="brand_name">Brand Name:</label>
-                    <input type="text" id="brand_name" value="{{old('brand_name')}}" name="brand_name" required
+                    <input type="text" id="brand_name" value="{{old('brand_name')}}" name="brand_name"
                         placeholder="Enter brand name">
+                        @error('brand_name')<span style="color:red;">{{$message}}</span>
+                        @enderror
                 </div>
-                @error('brand_name')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 <!-- Brand Image Upload -->
                 <div class="form-group">
                     <label for="brand_image">Upload Brand Image:</label>
-                    <input type="file" id="image" name="image" accept="image/*" required onchange="previewImage(event)">
+                    <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
                     <div class="image-preview" id="imagePreview">
                         <p>No image selected</p>
                     </div>
-                </div>
-                @error('image')<span style="color:red;">{{$message}}</span>
+                    @error('image')<span style="color:red;">{{$message}}</span>
                 @enderror
+                </div>
+
                 <!-- Buttons -->
                 <div class="btn-container">
                     <button type="submit" class="btn btn-primary">Save Brand</button>

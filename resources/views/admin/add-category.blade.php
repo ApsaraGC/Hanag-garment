@@ -34,33 +34,28 @@
             /* Enable vertical scrolling when content overflows */
             margin-bottom: 10px;
         }
-
         .container {
             width: 60%;
             max-width: 900px;
             background-color: #ffffff;
             padding: 30px;
-            height: 320px;
+            height: 370px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
         h3 {
             text-align: center;
             color: #ff1493;
         }
-
         /* Form Styling */
         .form-group {
             margin-bottom: 15px;
         }
-
         label {
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
         }
-
         input[type="text"],
         input[type="file"] {
             width: 96%;
@@ -69,7 +64,6 @@
             border-radius: 5px;
             outline: none;
         }
-
         /* Image Preview */
         .image-preview {
             width: 100px;
@@ -82,20 +76,17 @@
             overflow: hidden;
             border-radius: 5px;
         }
-
         .image-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         /* Buttons */
         .btn-container {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
-
         .btn {
             padding: 10px 15px;
             color: white;
@@ -105,12 +96,10 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .btn-primary {
             background: #ff1493;
         }
-
-        .btn-primary:hover {
+       .btn-primary:hover {
             background: #cc117a;
         }
 
@@ -123,11 +112,10 @@
         }
     </style>
 </head>
-
 <body>
-    {{-- <div class="admin-panels">
+    <div class="admin-panels">
         @include('admin.navbar')
-    </div> --}}
+    </div>
     @if(session('popup_message'))
         <script>
             Swal.fire({
@@ -157,21 +145,22 @@
                 <div class="form-group">
                     <label for="category_name">Category Name:</label>
                     <input type="text" id="category_name" value="{{old('category_name')}}" name="category_name">
+                    @error('category_name')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('category_name')<span style="color:red;">{{$message}}</span>
-                @enderror
                 <div class="form-group">
                     <label for="description">Description:</label>
                     <input type="text" id="description" value="{{old('description')}}" name="description">
+                    @error('description')<span style="color:red;">{{$message}}</span>
+                    @enderror
                 </div>
-                @error('description')<span style="color:red;">{{$message}}</span>
-                @enderror
+
                 <!-- Category Image -->
                 <div class="form-group">
                     <label for="image">Category Image:</label>
                     <input type="file" id="image" name="image">
+                    @error('image')<span style="color:red;">{{ $message }}</span>@enderror
                 </div>
-                @error('image')<span style="color:red;">{{ $message }}</span>@enderror
 
                 <!-- Buttons -->
                 <div class="btn-container">

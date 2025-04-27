@@ -36,6 +36,8 @@ class ProductController extends Controller
                 ->paginate(8);
         } else {
             // No search term, show all products
+            // $products = Product::withTrashed() // Include soft deleted products in listing
+
             $products = Product::orderBy('created_at', 'desc')->paginate(8); // Sort by created_at in descending order
         }
         return view('admin.products', compact('products', 'search'));
@@ -51,16 +53,16 @@ class ProductController extends Controller
             'short_description' => 'required|string',
             'description' => 'nullable|string',
             'regular_price' => 'nullable|numeric',
-            'sale_price' => 'nullable|numeric|lte:regular_price', // Ensures sale price is less than or equal to regular price
+            'sale_price' => 'required|numeric|lte:regular_price', // Ensures sale price is less than or equal to regular price
             'stock_status' => 'required|in:instock,outofstock',
             'quantity' => 'required|integer|min:1',
-            'color' => 'nullable|string',
-            'size' => 'nullable|string',
+            'color' => 'required|string',
+            'size' => 'required|string',
             'is_featured' => 'nullable',
             'category_id' => 'nullable|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // Create Product
@@ -305,7 +307,7 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
-        $product->delete();
+        $product->delete(); // Soft delete only (sets deleted_at)
         return redirect()->route('admin.products')->with('popup_message', 'Product deleted successfully!');
     }
 }
