@@ -113,9 +113,9 @@
     </style>
 </head>
 <body>
-    <div class="admin-panels">
+    {{-- <div class="admin-panels">
         @include('admin.navbar')
-    </div>
+    </div> --}}
     @if(session('popup_message'))
         <script>
             Swal.fire({
