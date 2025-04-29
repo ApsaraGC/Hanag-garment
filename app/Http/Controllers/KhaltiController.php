@@ -105,7 +105,6 @@ class KhaltiController extends Controller
             }
             // dd($Payment);
             // UserCart::where('user_id', $order->user_id)->delete();
-
             return redirect()->route('user.orderBill', ['orderId' => $order->id])
                 ->with('popup_message', 'Payment successful! Your order has been placed.');
         } else {

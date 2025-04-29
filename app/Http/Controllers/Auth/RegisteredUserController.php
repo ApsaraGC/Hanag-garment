@@ -46,9 +46,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'address'=>$request->address,
         ]);
-
         event(new Registered($user));
-
         // Automatically log in the newly registered user.
         Auth::login($user);
 

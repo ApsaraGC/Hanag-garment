@@ -163,7 +163,6 @@
         <h2>Register Your Account</h2>
         <form action="{{ route('register') }}" method="POST">
             @csrf
-
             <!-- First Row of Fields -->
             <div class="form-row">
                 <div class="form-column">

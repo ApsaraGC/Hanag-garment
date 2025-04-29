@@ -99,13 +99,11 @@
             background-color: #FFF;
 
         }
-
         .you-might-like h2 {
             font-size: 35px;
             margin-bottom: 20px;
             color: #F070BB;
         }
-
         /* Carousel container that holds the items */
         .carousel {
             margin-top: 10px;
